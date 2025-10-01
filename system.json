@@ -1,0 +1,30 @@
+{
+  "id": "venture-rpg",
+  "title": "Venture RPG",
+  "description": "A Foundry VTT system for Venture.",
+  "version": "0.1.1",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11"
+  },
+  "authors": [
+    {
+      "name": "Jeremie Choquette"
+    }
+  ],
+  "esmodules": [
+    "module.js",
+    "module/dice-adjust-menu.js",
+    "module/actor-sheet-character.js",
+    "module/actor-sheet-npc.js"
+  ],
+  "styles": ["styles/venture-rpg.css"],
+  "packs": [],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ]
+}

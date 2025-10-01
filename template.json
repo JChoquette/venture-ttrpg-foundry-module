@@ -1,0 +1,72 @@
+{
+  "Actor": {
+    "types": ["character", "npc"],
+    "templates": {
+      "stats": {
+        "strength": 1,
+        "strength_burn": 0,
+        "agility": 1,
+        "agility_burn": 0,
+        "intelligence": 1,
+        "intelligence_burn": 0,
+        "intuition": 1,
+        "intuition_burn": 0
+      },
+      "pc-basics": {
+        "exp":0,
+        "background":"",
+        "species":""
+      },
+      "resources":{
+        "max_vim": 6,
+        "current_vim": 6,
+        "vim_is_custom": false,
+        "max_vigour": 6,
+        "current_vigour": 6,
+        "vigour_is_custom": false,
+        "max_steam": 0,
+        "current_steam": 0
+      },
+      "damage":{
+        "endurance": 1,
+        "endurance_burn": 0,
+        "major_threshold": 4,
+        "critical_threshold": 14,
+        "major_threshold_is_custom": false,
+        "critical_threshold_is_custom": false,
+        "max_guard": 0,
+        "max_minor_wounds": 1,
+        "max_major_wounds": 1,
+        "max_critical_wounds": 1,
+        "guard": 0,
+        "minor_wounds": 0,
+        "major_wounds": 0,
+        "critical_wounds": 0,
+        "minor_wounds_is_custom":false,
+        "major_wounds_is_custom":false,
+        "critical_wounds_is_custom":false
+      },
+      "skills":{
+        "untrained-skills":{
+          "str":{"name":"Untrained Strength","stat":"strength","rank":0},
+          "agi":{"name":"Untrained Agility","stat":"agility","rank":0},
+          "int":{"name":"Untrained Intelligence","stat":"intelligence","rank":0},
+          "inu":{"name":"Untrained Intuition","stat":"intuition","rank":0}
+        },
+        "trained-skills": {}
+      },
+      "abilities":{
+        "abilities": {}
+      }
+    },
+    "character": {
+      "templates": ["stats","skills","pc-basics","damage"]
+    },
+    "npc": {
+      "templates": ["stats","skills","damage"]
+    }
+  },
+  "Item": {
+    "types": []
+  }
+}

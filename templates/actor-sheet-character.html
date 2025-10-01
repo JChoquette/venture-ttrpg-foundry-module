@@ -1,0 +1,256 @@
+<form class="actor-sheet">
+  <h2>{{actor.name}}</h2>
+  <div class="character-info">
+    <h2>Character Info</h2>
+
+    <div class="field">
+      <label for="species">Species:</label>
+      <input type="text" name="system.species" value="{{system.species}}">
+    </div>
+
+    <div class="field">
+      <label for="background">Background:</label>
+      <input type="text" name="system.background" value="{{system.background}}">
+    </div>
+
+    <div class="field">
+      <label for="exp">Exp:</label>
+      <input type="number" name="system.exp" value="{{system.exp}}" min="0">
+    </div>
+  </div>
+  
+
+  <div>
+    <button type="button" class="display-actor-info">Display Info</button>
+  </div>
+
+
+
+
+  <nav class="tabs" data-group="primary">
+    <!-- Tab navigation -->
+    <ul class="tab-nav">
+      <li class="active" data-tab="basic-info">Basic Info</li>
+      <li data-tab="abilities">Abilities</li>
+      <li data-tab="equipment">Equipment</li>
+      <li data-tab="edit">Edit Attributes</li>
+    </ul>
+  </nav>
+
+  <div class="tab-content">
+    <!-- Tab content -->
+    <div class="tab active" data-group="primary" data-tab="basic-info">
+
+      <h2>Wounds and Burn</h2>
+      <h3>Wounds</h3>
+      <div class="damage">
+        {{#if system.max_guard }}
+        <div class="damage-tracker">
+          <label>Guard</label>
+          {{#times system.guard}}
+            <input type="checkbox" checked="true" disabled/>
+          {{/times}}
+          {{#times (subtract system.max_guard system.guard)}}
+            <input type="checkbox" disabled/>
+          {{/times}}
+          <button class="increment-button" data-name="increment-button" data-amount="+1" data-field="guard" {{#if (gte system.guard system.max_guard)}} disabled {{/if}}>+</button>
+          <button class="increment-button" data-name="increment-button" data-amount="-1" data-field="guard" {{#if (gte 0 system.guard)}} disabled {{/if}}>-</button>
+        </div>
+        {{/if }}
+        <div class="damage-tracker">
+          <label>Minor Wounds</label>
+          {{#times system.minor_wounds}}
+            <input type="checkbox" checked="true" disabled/>
+          {{/times}}
+          {{#times (subtract system.max_minor_wounds system.minor_wounds)}}
+            <input type="checkbox" disabled/>
+          {{/times}}
+          <button class="increment-button" data-name="increment-button" data-amount="+1" data-field="minor_wounds" {{#if (gte system.minor_wounds system.max_minor_wounds)}} disabled {{/if}}>+</button>
+          <button class="increment-button" data-name="increment-button" data-amount="-1" data-field="minor_wounds" {{#if (gte 0 system.minor_wounds)}} disabled {{/if}}>-</button>
+        </div>
+        <div class="damage-tracker">
+          <label>Major Wounds</label>
+          {{#times system.major_wounds}}
+            <input type="checkbox" checked="true" disabled/>
+          {{/times}}
+          {{#times (subtract system.max_major_wounds system.major_wounds)}}
+            <input type="checkbox" disabled/>
+          {{/times}}
+          <button class="increment-button" data-name="increment-button" data-amount="+1" data-field="major_wounds" {{#if (gte system.major_wounds system.max_major_wounds)}} disabled {{/if}}>+</button>
+          <button class="increment-button" data-name="increment-button" data-amount="-1" data-field="major_wounds" {{#if (gte 0 system.major_wounds)}} disabled {{/if}}>-</button>
+        </div>
+        <div class="damage-tracker">
+          <label>Critical Wounds</label>
+          {{#times system.critical_wounds}}
+            <input type="checkbox" checked="true" disabled/>
+          {{/times}}
+          {{#times (subtract system.max_critical_wounds system.critical_wounds)}}
+            <input type="checkbox" disabled/>
+          {{/times}}
+          <button class="increment-button" data-name="increment-button" data-amount="+1" data-field="critical_wounds" {{#if (gte system.critical_wounds system.max_critical_wounds)}} disabled {{/if}}>+</button>
+          <button class="increment-button" data-name="increment-button" data-amount="-1" data-field="critical_wounds" {{#if (gte 0 system.critical_wounds)}} disabled {{/if}}>-</button>
+        </div>
+      </div>
+
+
+      <h2>Skills</h2>
+      <ul>
+        {{#each system.trained-skills as |skill key|}}
+          <li class="skill flexrow">
+            <label> {{skill.name}}: {{rankToDie skill.rank}} + {{rankToDie skill.statValue}} ({{skill.rank}} ranks, {{skill.statValue}} {{skill.stat}})
+            </label>
+            <button type="button" 
+              class="roll-skill" 
+              data-name={{skill.name}}
+              data-d1="{{skill.rank}}"
+              data-d2="{{skill.statValue}}">
+                roll
+            </button>
+            <button type="button" 
+              class="roll-skill-boon" 
+              data-name={{skill.name}}
+              data-d1="{{skill.rank}}"
+              data-d2="{{skill.statValue}}">
+                boon/bane
+            </button>
+            <button type="button" 
+              class="roll-skill-boon" 
+              data-name={{skill.name}}
+              data-d1="-1"
+              data-d2="-1"
+              data-d3="{{skill.rank}}">
+                help
+            </button>
+          </li>
+          
+        {{/each}}
+
+        <hr>
+
+        {{#each system.untrained-skills as |skill key|}}
+          <li class="skill">
+            <button type="button" 
+              class="roll-skill" 
+              data-name={{skill.name}}
+              data-d1="{{skill.rank}}"
+              data-d2="{{skill.statValue}}">
+                {{skill.name}}: {{rankToDie skill.rank}} + {{rankToDie skill.statValue}} ({{skill.rank}} ranks, {{skill.statValue}} {{skill.stat}})
+            </button>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="abilities">
+      <!-- Abilities go here -->
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="damage">
+      <!-- Abilities go here -->
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="equipment">
+      <!-- Skills go here -->
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="edit">
+
+
+      <div class="stats">
+        <h3>Stats</h3>
+        <div class="flexrow">
+          <label class="stat">Str
+            <input type="number" name="system.strength" value="{{system.strength}}" min="1" max="5">
+          </label>
+          <label class="stat">Agi
+            <input type="number" name="system.agility" value="{{system.agility}}" min="1" max="5">
+          </label>
+          <label class="stat">Int
+            <input type="number" name="system.intelligence" value="{{system.intelligence}}" min="1" max="5">
+          </label>
+          <label class="stat">Inu
+            <input type="number" name="system.intuition" value="{{system.intuition}}" min="1" max="5">
+          </label>
+          <label>Endurance
+            <input type="number" name="system.endurance" value="{{system.endurance}}" min="1" max="5">
+          </label>
+        </div>
+      </div>
+
+      <div class="other-values">
+        <div class="flexrow">
+          <label>Major Threshold
+            <input type="number" name="system.major_threshold" value="{{system.major_threshold}}" {{#unless system.major_threshold_is_custom}}disabled{{/unless}}>
+          </label>
+          <label>
+            Use custom
+            <input type="checkbox" name="system.major_threshold_is_custom" {{checked system.major_threshold_is_custom}}>
+          </label>
+        </div>
+        <div class="flexrow">
+          <label>Critcial Threshold
+            <input type="number" name="system.critical_threshold" value="{{system.critical_threshold}}" {{#unless system.critical_threshold_is_custom}}disabled{{/unless}}>
+          </label>
+          <label>
+            Use custom
+            <input type="checkbox" name="system.critical_threshold_is_custom" {{checked system.critical_threshold_is_custom}}>
+          </label>
+        </div>
+        <div class="flexrow">
+          <label>Max Minor Wounds
+            <input type="number" name="system.max_minor_wounds" value="{{system.max_minor_wounds}}" {{#unless system.minor_wounds_is_custom}}disabled{{/unless}}>
+          </label>
+          <label>
+            Use custom
+            <input type="checkbox" name="system.minor_wounds_is_custom" {{checked system.minor_wounds_is_custom}}>
+          </label>
+        </div>
+        <div class="flexrow">
+          <label>Max Major Wounds
+            <input type="number" name="system.max_major_wounds" value="{{system.max_major_wounds}}" {{#unless system.major_wounds_is_custom}}disabled{{/unless}}>
+          </label>
+          <label>
+            Use custom
+            <input type="checkbox" name="system.major_wounds_is_custom" {{checked system.major_wounds_is_custom}}>
+          </label>
+        </div>
+        <div class="flexrow">
+          <label>Max Critical Wounds
+            <input type="number" name="system.max_critical_wounds" value="{{system.max_critical_wounds}}" {{#unless system.critical_wounds_is_custom}}disabled{{/unless}}>
+          </label>
+          <label>
+            Use custom
+            <input type="checkbox" name="system.critical_wounds_is_custom" {{checked system.critical_wounds_is_custom}}>
+          </label>
+        </div>
+        <div class="flexrow">
+          <label>Max Guard
+            <input type="number" name="system.max_guard" value="{{system.max_guard}}">
+          </label>
+        </div>
+      </div>
+
+      <div class="skills">
+        <h2>Skills</h2>
+        <h3>Trained Skills</h3>
+        <ul>
+          {{#each system.trained-skills as |skill key|}}
+            <li class="skill">
+              <input type="text" name="system.trained-skills.{{key}}.name" value="{{skill.name}}">
+              <label>Stat:</label>
+                <select name="system.trained-skills.{{key}}.stat">
+                  <option value="strength" {{#if (eq skill.stat "strength")}}selected{{/if}}>Strength</option>
+                  <option value="agility" {{#if (eq skill.stat "agility")}}selected{{/if}}>Agility</option>
+                  <option value="intelligence" {{#if (eq skill.stat "intelligence")}}selected{{/if}}>Intelligence</option>
+                  <option value="intuition" {{#if (eq skill.stat "intuition")}}selected{{/if}}>Intuition</option>
+                </select>
+              <label>Ranks:</label>
+              <input type="number" name="system.trained-skills.{{key}}.rank" value="{{skill.rank}}" min="0" max="5">
+            </li>
+          {{/each}}
+        </ul>
+        <button type="button" class="add-skill">+ Add Skill</button>
+      </div>
+    </div>
+  </div>
+</form>
