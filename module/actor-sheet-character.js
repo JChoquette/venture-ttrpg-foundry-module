@@ -18,19 +18,27 @@ export class MyCharacterSheet extends ActorSheet {
     context.system = this.actor.system; // expose system shorthand
     let system = context.system;
 
+    // Create stats list
+    system.current_stats = {
+      "strength": system.strength - system.strength_burn || 1,
+      "agility": system.agility - system.agility_burn || 1,
+      "intelligence": system.intelligence - system.intelligence_burn || 1,
+      "intuition": system.intuition - system.intuition_burn || 1,
+    }
 
     // Precompute stat values for untrained skills
-    if (system["untrained-skills"]) {
-      for (let [key, skill] of Object.entries(system["untrained-skills"])) {
-        skill.statValue = system[skill.stat] || 1; // 1 as default
+    if (system["untrained_skills"]) {
+      for (let [key, skill] of Object.entries(system["untrained_skills"])) {
+        skill.statValue = system.current_stats[skill.stat];
       }
     }
     // Precompute stat values for skills
-    if (system["trained-skills"]) {
-      for (let [key, skill] of Object.entries(system["trained-skills"])) {
-        skill.statValue = system[skill.stat] || 1; // 1 as default
+    if (system["trained_skills"]) {
+      for (let [key, skill] of Object.entries(system["trained_skills"])) {
+        skill.statValue = system.current_stats[skill.stat];
       }
     }
+
 
     //Calculate defaults
     if (!system.major_threshold_is_custom){
@@ -55,6 +63,11 @@ export class MyCharacterSheet extends ActorSheet {
       system.max_vigour = 2+system.strength+system.agility;
     }
 
+    //Calculate largest damage track and burn track
+    system.largest_wounds = Math.max(system.max_guard,system.max_minor_wounds,system.max_major_wounds,system.max_critical_wounds);
+    system.largest_stat = Math.max(system.strength, system.agility, system.intelligence, system.intuition, system.endurance, system.fuel);
+    system.largest_resource = Math.max(system.max_steam, system.max_vigour, system.max_vim);
+
     return context;
   }
 
@@ -68,13 +81,33 @@ export class MyCharacterSheet extends ActorSheet {
     // Add new custom skill
     html.find(".add-skill").click(ev => {
       ev.preventDefault();
-      let trained = this.actor.system["trained-skills"];
-      console.log(trained);
+      let trained = this.actor.system["trained_skills"] || {};
       let new_id = randomID();
       let new_skill = { name: "New Skill", stat: "strength", rank: 0 };
       trained[new_id] = new_skill;
-      console.log(trained);
-      this.actor.update({ "actor.system.trained-skills": trained});
+      this.actor.update({ "system.trained_skills": trained});
+      this.render();
+    });
+
+    // Add new ability
+    html.find(".add-ability").click(ev => {
+      ev.preventDefault();
+      let abilities = this.actor.system["abilities"] || {};
+      let new_id = randomID();
+      let new_ability = { name: "New Ability", description: "", skill: "None" };
+      abilities[new_id] = new_ability;
+      this.actor.update({ "system.abilities": abilities});
+      this.render();
+    });
+
+    // Add new item
+    html.find(".add-equipment").click(ev => {
+      ev.preventDefault();
+      let equipment = this.actor.system["equipment"] || {};
+      let new_id = randomID();
+      let new_item = { name: "New Item", description: "" };
+      equipment[new_id] = new_item;
+      this.actor.update({ "system.equipment": equipment});
       this.render();
     });
 
@@ -92,7 +125,8 @@ export class MyCharacterSheet extends ActorSheet {
       ev.preventDefault();
       const d1 = $(ev.currentTarget).data("d1");
       const d2 = $(ev.currentTarget).data("d2");
-      const d3 = $(ev.currentTarget).data("d3") || -1;
+      let d3 = $(ev.currentTarget).data("d3");
+      if (d3 === null) d3=-1;
       const name = $(ev.currentTarget).data("name");
       new DiceAdjustMenu(name, d1, d2, d3).render(true);
       console.log("rendered a dice menu");

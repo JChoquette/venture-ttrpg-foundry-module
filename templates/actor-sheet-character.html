@@ -1,21 +1,29 @@
 <form class="actor-sheet">
   <h2>{{actor.name}}</h2>
   <div class="character-info">
-    <h2>Character Info</h2>
+    <div class="flexrow">
+      <div class="field">
+        <label for="species">Species:</label>
+        <input type="text" name="system.species" value="{{system.species}}">
+      </div>
 
-    <div class="field">
-      <label for="species">Species:</label>
-      <input type="text" name="system.species" value="{{system.species}}">
-    </div>
+      <div class="field">
+        <label for="background">Background:</label>
+        <input type="text" name="system.background" value="{{system.background}}">
+      </div>
 
-    <div class="field">
-      <label for="background">Background:</label>
-      <input type="text" name="system.background" value="{{system.background}}">
-    </div>
-
-    <div class="field">
-      <label for="exp">Exp:</label>
-      <input type="number" name="system.exp" value="{{system.exp}}" min="0">
+      <div class="field">
+        <label for="exp">Exp:</label>
+        <input type="number" name="system.exp" value="{{system.exp}}" min="0">
+      </div>
+      <div class="field">
+        <label for="exp">Wealth:</label>
+        <input type="number" name="system.exp" value="{{system.exp}}" min="0">
+      </div>
+      <div class="field">
+        <label for="exp">Wealth Track:</label>
+        <input type="number" name="system.exp" value="{{system.exp}}" min="0">
+      </div>
     </div>
   </div>
   
@@ -40,117 +48,298 @@
   <div class="tab-content">
     <!-- Tab content -->
     <div class="tab active" data-group="primary" data-tab="basic-info">
+      <h2>Skills and Defenses</h2>
+      <div class="flexrow">
+        <div>
+          <h3>Skills</h3>
+          <table class="first-column-grow">
+            {{#each system.trained_skills as |skill key|}}
+            <tr>
+              <td><label> {{skill.name}}: {{rankToDie skill.rank}} + {{rankToDie skill.statValue}}
+              </label></td>
+              <td><button type="button" 
+                class="roll-skill" 
+                data-name={{skill.name}}
+                data-d1="{{skill.rank}}"
+                data-d2="{{skill.statValue}}">
+                  roll
+              </button></td>
+              <td><button type="button" 
+                class="roll-skill-boon" 
+                data-name={{skill.name}}
+                data-d1="{{skill.rank}}"
+                data-d2="{{skill.statValue}}">
+                  boon/bane
+              </button></td>
+              <td><button type="button" 
+                class="roll-skill-boon" 
+                data-name={{skill.name}}
+                data-d1="-1"
+                data-d2="-1"
+                data-d3="{{skill.rank}}">
+                  help
+              </button></td>
+            </tr>
+            {{/each}}
 
-      <h2>Wounds and Burn</h2>
-      <h3>Wounds</h3>
-      <div class="damage">
-        {{#if system.max_guard }}
-        <div class="damage-tracker">
-          <label>Guard</label>
-          {{#times system.guard}}
-            <input type="checkbox" checked="true" disabled/>
-          {{/times}}
-          {{#times (subtract system.max_guard system.guard)}}
-            <input type="checkbox" disabled/>
-          {{/times}}
-          <button class="increment-button" data-name="increment-button" data-amount="+1" data-field="guard" {{#if (gte system.guard system.max_guard)}} disabled {{/if}}>+</button>
-          <button class="increment-button" data-name="increment-button" data-amount="-1" data-field="guard" {{#if (gte 0 system.guard)}} disabled {{/if}}>-</button>
+            {{#each system.untrained_skills as |skill key|}}
+              <tr>
+                <td><label> {{skill.name}}: {{rankToDie skill.rank}} + {{rankToDie skill.statValue}}
+                </label></td>
+                <td><button type="button" 
+                  class="roll-skill" 
+                  data-name={{skill.name}}
+                  data-d1="{{skill.rank}}"
+                  data-d2="{{skill.statValue}}">
+                    roll
+                </button></td>
+                <td><button type="button" 
+                  class="roll-skill-boon" 
+                  data-name={{skill.name}}
+                  data-d1="{{skill.rank}}"
+                  data-d2="{{skill.statValue}}">
+                    boon/bane
+                </button></td>
+                <td><button type="button" 
+                  class="roll-skill-boon" 
+                  data-name={{skill.name}}
+                  data-d1="-1"
+                  data-d2="-1"
+                  data-d3="{{skill.rank}}">
+                    help
+                </button></td>
+              </tr>
+            {{/each}}
+          </table>
         </div>
-        {{/if }}
-        <div class="damage-tracker">
-          <label>Minor Wounds</label>
-          {{#times system.minor_wounds}}
-            <input type="checkbox" checked="true" disabled/>
-          {{/times}}
-          {{#times (subtract system.max_minor_wounds system.minor_wounds)}}
-            <input type="checkbox" disabled/>
-          {{/times}}
-          <button class="increment-button" data-name="increment-button" data-amount="+1" data-field="minor_wounds" {{#if (gte system.minor_wounds system.max_minor_wounds)}} disabled {{/if}}>+</button>
-          <button class="increment-button" data-name="increment-button" data-amount="-1" data-field="minor_wounds" {{#if (gte 0 system.minor_wounds)}} disabled {{/if}}>-</button>
-        </div>
-        <div class="damage-tracker">
-          <label>Major Wounds</label>
-          {{#times system.major_wounds}}
-            <input type="checkbox" checked="true" disabled/>
-          {{/times}}
-          {{#times (subtract system.max_major_wounds system.major_wounds)}}
-            <input type="checkbox" disabled/>
-          {{/times}}
-          <button class="increment-button" data-name="increment-button" data-amount="+1" data-field="major_wounds" {{#if (gte system.major_wounds system.max_major_wounds)}} disabled {{/if}}>+</button>
-          <button class="increment-button" data-name="increment-button" data-amount="-1" data-field="major_wounds" {{#if (gte 0 system.major_wounds)}} disabled {{/if}}>-</button>
-        </div>
-        <div class="damage-tracker">
-          <label>Critical Wounds</label>
-          {{#times system.critical_wounds}}
-            <input type="checkbox" checked="true" disabled/>
-          {{/times}}
-          {{#times (subtract system.max_critical_wounds system.critical_wounds)}}
-            <input type="checkbox" disabled/>
-          {{/times}}
-          <button class="increment-button" data-name="increment-button" data-amount="+1" data-field="critical_wounds" {{#if (gte system.critical_wounds system.max_critical_wounds)}} disabled {{/if}}>+</button>
-          <button class="increment-button" data-name="increment-button" data-amount="-1" data-field="critical_wounds" {{#if (gte 0 system.critical_wounds)}} disabled {{/if}}>-</button>
+        <div>
+          <h3>Defenses</h3>
+          <table class="first-column-grow">
+            {{#each system.current_stats as |stat key|}}
+              <tr>
+                <td><label> {{key}}: {{rankToDie stat}} + {{rankToDie stat}}
+                </label>
+                <td><button type="button" 
+                  class="roll-skill" 
+                  data-name={{key}}
+                  data-d1="{{stat}}"
+                  data-d2="{{stat}}">
+                    roll
+                </button></td>
+                <td><button type="button" 
+                  class="roll-skill-boon" 
+                  data-name={{key}}
+                  data-d1="{{stat}}"
+                  data-d2="{{stat}}">
+                    boon/bane
+                </button></td>
+              </tr>
+            {{/each}}
+          </table>
         </div>
       </div>
-
-
-      <h2>Skills</h2>
-      <ul>
-        {{#each system.trained-skills as |skill key|}}
-          <li class="skill flexrow">
-            <label> {{skill.name}}: {{rankToDie skill.rank}} + {{rankToDie skill.statValue}} ({{skill.rank}} ranks, {{skill.statValue}} {{skill.stat}})
-            </label>
-            <button type="button" 
-              class="roll-skill" 
-              data-name={{skill.name}}
-              data-d1="{{skill.rank}}"
-              data-d2="{{skill.statValue}}">
-                roll
-            </button>
-            <button type="button" 
-              class="roll-skill-boon" 
-              data-name={{skill.name}}
-              data-d1="{{skill.rank}}"
-              data-d2="{{skill.statValue}}">
-                boon/bane
-            </button>
-            <button type="button" 
-              class="roll-skill-boon" 
-              data-name={{skill.name}}
-              data-d1="-1"
-              data-d2="-1"
-              data-d3="{{skill.rank}}">
-                help
-            </button>
-          </li>
-          
-        {{/each}}
-
-        <hr>
-
-        {{#each system.untrained-skills as |skill key|}}
-          <li class="skill">
-            <button type="button" 
-              class="roll-skill" 
-              data-name={{skill.name}}
-              data-d1="{{skill.rank}}"
-              data-d2="{{skill.statValue}}">
-                {{skill.name}}: {{rankToDie skill.rank}} + {{rankToDie skill.statValue}} ({{skill.rank}} ranks, {{skill.statValue}} {{skill.stat}})
-            </button>
-          </li>
-        {{/each}}
-      </ul>
+      <h2>Resources, Wounds and Burn</h2>
+      <div class="flexrow">
+        <div>
+        <h3>Resources</h3>
+        <table class="first-column-grow">
+          <tr class="damage-tracker">
+            <td><label>Vigour</label></td>
+            {{#times system.vigour}}
+              <td><input type="checkbox" checked="true" disabled/></td>
+            {{/times}}
+            {{#times (subtract system.max_vigour system.vigour)}}
+              <td><input type="checkbox" disabled/></td>
+            {{/times}}
+            {{#if (gte (subtract system.largest_resource system.max_vigour) 1) }}<td colspan="{{subtract system.largest_resource system.max_vigour}}"/>{{/if}}
+            <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="vigour" {{#if (gte system.vigour system.max_vigour)}} disabled {{/if}}>+</button></td>
+            <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="vigour" {{#if (gte 0 system.vigour)}} disabled {{/if}}>-</button></td>
+          </tr>
+          <tr class="damage-tracker">
+            <td><label>Vim</label></td>
+            {{#times system.vim}}
+              <td><input type="checkbox" checked="true" disabled/></td>
+            {{/times}}
+            {{#times (subtract system.max_vim system.vim)}}
+              <td><input type="checkbox" disabled/></td>
+            {{/times}}
+            {{#if (gte (subtract system.largest_resource system.max_vim) 1) }}<td colspan="{{subtract system.largest_resource system.max_vim}}"/>{{/if}}
+            <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="vim" {{#if (gte system.vim system.max_vim)}} disabled {{/if}}>+</button></td>
+            <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="vim" {{#if (gte 0 system.vim)}} disabled {{/if}}>-</button></td>
+          </tr>
+          {{#if system.max_steam}}
+          <tr class="damage-tracker">
+            <td><label>Steam</label></td>
+            {{#times system.steam}}
+              <td><input type="checkbox" checked="true" disabled/></td>
+            {{/times}}
+            {{#times (subtract system.max_steam system.steam)}}
+              <td><input type="checkbox" disabled/></td>
+            {{/times}}
+            {{#if (gte (subtract system.largest_resource system.max_steam) 1) }}<td colspan="{{subtract system.largest_resource system.max_steam}}"/>{{/if}}
+            <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="steam" {{#if (gte system.steam system.max_steam)}} disabled {{/if}}>+</button></td>
+            <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="steam" {{#if (gte 0 system.steam)}} disabled {{/if}}>-</button></td>
+          </tr>
+          {{/if}}
+        </table>
+        <h3>Wounds</h3>
+        <table class="first-column-grow">
+          {{#if system.max_guard }}
+          <tr class="damage-tracker">
+            <td><label>Guard</label></td>
+            {{#times system.guard}}
+              <td><input type="checkbox" checked="true" disabled/></td>
+            {{/times}}
+            {{#times (subtract system.max_guard system.guard)}}
+              <td><input type="checkbox" disabled/></td>
+            {{/times}}
+            {{#if (gte (subtract system.largest_wounds system.max_guard) 1) }}<td colspan="{{subtract system.largest_wounds system.max_guard}}"/>{{/if}}
+            <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="guard" {{#if (gte system.guard system.max_guard)}} disabled {{/if}}>+</button></td>
+            <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="guard" {{#if (gte 0 system.guard)}} disabled {{/if}}>-</button></td>
+          </tr>
+          {{/if }}
+          <tr class="damage-tracker">
+            <td><label>Minor Wounds</label></td>
+            {{#times system.minor_wounds}}
+              <td><input type="checkbox" checked="true" disabled/></td>
+            {{/times}}
+            {{#times (subtract system.max_minor_wounds system.minor_wounds)}}
+              <td><input type="checkbox" disabled/></td>
+            {{/times}}
+            {{#if (gte (subtract system.largest_wounds system.max_minor_wounds) 1) }}<td colspan="{{subtract system.largest_wounds system.max_minor_wounds}}"/>{{/if}}
+            <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="minor_wounds" {{#if (gte system.minor_wounds system.max_minor_wounds)}} disabled {{/if}}>+</button></td>
+            <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="minor_wounds" {{#if (gte 0 system.minor_wounds)}} disabled {{/if}}>-</button></td>
+          </tr>
+          <tr class="damage-tracker">
+            <td><label>Major Wounds</label></td>
+            {{#times system.major_wounds}}
+              <td><input type="checkbox" checked="true" disabled/></td>
+            {{/times}}
+            {{#times (subtract system.max_major_wounds system.major_wounds)}}
+              <td><input type="checkbox" disabled/></td>
+            {{/times}}
+            {{#if (gte (subtract system.largest_wounds system.max_major_wounds) 1) }}<td colspan="{{subtract system.largest_wounds system.max_major_wounds}}"/>{{/if}}
+            <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="major_wounds" {{#if (gte system.major_wounds system.max_major_wounds)}} disabled {{/if}}>+</button></td>
+            <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="major_wounds" {{#if (gte 0 system.major_wounds)}} disabled {{/if}}>-</button></td>
+          </tr>
+          <tr class="damage-tracker">
+            <td><label>Critical Wounds</label></td>
+            {{#times system.critical_wounds}}
+              <td><input type="checkbox" checked="true" disabled/></td>
+            {{/times}}
+            {{#times (subtract system.max_critical_wounds system.critical_wounds)}}
+              <td><input type="checkbox" disabled/></td>
+            {{/times}}
+            {{#if (gte (subtract system.largest_wounds system.max_critical_wounds) 1) }}<td colspan="{{subtract system.largest_wounds system.max_critical_wounds}}"/>{{/if}}
+            <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="critical_wounds" {{#if (gte system.critical_wounds system.max_critical_wounds)}} disabled {{/if}}>+</button></td>
+            <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="critical_wounds" {{#if (gte 0 system.critical_wounds)}} disabled {{/if}}>-</button></td>
+          </tr>
+        </table>
+        </div>
+        <div>
+        <h3>Stat Burn</h3>
+        <table class="first-column-grow">
+          <tr class="damage-tracker">
+            <td><label>Strength</label></td>
+            {{#times system.strength_burn}}
+              <td><input type="checkbox" checked="true" disabled/></td>
+            {{/times}}
+            {{#times (subtract (subtract system.strength 1) system.strength_burn)}}
+              <td><input type="checkbox" disabled/></td>
+            {{/times}}
+            {{#if (gte (subtract system.largest_stat system.strength) 1) }}<td colspan="{{subtract system.largest_stat system.strength}}"/>{{/if}}
+            <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="strength_burn" {{#if (gte system.strength_burn (subtract system.strength 1))}} disabled {{/if}}>+</button></td>
+            <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="strength_burn" {{#if (gte 0 system.strength_burn)}} disabled {{/if}}>-</button></td>
+          </tr>
+          <tr class="damage-tracker">
+            <td><label>Agility</label></td>
+            {{#times system.agility_burn}}
+              <td><input type="checkbox" checked="true" disabled/></td>
+            {{/times}}
+            {{#times (subtract (subtract system.agility 1) system.agility_burn)}}
+              <td><input type="checkbox" disabled/></td>
+            {{/times}}
+            {{#if (gte (subtract system.largest_stat system.agility) 1) }}<td colspan="{{subtract system.largest_stat system.agility}}"/>{{/if}}
+            <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="agility_burn" {{#if (gte system.agility_burn (subtract system.agility 1))}} disabled {{/if}}>+</button></td>
+            <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="agility_burn" {{#if (gte 0 system.agility_burn)}} disabled {{/if}}>-</button></td>
+          </tr>
+          <tr class="damage-tracker">
+            <td><label>Intelligence</label></td>
+            {{#times system.intelligence_burn}}
+              <td><input type="checkbox" checked="true" disabled/></td>
+            {{/times}}
+            {{#times (subtract (subtract system.intelligence 1) system.intelligence_burn)}}
+              <td><input type="checkbox" disabled/></td>
+            {{/times}}
+            {{#if (gte (subtract system.largest_stat system.intelligence) 1) }}<td colspan="{{subtract system.largest_stat system.intelligence}}"/>{{/if}}
+            <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="intelligence_burn" {{#if (gte system.intelligence_burn (subtract system.intelligence 1))}} disabled {{/if}}>+</button></td>
+            <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="intelligence_burn" {{#if (gte 0 system.intelligence_burn)}} disabled {{/if}}>-</button></td>
+          </tr>
+          <tr class="damage-tracker">
+            <td><label>Intuition</label></td>
+            {{#times system.intuition_burn}}
+              <td><input type="checkbox" checked="true" disabled/></td>
+            {{/times}}
+            {{#times (subtract (subtract system.intuition 1) system.intuition_burn)}}
+              <td><input type="checkbox" disabled/></td>
+            {{/times}}
+            {{#if (gte (subtract system.largest_stat system.intuition) 1) }}<td colspan="{{subtract system.largest_stat system.intuition}}"/>{{/if}}
+            <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="intuition_burn" {{#if (gte system.intuition_burn (subtract system.intuition 1))}} disabled {{/if}}>+</button></td>
+            <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="intuition_burn" {{#if (gte 0 system.intuition_burn)}} disabled {{/if}}>-</button></td>
+          </tr>
+          <tr class="damage-tracker">
+            <td><label>Endurance</label></td>
+            {{#times system.endurance_burn}}
+              <td><input type="checkbox" checked="true" disabled/></td>
+            {{/times}}
+            {{#times (subtract (subtract system.endurance 1) system.endurance_burn)}}
+              <td><input type="checkbox" disabled/></td>
+            {{/times}}
+            {{#if (gte (subtract system.largest_stat system.endurance) 1) }}<td colspan="{{subtract system.largest_stat system.endurance}}"/>{{/if}}
+            <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="endurance_burn" {{#if (gte system.endurance_burn (subtract system.endurance 1))}} disabled {{/if}}>+</button></td>
+            <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="endurance_burn" {{#if (gte 0 system.endurance_burn)}} disabled {{/if}}>-</button></td>
+          </tr>
+          {{#if system.fuel}}<tr class="damage-tracker">
+            <td><label>Fuel</label></td>
+            {{#times system.fuel_burn}}
+              <td><input type="checkbox" checked="true" disabled/></td>
+            {{/times}}
+            {{#times (subtract system.fuel system.fuel_burn)}}
+              <td><input type="checkbox" disabled/></td>
+            {{/times}}
+            {{#if (gte (subtract system.largest_stat system.fuel) 0) }}<td colspan="{{subtract system.largest_stat system.fuel}}"/>{{/if}}
+            <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="fuel_burn" {{#if (gte system.fuel_burn system.fuel)}} disabled {{/if}}>+</button></td>
+            <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="fuel_burn" {{#if (gte 0 system.fuel_burn)}} disabled {{/if}}>-</button></td>
+          </tr>
+          {{/if}}
+        </table>
+        </div>
+      </div>
     </div>
 
     <div class="tab" data-group="primary" data-tab="abilities">
-      <!-- Abilities go here -->
+        {{#each system.abilities as |ability key|}}
+          {{ability.name}} ({{ability.skill}}): {{ability.description}}
+        {{/each}}
     </div>
 
-    <div class="tab" data-group="primary" data-tab="damage">
-      <!-- Abilities go here -->
-    </div>
 
     <div class="tab" data-group="primary" data-tab="equipment">
-      <!-- Skills go here -->
+      <div class="equipment">
+        <h2>Equipment</h2>
+        <ul>
+          {{#each system.equipment as |item key|}}
+            <li class="item flexrow">
+              <input type="text" name="system.equipment.{{key}}.name" value="{{item.name}}">
+              <div>
+                <label>Description</label>
+                <input type="text" name="system.equipment.{{key}}.description" value="{{item.description}}">
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+        <button type="button" class="add-equipment">+ Add Item</button>
+      </div>
     </div>
 
     <div class="tab" data-group="primary" data-tab="edit">
@@ -227,29 +416,75 @@
           <label>Max Guard
             <input type="number" name="system.max_guard" value="{{system.max_guard}}">
           </label>
+        </div><div class="flexrow">
+          <label>Max Vigour
+            <input type="number" name="system.max_vigour" value="{{system.max_vigour}}" {{#unless system.vigour_is_custom}}disabled{{/unless}}>
+          </label>
+          <label>
+            Use custom
+            <input type="checkbox" name="system.vigour_is_custom" {{checked system.vigour_is_custom}}>
+          </label>
+        </div>
+        <div class="flexrow">
+          <label>Vim
+            <input type="number" name="system.max_vim" value="{{system.max_vim}}" {{#unless system.vim_is_custom}}disabled{{/unless}}>
+          </label>
+          <label>
+            Use custom
+            <input type="checkbox" name="system.vim_is_custom" {{checked system.vim_is_custom}}>
+          </label>
+        </div>
+        <div class="flexrow">
+          <label>Steam
+            <input type="number" name="system.max_steam" value="{{system.max_steam}}">
+          </label>
+        </div>
+        <div class="flexrow">
+          <label>Fuel
+            <input type="number" name="system.fuel" value="{{system.fuel}}">
+          </label>
         </div>
       </div>
 
       <div class="skills">
         <h2>Skills</h2>
-        <h3>Trained Skills</h3>
         <ul>
-          {{#each system.trained-skills as |skill key|}}
+          {{#each system.trained_skills as |skill key|}}
             <li class="skill">
-              <input type="text" name="system.trained-skills.{{key}}.name" value="{{skill.name}}">
+              <input type="text" name="system.trained_skills.{{key}}.name" value="{{skill.name}}">
               <label>Stat:</label>
-                <select name="system.trained-skills.{{key}}.stat">
+                <select name="system.trained_skills.{{key}}.stat">
                   <option value="strength" {{#if (eq skill.stat "strength")}}selected{{/if}}>Strength</option>
                   <option value="agility" {{#if (eq skill.stat "agility")}}selected{{/if}}>Agility</option>
                   <option value="intelligence" {{#if (eq skill.stat "intelligence")}}selected{{/if}}>Intelligence</option>
                   <option value="intuition" {{#if (eq skill.stat "intuition")}}selected{{/if}}>Intuition</option>
                 </select>
               <label>Ranks:</label>
-              <input type="number" name="system.trained-skills.{{key}}.rank" value="{{skill.rank}}" min="0" max="5">
+              <input type="number" name="system.trained_skills.{{key}}.rank" value="{{skill.rank}}" min="0" max="5">
             </li>
           {{/each}}
         </ul>
         <button type="button" class="add-skill">+ Add Skill</button>
+      </div>
+      <div class="abilities">
+        <h2>Abilities</h2>
+        <ul>
+          {{#each system.abilities as |ability key|}}
+            <li class="ability">
+              <input type="text" name="system.abilities.{{key}}.name" value="{{ability.name}}">
+              <label>Skill:</label>
+              <select name="system.abilities.{{key}}.skill">
+                <option value="None" {{#if (eq ability.skill "None")}} selected {{/if}}>None</option>
+                {{#each ../system.trained_skills as |skill key|}}
+                  <option value="{{skill.name}}" {{#if (eq ability.skill skill.name)}}selected{{/if}}>{{skill.name}}</option>
+                {{/each}}
+              </select>
+              <label>Description</label>
+              <input type="text" name="system.abilities.{{key}}.description" value="{{ability.description}}">
+            </li>
+          {{/each}}
+        </ul>
+        <button type="button" class="add-ability">+ Add Ability</button>
       </div>
     </div>
   </div>

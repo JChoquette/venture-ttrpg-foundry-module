@@ -25,7 +25,9 @@
         "current_vigour": 6,
         "vigour_is_custom": false,
         "max_steam": 0,
-        "current_steam": 0
+        "current_steam": 0,
+        "fuel":0,
+        "fuel_burn":0
       },
       "damage":{
         "endurance": 1,
@@ -47,16 +49,19 @@
         "critical_wounds_is_custom":false
       },
       "skills":{
-        "untrained-skills":{
+        "untrained_skills":{
           "str":{"name":"Untrained Strength","stat":"strength","rank":0},
           "agi":{"name":"Untrained Agility","stat":"agility","rank":0},
           "int":{"name":"Untrained Intelligence","stat":"intelligence","rank":0},
           "inu":{"name":"Untrained Intuition","stat":"intuition","rank":0}
         },
-        "trained-skills": {}
+        "trained_skills": {}
       },
       "abilities":{
         "abilities": {}
+      },
+      "equipment":{
+        "equipment": {}
       }
     },
     "character": {

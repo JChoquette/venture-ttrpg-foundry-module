@@ -6,12 +6,22 @@
   width: 30px;
 }
 
-.venture-rpg .actor-sheet .skill{
+.venture-rpg .actor-sheet .skill, .venture-rpg .actor-sheet .ability, .venture-rpg .actor-sheet .equip{
   display: flex;
 }
 
 .venture-rpg .actor-sheet .flexrow{
   display: flex;
+  gap: 10px;
+}
+
+.venture-rpg .actor-sheet .roll-skill, .venture-rpg .actor-sheet .roll-skill-boon{
+  width: 24px;
+  height: 24px;
+}
+
+.venture-rpg .actor-sheet .first-column-grow td:first-child{
+  width: 100%;
 }
 
 .venture-rpg .actor-sheet .tabs {
@@ -25,7 +35,12 @@
 .venture-rpg .actor-sheet .tab *{
   text-shadow: none !important
 }
-.venture-rpg .actor-sheet .tab-nav { list-style: none; display: flex; padding: 0; margin: 0 0 10px 0; }
+.venture-rpg .actor-sheet .tab-nav { 
+  list-style: none; 
+  display: flex; 
+  padding: 0; 
+  margin: 0 0 10px 0; 
+}
 .venture-rpg .actor-sheet .tab-nav li {
   padding: 5px 15px;
   cursor: pointer;
@@ -33,7 +48,9 @@
   border-radius: 3px 3px 0 0;
 }
 .venture-rpg .actor-sheet .tab-nav li.active { background-color: #BBB; }
-.venture-rpg .actor-sheet .tab { display: none; padding: 10px; border: 1px solid #444; border-top: none; border-radius: 0 0 5px 5px; }
+.venture-rpg .actor-sheet .tab { 
+  display: none; 
+}
 .venture-rpg .actor-sheet .tab.active { display: block; }
 
 .venture-rpg .actor-sheet .increment-button{
