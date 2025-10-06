@@ -15,7 +15,9 @@
       "pc-basics": {
         "exp":0,
         "background":"",
-        "species":""
+        "species":"",
+        "wealth":0,
+        "wealth_track":0
       },
       "resources":{
         "max_vim": 6,
@@ -61,7 +63,9 @@
         "abilities": {}
       },
       "equipment":{
-        "equipment": {}
+        "equipment": {},
+        "weapons": {},
+        "armour": {}
       }
     },
     "character": {

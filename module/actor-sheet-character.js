@@ -57,16 +57,57 @@ export class MyCharacterSheet extends ActorSheet {
       system.max_critical_wounds = 1;
     }
     if (!system.vim_is_custom){
-      system.max_vim = 2+system.intelligence+system.intuition;
+      system.max_vim = system.intelligence+system.intuition;
     }
     if (!system.vigour_is_custom){
-      system.max_vigour = 2+system.strength+system.agility;
+      system.max_vigour = system.strength+system.agility;
     }
 
     //Calculate largest damage track and burn track
     system.largest_wounds = Math.max(system.max_guard,system.max_minor_wounds,system.max_major_wounds,system.max_critical_wounds);
     system.largest_stat = Math.max(system.strength, system.agility, system.intelligence, system.intuition, system.endurance, system.fuel);
     system.largest_resource = Math.max(system.max_steam, system.max_vigour, system.max_vim);
+
+    //Equip a weapon if none
+    if (system.weapons ){
+      if (! system.equipped_weapon || !system.weapons[system.equipped_weapon])system.equipped_weapon = system.weapons[Object.keys(system.weapons)[0]];
+    } else {
+      system.equipped_weapon = null;
+    }
+
+    //Alter weapon abilities to apply rolls and correct weapon:
+    system.abilities_prepared = {};
+    for (let [key, ability] of Object.entries(system["abilities"])) {
+      let ability_copy = {...ability};
+      if (ability_copy.skill != "None"){
+        try {
+          let skill = system.trained_skills[ability_copy.skill];
+          ability_copy.statValue = skill.statValue;
+          ability_copy.rank = skill.rank;
+          ability_copy.skill_name = skill.name
+        } catch (err) {}
+      } else {
+        ability_copy.skill_name = "None";
+      }
+      if (ability_copy.type == "weapon" && system.equipped_weapon){
+        let equipped_weapon = system.weapons[system.equipped_weapon];
+        if (equipped_weapon.stat){
+          ability_copy.statValue = system[equipped_weapon.stat];
+        }
+        if (ability_copy.action == "weapon") ability_copy.action = equipped_weapon.action;
+        ability_copy.description += "\n Weapon info: "+equipped_weapon.description;
+      }
+
+      if (ability_copy.cost && ability_copy.costtype){
+        try{
+          let resource_amount = system["max_"+ability_copy.costtype] - system[ability_copy.costtype];
+          if (resource_amount < ability_copy.cost) ability_copy.too_expensive = true;
+          else ability_copy.too_expensive = false;
+        } catch (err) {}
+      }
+
+      system.abilities_prepared[key] = ability_copy;
+    }
 
     return context;
   }
@@ -94,7 +135,7 @@ export class MyCharacterSheet extends ActorSheet {
       ev.preventDefault();
       let abilities = this.actor.system["abilities"] || {};
       let new_id = randomID();
-      let new_ability = { name: "New Ability", description: "", skill: "None" };
+      let new_ability = { name: "New Ability", action:"none", roll_type:"skill", description: "", skill: "None" };
       abilities[new_id] = new_ability;
       this.actor.update({ "system.abilities": abilities});
       this.render();
@@ -107,7 +148,9 @@ export class MyCharacterSheet extends ActorSheet {
       let new_id = randomID();
       let new_item = { name: "New Item", description: "" };
       equipment[new_id] = new_item;
-      this.actor.update({ "system.equipment": equipment});
+      const item_type = $(ev.currentTarget).data("type");
+      if (item_type == "weapon")this.actor.update({ "system.weapons": equipment});
+      else this.actor.update({ "system.equipment": equipment});
       this.render();
     });
 
@@ -117,7 +160,6 @@ export class MyCharacterSheet extends ActorSheet {
       const d1 = $(ev.currentTarget).data("d1");
       const d2 = $(ev.currentTarget).data("d2");
       const name = $(ev.currentTarget).data("name");
-
       rollSkill(name, d1, d2);
     });
     //activate custom rolls
@@ -129,7 +171,20 @@ export class MyCharacterSheet extends ActorSheet {
       if (d3 === null) d3=-1;
       const name = $(ev.currentTarget).data("name");
       new DiceAdjustMenu(name, d1, d2, d3).render(true);
-      console.log("rendered a dice menu");
+    });
+
+    //activate custom rolls
+    html.find(".pay-cost").click(ev => {
+      ev.preventDefault();
+      const cost = $(ev.currentTarget).data("cost");
+      const costtype = $(ev.currentTarget).data("costtype");
+      if (!cost || !costtype)return;
+      let new_value = {};
+      console.log(costtype,cost);
+      new_value["system."+costtype] = this.actor.system[costtype]+cost;
+      console.log(new_value);
+      this.actor.update(new_value);
+      this.render();
     });
 
     //activate all custom roll buttons

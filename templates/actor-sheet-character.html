@@ -17,12 +17,12 @@
         <input type="number" name="system.exp" value="{{system.exp}}" min="0">
       </div>
       <div class="field">
-        <label for="exp">Wealth:</label>
-        <input type="number" name="system.exp" value="{{system.exp}}" min="0">
+        <label for="wealth">Wealth:</label>
+        <input type="number" name="system.wealth" value="{{system.wealth}}" min="0">
       </div>
       <div class="field">
-        <label for="exp">Wealth Track:</label>
-        <input type="number" name="system.exp" value="{{system.exp}}" min="0">
+        <label for="wealth_track">Wealth Track:</label>
+        <input type="number" name="system.wealth_track" value="{{system.wealth_track}}" min="0">
       </div>
     </div>
   </div>
@@ -57,57 +57,58 @@
             <tr>
               <td><label> {{skill.name}}: {{rankToDie skill.rank}} + {{rankToDie skill.statValue}}
               </label></td>
-              <td><button type="button" 
-                class="roll-skill" 
+              <td><img
+                title="Quick roll"
+                src="{{icons 'rolling-dice-cup'}}"
+                class="roll-skill roll-icon hover-shade" 
                 data-name={{skill.name}}
                 data-d1="{{skill.rank}}"
-                data-d2="{{skill.statValue}}">
-                  roll
-              </button></td>
-              <td><button type="button" 
-                class="roll-skill-boon" 
+                data-d2="{{skill.statValue}}"/></td>
+              <td><img 
+                title="Roll with boon/bane"
+                src="{{icons 'boon'}}"
+                class="roll-skill-boon roll-icon hover-shade" 
                 data-name={{skill.name}}
                 data-d1="{{skill.rank}}"
-                data-d2="{{skill.statValue}}">
-                  boon/bane
-              </button></td>
-              <td><button type="button" 
-                class="roll-skill-boon" 
+                data-d2="{{skill.statValue}}"/></td>
+              <td><img 
+                title="Help another"
+                src="{{icons 'help'}}" 
+                class="roll-skill-boon roll-icon hover-shade" 
                 data-name={{skill.name}}
                 data-d1="-1"
                 data-d2="-1"
-                data-d3="{{skill.rank}}">
-                  help
-              </button></td>
+                data-d3="{{skill.rank}}"/></td>
             </tr>
             {{/each}}
-
+          </table>
+          <table class="first-column-grow">
             {{#each system.untrained_skills as |skill key|}}
               <tr>
                 <td><label> {{skill.name}}: {{rankToDie skill.rank}} + {{rankToDie skill.statValue}}
                 </label></td>
-                <td><button type="button" 
-                  class="roll-skill" 
+                <td><img
+                  title="Quick roll"
+                  src="{{icons 'rolling-dice-cup'}}"
+                  class="roll-skill roll-icon hover-shade" 
                   data-name={{skill.name}}
                   data-d1="{{skill.rank}}"
-                  data-d2="{{skill.statValue}}">
-                    roll
-                </button></td>
-                <td><button type="button" 
-                  class="roll-skill-boon" 
+                  data-d2="{{skill.statValue}}"/></td>
+                <td><img 
+                  title="Roll with boon/bane"
+                  src="{{icons 'boon'}}"
+                  class="roll-skill-boon roll-icon hover-shade" 
                   data-name={{skill.name}}
                   data-d1="{{skill.rank}}"
-                  data-d2="{{skill.statValue}}">
-                    boon/bane
-                </button></td>
-                <td><button type="button" 
-                  class="roll-skill-boon" 
+                  data-d2="{{skill.statValue}}"/></td>
+                <td><img 
+                  title="Help another"
+                  src="{{icons 'help'}}" 
+                  class="roll-skill-boon roll-icon hover-shade" 
                   data-name={{skill.name}}
                   data-d1="-1"
                   data-d2="-1"
-                  data-d3="{{skill.rank}}">
-                    help
-                </button></td>
+                  data-d3="{{skill.rank}}"/></td>
               </tr>
             {{/each}}
           </table>
@@ -119,20 +120,20 @@
               <tr>
                 <td><label> {{key}}: {{rankToDie stat}} + {{rankToDie stat}}
                 </label>
-                <td><button type="button" 
-                  class="roll-skill" 
+                <td><img
+                  title="Quick roll"
+                  src="{{icons 'rolling-dice-cup'}}"
+                  class="roll-skill roll-icon hover-shade" 
                   data-name={{key}}
                   data-d1="{{stat}}"
-                  data-d2="{{stat}}">
-                    roll
-                </button></td>
-                <td><button type="button" 
-                  class="roll-skill-boon" 
+                  data-d2="{{stat}}"/></td>
+                <td><img 
+                  title="Roll with boon/bane"
+                  src="{{icons 'boon'}}"
+                  class="roll-skill-boon roll-icon hover-shade" 
                   data-name={{key}}
                   data-d1="{{stat}}"
-                  data-d2="{{stat}}">
-                    boon/bane
-                </button></td>
+                  data-d2="{{stat}}"/></td>
               </tr>
             {{/each}}
           </table>
@@ -318,21 +319,142 @@
     </div>
 
     <div class="tab" data-group="primary" data-tab="abilities">
-        {{#each system.abilities as |ability key|}}
-          {{ability.name}} ({{ability.skill}}): {{ability.description}}
+      {{#if system.weapons}}
+        <h3>Equip a weapon:</h3>
+        <select name="system.equipped_weapon">
+          {{#each system.weapons as |item key|}}
+            <option value="{{key}}" {{#if (eq ../system.equipped_weapon key)}} selected {{/if}}>{{item.name}}</option>
+          {{/each}}
+        </select>
+      {{/if}}
+      <h3>Abilities:</h3>
+      <table>
+        <tr>
+          <th>Skill</th>
+          <th>Cost</th>
+          <th>Name</th>
+          <th>Action</th>
+          <th>Description</th>
+        </tr>
+        {{#each system.abilities_prepared as |ability key|}}
+          <tr>
+            <td>{{ability.skill_name}}</td>
+            <td class="hover-shade pay-cost {{#if ability.too_expensive}}too-expensive{{/if}}" title="Pay cost" data-cost="{{ability.cost}}" data-costtype="{{ability.costtype}}">
+              {{# if ability.cost}}
+                <img class="icon" src="{{icons ability.costtype}}"/> x {{ability.cost}}
+              {{/if}}
+            </td>
+            <td>{{ability.name}}</td>
+            <td>
+              {{# if ability.action}}
+                {{ability.action}}
+              {{/if}}
+            </td>
+            <td>{{ability.description}}</td>
+            {{#if (eq ability.roll_type "help")}}
+            <td><img 
+              title="Help another"
+              src="{{icons 'help'}}" 
+              class="roll-skill-boon roll-icon hover-shade" 
+              data-name={{ability.name}}
+              data-d1="-1"
+              data-d2="-1"
+              data-d3="{{ability.rank}}"/></td>
+            {{else}}
+            <td><img 
+              title="Roll with boon/bane"
+              src="{{icons 'boon'}}"
+              class="roll-skill-boon roll-icon hover-shade" 
+              data-name={{ability.name}}
+              data-d1="{{ability.rank}}"
+              data-d2="{{ability.statValue}}"/></td>
+            {{/if}}
+          </tr>
         {{/each}}
+      </table>
     </div>
 
 
     <div class="tab" data-group="primary" data-tab="equipment">
       <div class="equipment">
         <h2>Equipment</h2>
+        <h3>Weapons</h3>
+        <ul>
+          {{#each system.weapons as |item key|}}
+            <li class="item flexrow">
+              <div>
+                <label>Item:</label>
+                <input type="text" name="system.weapons.{{key}}.name" value="{{item.name}}">
+              </div>
+              <div>
+                <label>Stat:</label>
+                <select name="system.weapons.{{key}}.stat">
+                  <option value="strength" {{#if (eq item.stat "strength")}}selected{{/if}}>
+                    Strength
+                  </option>
+                  <option value="agility" {{#if (eq item.stat "agility")}}selected{{/if}}>
+                    Agility
+                  </option>
+                  <option value="intelligence" {{#if (eq item.stat "intelligence")}}selected{{/if}}>
+                    Intelligence
+                  </option>
+                  <option value="intuition" {{#if (eq item.stat "intuition")}}selected{{/if}}>
+                    Intuition
+                  </option>
+                </select>
+              </div>
+              <div>
+                <label>Action:</label>
+                <select name="system.weapons.{{key}}.action">
+                  <option value="fast" {{#if (eq item.action "fast")}}selected{{/if}}>
+                    Fast
+                  </option>
+                  <option value="medium" {{#if (eq item.action "medium")}}selected{{/if}}>
+                    Medium
+                  </option>
+                  <option value="slow" {{#if (eq item.action "slow")}}selected{{/if}}>
+                    Slow
+                  </option>
+                </select>
+              </div>
+              <div>
+                <label>Range:</label>
+                <select name="system.weapons.{{key}}.range">
+                  <option value="Melee" {{#if (eq item.range "Melee")}}selected{{/if}}>
+                    Melee
+                  </option>
+                  <option value="Close" {{#if (eq item.range "Close")}}selected{{/if}}>
+                    Close
+                  </option>
+                  <option value="Short" {{#if (eq item.range "Short")}}selected{{/if}}>
+                    Short
+                  </option>
+                  <option value="Long" {{#if (eq item.range "Long")}}selected{{/if}}>
+                    Long
+                  </option>
+                  <option value="Very Long" {{#if (eq item.range "Very Long")}}selected{{/if}}>
+                    Very Long
+                  </option>
+                </select>
+              </div>
+              <div>
+                <label>Description:</label>
+                <input type="text" name="system.weapons.{{key}}.description" value="{{item.description}}">
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+        <button type="button" class="add-equipment" data-type="weapon">+ Add Weapon</button>
+        <h3>Other Equipment</h3>
         <ul>
           {{#each system.equipment as |item key|}}
             <li class="item flexrow">
-              <input type="text" name="system.equipment.{{key}}.name" value="{{item.name}}">
               <div>
-                <label>Description</label>
+                <label>Item:</label>
+                <input type="text" name="system.equipment.{{key}}.name" value="{{item.name}}">
+              </div>
+              <div>
+                <label>Description:</label>
                 <input type="text" name="system.equipment.{{key}}.description" value="{{item.description}}">
               </div>
             </li>
@@ -343,8 +465,6 @@
     </div>
 
     <div class="tab" data-group="primary" data-tab="edit">
-
-
       <div class="stats">
         <h3>Stats</h3>
         <div class="flexrow">
@@ -471,16 +591,102 @@
         <ul>
           {{#each system.abilities as |ability key|}}
             <li class="ability">
-              <input type="text" name="system.abilities.{{key}}.name" value="{{ability.name}}">
-              <label>Skill:</label>
-              <select name="system.abilities.{{key}}.skill">
-                <option value="None" {{#if (eq ability.skill "None")}} selected {{/if}}>None</option>
-                {{#each ../system.trained_skills as |skill key|}}
-                  <option value="{{skill.name}}" {{#if (eq ability.skill skill.name)}}selected{{/if}}>{{skill.name}}</option>
-                {{/each}}
-              </select>
-              <label>Description</label>
-              <input type="text" name="system.abilities.{{key}}.description" value="{{ability.description}}">
+              <div>
+                <label>Description:</label>
+                <input type="text" name="system.abilities.{{key}}.name" value="{{ability.name}}">
+              </div>
+              <div>
+                <label>Skill:</label>
+                <select name="system.abilities.{{key}}.skill">
+                  <option value="None" {{#if (eq ability.skill "None")}} selected {{/if}}>None</option>
+                  {{#each ../system.trained_skills as |skill key|}}
+                    <option value="{{key}}" {{#if (eq ability.skill key)}}selected{{/if}}>{{skill.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+              <div>
+                <label>Type:</label>
+                <select name="system.abilities.{{key}}.type">
+                  <option value="ability" {{#if (eq ability.type "ability")}}selected{{/if}}>
+                    Ability
+                  </option>
+                  <option value="technique" {{#if (eq ability.type "technique")}}selected{{/if}}>
+                    Technique
+                  </option>
+                  <option value="weapon" {{#if (eq ability.type "weapon")}}selected{{/if}}>
+                    Weapon Technique
+                  </option>
+                </select>
+              </div>
+              <div>
+                <label>Cost:</label>
+                <div class="flexrow">
+                  <input type="number" name="system.abilities.{{key}}.cost" value="{{ability.cost}}" />
+                  <select name="system.abilities.{{key}}.costtype">
+                    <option value="vigour" {{#if (eq ability.costtype "vigour")}}selected{{/if}}>
+                      Vigour
+                    </option>
+                    <option value="vim" {{#if (eq ability.costtype "vim")}}selected{{/if}}>
+                      Vim
+                    </option>
+                    <option value="steam" {{#if (eq ability.costtype "steam")}}selected{{/if}}>
+                      Steam
+                    </option>
+                  </select>
+                </div>
+              </div>
+              {{#if (or (eq ability.type "technique") (eq ability.type "weapon"))}}
+                <div>
+                  <label>Action:</label>
+                  <select name="system.abilities.{{key}}.action">
+                    <option value="none" {{#if (eq ability.action "none")}}selected{{/if}}>
+                      None
+                    </option>
+                    <option value="fast" {{#if (eq ability.action "fast")}}selected{{/if}}>
+                      Fast
+                    </option>
+                    <option value="medium" {{#if (eq ability.action "medium")}}selected{{/if}}>
+                      Medium
+                    </option>
+                    <option value="slow" {{#if (eq ability.action "slow")}}selected{{/if}}>
+                      Slow
+                    </option>
+                    <option value="reaction" {{#if (eq ability.action "reaction")}}selected{{/if}}>
+                      Reaction
+                    </option>
+                    {{#if (eq ability.type "weapon")}}
+                    <option value="weapon" {{#if (eq ability.action "weapon")}}selected{{/if}}>
+                      Weapon
+                    </option>
+                    {{/if}}
+                  </select>
+                </div>
+                <div>
+                  <label>Defense:</label>
+                  <select name="system.abilities.{{key}}.defense">
+                    {{#each ../system.current_stats as |stat key|}}
+                    <option value="{{key}}" {{#if (eq ability.defense key)}}selected{{/if}}>
+                      {{key}}
+                    </option>
+                    {{/each}}
+                  </select>
+                </div>
+              {{/if}}
+              <div>
+                <label>Roll Type:</label>
+                <select name="system.abilities.{{key}}.roll_type">
+                  <option value="skill" {{#if (eq ability.roll_type "skill")}} selected {{/if}}>
+                    Skill
+                  </option>
+                  <option value="help" {{#if (eq ability.roll_type "help")}} selected {{/if}}>
+                    Help
+                  </option>
+                </select>
+              </div>
+              <div>
+                <label>Description:</label>
+                <input type="text" name="system.abilities.{{key}}.description" value="{{ability.description}}">
+              </div>
             </li>
           {{/each}}
         </ul>

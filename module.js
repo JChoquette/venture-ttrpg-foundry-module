@@ -39,8 +39,18 @@ Hooks.once("init", () => {
     return a >= b;
   })
 
+  Handlebars.registerHelper("or", function(a,b){
+    return a || b;
+  })
+  Handlebars.registerHelper("and", function(a,b){
+    return a && b;
+  })
+
   Handlebars.registerHelper("dieImage", function(size) {
     return `systems/venture-rpg/assets/dice/${size}.svg`;
   });
 
+  Handlebars.registerHelper("icons", function(icon) {
+    return `systems/venture-rpg/assets/icons/${icon}.svg`;
+  });
 });

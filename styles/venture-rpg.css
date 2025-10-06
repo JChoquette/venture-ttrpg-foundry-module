@@ -60,7 +60,50 @@
 }
 
 .venture-rpg .die-indicator{
-  width: 48px;
-  height: 48px;
+  width: 64px;
+  height: 64px;
   border: none;
+}
+
+.venture-rpg .roll-icon{
+  min-width: 24px;
+  border: 0px;
+  border-radius: 5px;
+}
+
+.venture-rpg .icon{
+  width: 24px;
+  min-width: 24px;
+  border: 0px;
+  border-radius: 5px;
+}
+
+.hover-shade:not(.ui-state-disabled):not(.disabled):not([disabled]){
+    cursor:pointer;
+}
+.hover-shade:not(.ui-state-disabled):not(.disabled):not([disabled]):hover{
+    box-shadow: inset 0 0 0 9999px rgba(0,0,0,0.1);
+}
+
+.roll-category > *{
+  margin: auto;
+}
+
+.venture-rpg.dice-adjust-menu .increment-button{
+  width: 24px;
+  max-width: 24px;
+  height: 24px;
+  padding: 0px;
+}
+
+.venture-rpg .roll-category{
+  margin-bottom: 10px;
+}
+
+.venture-rpg .roll-category .flexrow{
+  justify-content: center;
+}
+
+.venture-rpg .too-expensive{
+  box-shadow: inset 0 0 0 9999px rgba(255,0,0,0.1);
 }

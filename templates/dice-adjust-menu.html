@@ -1,22 +1,33 @@
 <form>
   <p>Roll {{name}} With Boons or Banes:</p>
   <div class="flexrow">
-    <label>Die 1:</label>
-    {{#if (gte d1 0)}}<img class="die-indicator" src="{{dieImage (rankToDie d1)}}"/>{{/if}}
-    <button class="increment-button" data-name="increment-button" data-amount="+1" data-field="d1">+</button>
-    <button class="increment-button" data-name="increment-button" data-amount="-1" data-field="d1">-</button>
-  </div>
-  <div class="flexrow">
-    <label>Die 2:</label>
-    {{#if (gte d2 0)}}<img class="die-indicator" src="{{dieImage (rankToDie d2)}}"/>{{/if}}
-    <button class="increment-button" data-name="increment-button" data-amount="+1" data-field="d2">+</button>
-    <button class="increment-button" data-name="increment-button" data-amount="-1" data-field="d2">-</button>
-  </div>
-  <div class="flexrow">
-    <label>Help:</label>
-    {{#if (gte d3 0)}}<img class="die-indicator" src="{{dieImage (rankToDie d3)}}"/>{{/if}}
-    <button class="increment-button" data-name="increment-button" data-amount="+1" data-field="d3">+</button>
-    <button class="increment-button" data-name="increment-button" data-amount="-1" data-field="d3">-</button>
+    <div class="roll-category">
+      <label>Die 1:</label>
+      {{#if (gte d1 0)}}<img class="die-indicator" src="{{dieImage (rankToDie d1)}}"/>{{/if}}
+      {{#unless (gte d1 0)}}<div class="die-indicator"></div>{{/unless}}
+      <div class="flexrow">
+        {{#if enabled.d1.up}}<button class="increment-button" data-name="increment-button" data-amount="+1" data-field="d1">+</button>{{/if}}
+        {{#if enabled.d1.down}}<button class="increment-button" data-name="increment-button" data-amount="-1" data-field="d1">-</button>{{/if}}
+      </div>
+    </div>
+    <div class="roll-category">
+      <label>Die 2:</label>
+      {{#if (gte d2 0)}}<img class="die-indicator" src="{{dieImage (rankToDie d2)}}"/>{{/if}}
+      {{#unless (gte d2 0)}}<div class="die-indicator"></div>{{/unless}}
+      <div class="flexrow">
+        {{#if enabled.d2.up}}<button class="increment-button" data-name="increment-button" data-amount="+1" data-field="d2">+</button>{{/if}}
+        {{#if enabled.d2.down}}<button class="increment-button" data-name="increment-button" data-amount="-1" data-field="d2">-</button>{{/if}}
+      </div>
+    </div>
+    <div class="roll-category">
+      <label>Help:</label>
+      {{#if (gte d3 0)}}<img class="die-indicator" src="{{dieImage (rankToDie d3)}}"/>{{/if}}
+      {{#unless (gte d3 0)}}<div class="die-indicator"></div>{{/unless}}
+      <div class="flexrow">
+        {{#if enabled.d3.up}}<button class="increment-button" data-name="increment-button" data-amount="+1" data-field="d3">+</button>{{/if}}
+        {{#if enabled.d3.down}}<button class="increment-button" data-name="increment-button" data-amount="-1" data-field="d3">-</button>{{/if}}
+      </div>
+    </div>
   </div>
   <button type="button" class="confirm">Roll!</button>
 </form>
