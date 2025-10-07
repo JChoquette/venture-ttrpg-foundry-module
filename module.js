@@ -21,8 +21,6 @@ Hooks.once("init", () => {
   });
 
   Handlebars.registerHelper("times", function(n, block) {
-    console.log(n);
-    console.log(block);
     let accum = "";
     for (let i = 0; i < n; ++i) {
       // expose the current index as @index, and i as the context

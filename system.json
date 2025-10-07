@@ -16,7 +16,8 @@
     "module.js",
     "module/dice-adjust-menu.js",
     "module/actor-sheet-character.js",
-    "module/actor-sheet-npc.js"
+    "module/actor-sheet-npc.js",
+    "module/confirm-delete-menu.js"
   ],
   "styles": ["styles/venture-rpg.css"],
   "packs": [],

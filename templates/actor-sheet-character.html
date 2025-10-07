@@ -441,6 +441,7 @@
                 <label>Description:</label>
                 <input type="text" name="system.weapons.{{key}}.description" value="{{item.description}}">
               </div>
+              <img class="icon hover-shade delete-button" data-type="weapons" data-key="{{key}}" data-name="{{item.name}}" src="{{icons 'delete'}}"/>
             </li>
           {{/each}}
         </ul>
@@ -457,6 +458,7 @@
                 <label>Description:</label>
                 <input type="text" name="system.equipment.{{key}}.description" value="{{item.description}}">
               </div>
+              <img class="icon hover-shade delete-button" data-type="equipment" data-key="{{key}}" data-name="{{item.name}}" src="{{icons 'delete'}}"/>
             </li>
           {{/each}}
         </ul>
@@ -581,6 +583,7 @@
                 </select>
               <label>Ranks:</label>
               <input type="number" name="system.trained_skills.{{key}}.rank" value="{{skill.rank}}" min="0" max="5">
+              <img class="icon hover-shade delete-button" data-type="trained_skills" data-key="{{key}}" data-name="{{skill.name}}" src="{{icons 'delete'}}"/>
             </li>
           {{/each}}
         </ul>
@@ -687,6 +690,7 @@
                 <label>Description:</label>
                 <input type="text" name="system.abilities.{{key}}.description" value="{{ability.description}}">
               </div>
+              <img class="icon hover-shade delete-button" data-type="abilities" data-key="{{key}}" data-name="{{ability.name}}" src="{{icons 'delete'}}"/>
             </li>
           {{/each}}
         </ul>

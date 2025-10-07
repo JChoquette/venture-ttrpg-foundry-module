@@ -1,4 +1,5 @@
 import {DiceAdjustMenu} from "./dice-adjust-menu.js"
+import {ConfirmDeleteMenu} from "./confirm-delete-menu.js"
 import {rollSkill} from "./rolling.js"
 
 
@@ -180,9 +181,7 @@ export class MyCharacterSheet extends ActorSheet {
       const costtype = $(ev.currentTarget).data("costtype");
       if (!cost || !costtype)return;
       let new_value = {};
-      console.log(costtype,cost);
       new_value["system."+costtype] = this.actor.system[costtype]+cost;
-      console.log(new_value);
       this.actor.update(new_value);
       this.render();
     });
@@ -196,6 +195,16 @@ export class MyCharacterSheet extends ActorSheet {
       new_value["system."+field] = this.actor.system[field] + parseInt(amount);
       this.actor.update(new_value);
       this.render();
+    });
+
+
+    //activate delete buttons
+    html.find(".delete-button").click(ev => {
+      ev.preventDefault();
+      const type = $(ev.currentTarget).data("type");
+      const key = $(ev.currentTarget).data("key");
+      const name = $(ev.currentTarget).data("name");
+      new ConfirmDeleteMenu(this.actor, name, type, key).render(true);
     });
   }
 
