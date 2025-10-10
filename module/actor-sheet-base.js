@@ -129,7 +129,7 @@ export class VentureBaseSheet extends ActorSheet {
     // Add new ability
     html.find(".add-ability").click(ev => {
       ev.preventDefault();
-      let abilities = this.actor.system["abilities"] || {};
+      let abilities = {};
       let new_id = randomID();
       let new_ability = { name: "New Ability", action:"none", roll_type:"skill", description: "", skill: "None" };
       abilities[new_id] = new_ability;
@@ -140,11 +140,10 @@ export class VentureBaseSheet extends ActorSheet {
     // Add new item
     html.find(".add-equipment").click(ev => {
       ev.preventDefault();
-      let equipment = this.actor.system["equipment"] || {};
-      let new_id = randomID();
-      let new_item = { name: "New Item", description: "" };
-      equipment[new_id] = new_item;
       const item_type = $(ev.currentTarget).data("type");
+      let equipment = {};
+      let new_id = randomID();
+      equipment[new_id] = {name:"New item",description:""};
       if (item_type == "weapon")this.actor.update({ "system.weapons": equipment});
       else this.actor.update({ "system.equipment": equipment});
       this.render();
