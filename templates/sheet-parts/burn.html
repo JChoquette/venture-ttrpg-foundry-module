@@ -1,0 +1,78 @@
+<div>
+	<h3>Stat Burn</h3>
+  <table class="first-column-grow">
+    <tr class="damage-tracker">
+      <td><label>Strength</label></td>
+      {{#times system.strength_burn}}
+        <td><input type="checkbox" checked="true" disabled/></td>
+      {{/times}}
+      {{#times (subtract (subtract system.strength 1) system.strength_burn)}}
+        <td><input type="checkbox" disabled/></td>
+      {{/times}}
+      {{#if (gte (subtract system.largest_stat system.strength) 1) }}<td colspan="{{subtract system.largest_stat system.strength}}"/>{{/if}}
+      <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="strength_burn" {{#if (gte system.strength_burn (subtract system.strength 1))}} disabled {{/if}}>+</button></td>
+      <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="strength_burn" {{#if (gte 0 system.strength_burn)}} disabled {{/if}}>-</button></td>
+    </tr>
+    <tr class="damage-tracker">
+      <td><label>Agility</label></td>
+      {{#times system.agility_burn}}
+        <td><input type="checkbox" checked="true" disabled/></td>
+      {{/times}}
+      {{#times (subtract (subtract system.agility 1) system.agility_burn)}}
+        <td><input type="checkbox" disabled/></td>
+      {{/times}}
+      {{#if (gte (subtract system.largest_stat system.agility) 1) }}<td colspan="{{subtract system.largest_stat system.agility}}"/>{{/if}}
+      <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="agility_burn" {{#if (gte system.agility_burn (subtract system.agility 1))}} disabled {{/if}}>+</button></td>
+      <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="agility_burn" {{#if (gte 0 system.agility_burn)}} disabled {{/if}}>-</button></td>
+    </tr>
+    <tr class="damage-tracker">
+      <td><label>Intelligence</label></td>
+      {{#times system.intelligence_burn}}
+        <td><input type="checkbox" checked="true" disabled/></td>
+      {{/times}}
+      {{#times (subtract (subtract system.intelligence 1) system.intelligence_burn)}}
+        <td><input type="checkbox" disabled/></td>
+      {{/times}}
+      {{#if (gte (subtract system.largest_stat system.intelligence) 1) }}<td colspan="{{subtract system.largest_stat system.intelligence}}"/>{{/if}}
+      <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="intelligence_burn" {{#if (gte system.intelligence_burn (subtract system.intelligence 1))}} disabled {{/if}}>+</button></td>
+      <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="intelligence_burn" {{#if (gte 0 system.intelligence_burn)}} disabled {{/if}}>-</button></td>
+    </tr>
+    <tr class="damage-tracker">
+      <td><label>Intuition</label></td>
+      {{#times system.intuition_burn}}
+        <td><input type="checkbox" checked="true" disabled/></td>
+      {{/times}}
+      {{#times (subtract (subtract system.intuition 1) system.intuition_burn)}}
+        <td><input type="checkbox" disabled/></td>
+      {{/times}}
+      {{#if (gte (subtract system.largest_stat system.intuition) 1) }}<td colspan="{{subtract system.largest_stat system.intuition}}"/>{{/if}}
+      <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="intuition_burn" {{#if (gte system.intuition_burn (subtract system.intuition 1))}} disabled {{/if}}>+</button></td>
+      <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="intuition_burn" {{#if (gte 0 system.intuition_burn)}} disabled {{/if}}>-</button></td>
+    </tr>
+    <tr class="damage-tracker">
+      <td><label>Endurance</label></td>
+      {{#times system.endurance_burn}}
+        <td><input type="checkbox" checked="true" disabled/></td>
+      {{/times}}
+      {{#times (subtract (subtract system.endurance 1) system.endurance_burn)}}
+        <td><input type="checkbox" disabled/></td>
+      {{/times}}
+      {{#if (gte (subtract system.largest_stat system.endurance) 1) }}<td colspan="{{subtract system.largest_stat system.endurance}}"/>{{/if}}
+      <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="endurance_burn" {{#if (gte system.endurance_burn (subtract system.endurance 1))}} disabled {{/if}}>+</button></td>
+      <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="endurance_burn" {{#if (gte 0 system.endurance_burn)}} disabled {{/if}}>-</button></td>
+    </tr>
+    {{#if system.fuel}}<tr class="damage-tracker">
+      <td><label>Fuel</label></td>
+      {{#times system.fuel_burn}}
+        <td><input type="checkbox" checked="true" disabled/></td>
+      {{/times}}
+      {{#times (subtract system.fuel system.fuel_burn)}}
+        <td><input type="checkbox" disabled/></td>
+      {{/times}}
+      {{#if (gte (subtract system.largest_stat system.fuel) 0) }}<td colspan="{{subtract system.largest_stat system.fuel}}"/>{{/if}}
+      <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="fuel_burn" {{#if (gte system.fuel_burn system.fuel)}} disabled {{/if}}>+</button></td>
+      <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="fuel_burn" {{#if (gte 0 system.fuel_burn)}} disabled {{/if}}>-</button></td>
+    </tr>
+    {{/if}}
+  </table>
+</div>

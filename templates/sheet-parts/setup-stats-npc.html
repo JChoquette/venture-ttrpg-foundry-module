@@ -1,0 +1,38 @@
+<div class="setup-stats">
+  <div class="flexrow">
+    <label>Strength
+      <input type="number" name="system.strength" value="{{system.strength}}" {{#unless system.strength_is_custom}}disabled{{/unless}}>
+    </label>
+    <label>
+      Use custom
+      <input type="checkbox" name="system.strength_is_custom" {{checked system.strength_is_custom}}>
+    </label>
+  </div>
+  <div class="flexrow">
+    <label>Agility
+      <input type="number" name="system.agility" value="{{system.agility}}" {{#unless system.agility_is_custom}}disabled{{/unless}}>
+    </label>
+    <label>
+      Use custom
+      <input type="checkbox" name="system.agility_is_custom" {{checked system.agility_is_custom}}>
+    </label>
+  </div>
+  <div class="flexrow">
+    <label>Intelligence
+      <input type="number" name="system.intelligence" value="{{system.intelligence}}" {{#unless system.intelligence_is_custom}}disabled{{/unless}}>
+    </label>
+    <label>
+      Use custom
+      <input type="checkbox" name="system.intelligence_is_custom" {{checked system.intelligence_is_custom}}>
+    </label>
+  </div>
+  <div class="flexrow">
+    <label>Intuition
+      <input type="number" name="system.intuition" value="{{system.intuition}}" {{#unless system.intuition_is_custom}}disabled{{/unless}}>
+    </label>
+    <label>
+      Use custom
+      <input type="checkbox" name="system.intuition_is_custom" {{checked system.intuition_is_custom}}>
+    </label>
+  </div>
+</div>

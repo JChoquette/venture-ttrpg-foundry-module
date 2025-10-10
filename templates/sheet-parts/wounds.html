@@ -1,0 +1,55 @@
+<div>
+  <h3>Wounds</h3>
+  <table class="first-column-grow">
+    {{#if system.max_guard }}
+    <tr class="damage-tracker">
+      <td><label>Guard</label></td>
+      {{#times system.guard}}
+        <td><input type="checkbox" checked="true" disabled/></td>
+      {{/times}}
+      {{#times (subtract system.max_guard system.guard)}}
+        <td><input type="checkbox" disabled/></td>
+      {{/times}}
+      {{#if (gte (subtract system.largest_wounds system.max_guard) 1) }}<td colspan="{{subtract system.largest_wounds system.max_guard}}"/>{{/if}}
+      <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="guard" {{#if (gte system.guard system.max_guard)}} disabled {{/if}}>+</button></td>
+      <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="guard" {{#if (gte 0 system.guard)}} disabled {{/if}}>-</button></td>
+    </tr>
+    {{/if }}
+    <tr class="damage-tracker">
+      <td><label>Minor Wounds</label></td>
+      {{#times system.minor_wounds}}
+        <td><input type="checkbox" checked="true" disabled/></td>
+      {{/times}}
+      {{#times (subtract system.max_minor_wounds system.minor_wounds)}}
+        <td><input type="checkbox" disabled/></td>
+      {{/times}}
+      {{#if (gte (subtract system.largest_wounds system.max_minor_wounds) 1) }}<td colspan="{{subtract system.largest_wounds system.max_minor_wounds}}"/>{{/if}}
+      <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="minor_wounds" {{#if (gte system.minor_wounds system.max_minor_wounds)}} disabled {{/if}}>+</button></td>
+      <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="minor_wounds" {{#if (gte 0 system.minor_wounds)}} disabled {{/if}}>-</button></td>
+    </tr>
+    <tr class="damage-tracker">
+      <td><label>Major Wounds</label></td>
+      {{#times system.major_wounds}}
+        <td><input type="checkbox" checked="true" disabled/></td>
+      {{/times}}
+      {{#times (subtract system.max_major_wounds system.major_wounds)}}
+        <td><input type="checkbox" disabled/></td>
+      {{/times}}
+      {{#if (gte (subtract system.largest_wounds system.max_major_wounds) 1) }}<td colspan="{{subtract system.largest_wounds system.max_major_wounds}}"/>{{/if}}
+      <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="major_wounds" {{#if (gte system.major_wounds system.max_major_wounds)}} disabled {{/if}}>+</button></td>
+      <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="major_wounds" {{#if (gte 0 system.major_wounds)}} disabled {{/if}}>-</button></td>
+    </tr>
+    <tr class="damage-tracker">
+      <td><label>Critical Wounds</label></td>
+      {{#times system.critical_wounds}}
+        <td><input type="checkbox" checked="true" disabled/></td>
+      {{/times}}
+      {{#times (subtract system.max_critical_wounds system.critical_wounds)}}
+        <td><input type="checkbox" disabled/></td>
+      {{/times}}
+      {{#if (gte (subtract system.largest_wounds system.max_critical_wounds) 1) }}<td colspan="{{subtract system.largest_wounds system.max_critical_wounds}}"/>{{/if}}
+      <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="critical_wounds" {{#if (gte system.critical_wounds system.max_critical_wounds)}} disabled {{/if}}>+</button></td>
+      <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="critical_wounds" {{#if (gte 0 system.critical_wounds)}} disabled {{/if}}>-</button></td>
+    </tr>
+  </table>
+</div>

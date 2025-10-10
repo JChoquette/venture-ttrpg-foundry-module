@@ -1,0 +1,25 @@
+<div>
+  <h3>Defenses</h3>
+  <table class="first-column-grow">
+    {{#each system.current_stats as |stat key|}}
+      <tr>
+        <td><label> {{key}}: {{rankToDie stat}} + {{rankToDie stat}}
+        </label>
+        <td><img
+          title="Quick roll"
+          src="{{icons 'rolling-dice-cup'}}"
+          class="roll-skill roll-icon hover-shade" 
+          data-name={{key}}
+          data-d1="{{stat}}"
+          data-d2="{{stat}}"/></td>
+        <td><img 
+          title="Roll with boon/bane"
+          src="{{icons 'boon'}}"
+          class="roll-skill-boon roll-icon hover-shade" 
+          data-name={{key}}
+          data-d1="{{stat}}"
+          data-d2="{{stat}}"/></td>
+      </tr>
+    {{/each}}
+  </table>
+</div>

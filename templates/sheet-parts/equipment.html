@@ -1,0 +1,88 @@
+<div class="equipment">
+  <h2>Equipment</h2>
+  <h3>Weapons</h3>
+  <ul>
+    {{#each system.weapons as |item key|}}
+      <li class="item flexrow">
+        <div>
+          <label>Item:</label>
+          <input type="text" name="system.weapons.{{key}}.name" value="{{item.name}}">
+        </div>
+        <div>
+          <label>Stat:</label>
+          <select name="system.weapons.{{key}}.stat">
+            <option value="strength" {{#if (eq item.stat "strength")}}selected{{/if}}>
+              Strength
+            </option>
+            <option value="agility" {{#if (eq item.stat "agility")}}selected{{/if}}>
+              Agility
+            </option>
+            <option value="intelligence" {{#if (eq item.stat "intelligence")}}selected{{/if}}>
+              Intelligence
+            </option>
+            <option value="intuition" {{#if (eq item.stat "intuition")}}selected{{/if}}>
+              Intuition
+            </option>
+          </select>
+        </div>
+        <div>
+          <label>Action:</label>
+          <select name="system.weapons.{{key}}.action">
+            <option value="fast" {{#if (eq item.action "fast")}}selected{{/if}}>
+              Fast
+            </option>
+            <option value="medium" {{#if (eq item.action "medium")}}selected{{/if}}>
+              Medium
+            </option>
+            <option value="slow" {{#if (eq item.action "slow")}}selected{{/if}}>
+              Slow
+            </option>
+          </select>
+        </div>
+        <div>
+          <label>Range:</label>
+          <select name="system.weapons.{{key}}.range">
+            <option value="Melee" {{#if (eq item.range "Melee")}}selected{{/if}}>
+              Melee
+            </option>
+            <option value="Close" {{#if (eq item.range "Close")}}selected{{/if}}>
+              Close
+            </option>
+            <option value="Short" {{#if (eq item.range "Short")}}selected{{/if}}>
+              Short
+            </option>
+            <option value="Long" {{#if (eq item.range "Long")}}selected{{/if}}>
+              Long
+            </option>
+            <option value="Very Long" {{#if (eq item.range "Very Long")}}selected{{/if}}>
+              Very Long
+            </option>
+          </select>
+        </div>
+        <div>
+          <label>Description:</label>
+          <input type="text" name="system.weapons.{{key}}.description" value="{{item.description}}">
+        </div>
+        <img class="icon hover-shade delete-button" data-type="weapons" data-key="{{key}}" data-name="{{item.name}}" src="{{icons 'delete'}}"/>
+      </li>
+    {{/each}}
+  </ul>
+  <button type="button" class="add-equipment" data-type="weapon">+ Add Weapon</button>
+  <h3>Other Equipment</h3>
+  <ul>
+    {{#each system.equipment as |item key|}}
+      <li class="item flexrow">
+        <div>
+          <label>Item:</label>
+          <input type="text" name="system.equipment.{{key}}.name" value="{{item.name}}">
+        </div>
+        <div>
+          <label>Description:</label>
+          <input type="text" name="system.equipment.{{key}}.description" value="{{item.description}}">
+        </div>
+        <img class="icon hover-shade delete-button" data-type="equipment" data-key="{{key}}" data-name="{{item.name}}" src="{{icons 'delete'}}"/>
+      </li>
+    {{/each}}
+  </ul>
+  <button type="button" class="add-equipment">+ Add Item</button>
+</div>

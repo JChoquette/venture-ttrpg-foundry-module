@@ -1,0 +1,64 @@
+
+<div>
+  <h3>Skills</h3>
+  <table class="first-column-grow">
+    {{#each system.trained_skills as |skill key|}}
+    <tr>
+      <td><label> {{skill.name}}: {{rankToDie skill.rank}} + {{rankToDie skill.statValue}}
+      </label></td>
+      <td><img
+        title="Quick roll"
+        src="{{icons 'rolling-dice-cup'}}"
+        class="roll-skill roll-icon hover-shade" 
+        data-name="{{skill.name}}"
+        data-d1="{{skill.rank}}"
+        data-d2="{{skill.statValue}}"/></td>
+      <td><img 
+        title="Roll with boon/bane"
+        src="{{icons 'boon'}}"
+        class="roll-skill-boon roll-icon hover-shade" 
+        data-name="{{skill.name}}"
+        data-d1="{{skill.rank}}"
+        data-d2="{{skill.statValue}}"/></td>
+      <td><img 
+        title="Help another"
+        src="{{icons 'help'}}" 
+        class="roll-skill-boon roll-icon hover-shade" 
+        data-name="{{skill.name}}"
+        data-d1="-1"
+        data-d2="-1"
+        data-d3="{{skill.rank}}"/></td>
+    </tr>
+    {{/each}}
+  </table>
+  <table class="first-column-grow">
+    {{#each system.untrained_skills as |skill key|}}
+      <tr>
+        <td><label> {{skill.name}}: {{rankToDie skill.rank}} + {{rankToDie skill.statValue}}
+        </label></td>
+        <td><img
+          title="Quick roll"
+          src="{{icons 'rolling-dice-cup'}}"
+          class="roll-skill roll-icon hover-shade" 
+          data-name="{{skill.name}}"
+          data-d1="{{skill.rank}}"
+          data-d2="{{skill.statValue}}"/></td>
+        <td><img 
+          title="Roll with boon/bane"
+          src="{{icons 'boon'}}"
+          class="roll-skill-boon roll-icon hover-shade" 
+          data-name="{{skill.name}}"
+          data-d1="{{skill.rank}}"
+          data-d2="{{skill.statValue}}"/></td>
+        <td><img 
+          title="Help another"
+          src="{{icons 'help'}}" 
+          class="roll-skill-boon roll-icon hover-shade" 
+          data-name="{{skill.name}}"
+          data-d1="-1"
+          data-d2="-1"
+          data-d3="{{skill.rank}}"/></td>
+      </tr>
+    {{/each}}
+  </table>
+</div>

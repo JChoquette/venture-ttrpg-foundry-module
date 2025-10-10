@@ -1,0 +1,55 @@
+<div>
+	{{#if system.weapons}}
+    <h3>Equip a weapon:</h3>
+    <select name="system.equipped_weapon">
+      {{#each system.weapons as |item key|}}
+        <option value="{{key}}" {{#if (eq ../system.equipped_weapon key)}} selected {{/if}}>{{item.name}}</option>
+      {{/each}}
+    </select>
+  {{/if}}
+  <h3>Abilities:</h3>
+  <table>
+    <tr>
+      <th>Skill</th>
+      <th>Cost</th>
+      <th>Name</th>
+      <th>Action</th>
+      <th>Description</th>
+    </tr>
+    {{#each system.abilities_prepared as |ability key|}}
+      <tr>
+        <td>{{ability.skill_name}}</td>
+        <td class="hover-shade pay-cost {{#if ability.too_expensive}}too-expensive{{/if}}" title="Pay cost" data-cost="{{ability.cost}}" data-costtype="{{ability.costtype}}">
+          {{# if ability.cost}}
+            <img class="icon" src="{{icons ability.costtype}}"/> x {{ability.cost}}
+          {{/if}}
+        </td>
+        <td>{{ability.name}}</td>
+        <td>
+          {{# if ability.action}}
+            {{ability.action}}
+          {{/if}}
+        </td>
+        <td>{{ability.description}}</td>
+        {{#if (eq ability.roll_type "help")}}
+        <td><img 
+          title="Help another"
+          src="{{icons 'help'}}" 
+          class="roll-skill-boon roll-icon hover-shade" 
+          data-name="{{ability.name}}"
+          data-d1="-1"
+          data-d2="-1"
+          data-d3="{{ability.rank}}"/></td>
+        {{else}}
+        <td><img 
+          title="Roll with boon/bane"
+          src="{{icons 'boon'}}"
+          class="roll-skill-boon roll-icon hover-shade" 
+          data-name="{{ability.name}}"
+          data-d1="{{ability.rank}}"
+          data-d2="{{ability.statValue}}"/></td>
+        {{/if}}
+      </tr>
+    {{/each}}
+  </table>
+</div>

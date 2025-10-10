@@ -1,0 +1,30 @@
+<div class="setup-resources">
+  <div class="flexrow">
+    <label>Max Vigour
+      <input type="number" name="system.max_vigour" value="{{system.max_vigour}}" {{#unless system.vigour_is_custom}}disabled{{/unless}}>
+    </label>
+    <label>
+      Use custom
+      <input type="checkbox" name="system.vigour_is_custom" {{checked system.vigour_is_custom}}>
+    </label>
+  </div>
+  <div class="flexrow">
+    <label>Vim
+      <input type="number" name="system.max_vim" value="{{system.max_vim}}" {{#unless system.vim_is_custom}}disabled{{/unless}}>
+    </label>
+    <label>
+      Use custom
+      <input type="checkbox" name="system.vim_is_custom" {{checked system.vim_is_custom}}>
+    </label>
+  </div>
+  <div class="flexrow">
+    <label>Steam
+      <input type="number" name="system.max_steam" value="{{system.max_steam}}">
+    </label>
+  </div>
+  <div class="flexrow">
+    <label>Fuel
+      <input type="number" name="system.fuel" value="{{system.fuel}}">
+    </label>
+  </div>
+</div>

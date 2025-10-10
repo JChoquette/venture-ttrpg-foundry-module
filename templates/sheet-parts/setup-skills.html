@@ -1,0 +1,21 @@
+<div class="skills">
+  <h2>Skills</h2>
+  <ul>
+    {{#each system.trained_skills as |skill key|}}
+      <li class="skill">
+        <input type="text" name="system.trained_skills.{{key}}.name" value="{{skill.name}}">
+        <label>Stat:</label>
+          <select name="system.trained_skills.{{key}}.stat">
+            <option value="strength" {{#if (eq skill.stat "strength")}}selected{{/if}}>Strength</option>
+            <option value="agility" {{#if (eq skill.stat "agility")}}selected{{/if}}>Agility</option>
+            <option value="intelligence" {{#if (eq skill.stat "intelligence")}}selected{{/if}}>Intelligence</option>
+            <option value="intuition" {{#if (eq skill.stat "intuition")}}selected{{/if}}>Intuition</option>
+          </select>
+        <label>Ranks:</label>
+        <input type="number" name="system.trained_skills.{{key}}.rank" value="{{skill.rank}}" min="0" max="5">
+        <img class="icon hover-shade delete-button" data-type="trained_skills" data-key="{{key}}" data-name="{{skill.name}}" src="{{icons 'delete'}}"/>
+      </li>
+    {{/each}}
+  </ul>
+  <button type="button" class="add-skill">+ Add Skill</button>
+</div>

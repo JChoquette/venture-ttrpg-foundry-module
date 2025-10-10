@@ -19,6 +19,9 @@
         "wealth":0,
         "wealth_track":0
       },
+      "npc-basics":{
+        "level":1
+      },
       "resources":{
         "max_vim": 6,
         "current_vim": 6,
@@ -69,10 +72,10 @@
       }
     },
     "character": {
-      "templates": ["stats","skills","pc-basics","damage"]
+      "templates": ["pc-basics","stats","skills","resources","damage","abilities","equipment"]
     },
-    "npc": {
-      "templates": ["stats","skills","damage"]
+    "npc": {      
+      "templates": ["npc-basics","stats","skills","damage","abilities"]
     }
   },
   "Item": {

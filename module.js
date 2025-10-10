@@ -6,6 +6,9 @@
 Hooks.once("init", () => {
   console.log("Venture RPG | Initializing system");
 
+  //preload templates
+  preloadHandlebarsTemplates();
+
   // Example Handlebars helper: convert rank 1–5 into dice
   Handlebars.registerHelper("rankToDie", function(rank) {
     const dice = {
@@ -52,3 +55,22 @@ Hooks.once("init", () => {
     return `systems/venture-rpg/assets/icons/${icon}.svg`;
   });
 });
+
+export const preloadHandlebarsTemplates = async function() {
+  const templatePaths = [
+    "systems/venture-rpg/templates/sheet-parts/skills.html",
+    "systems/venture-rpg/templates/sheet-parts/defenses.html",
+    "systems/venture-rpg/templates/sheet-parts/resources.html",
+    "systems/venture-rpg/templates/sheet-parts/wounds.html",
+    "systems/venture-rpg/templates/sheet-parts/burn.html",
+    "systems/venture-rpg/templates/sheet-parts/abilities.html",
+    "systems/venture-rpg/templates/sheet-parts/equipment.html",
+    "systems/venture-rpg/templates/sheet-parts/setup-stats-character.html",
+    "systems/venture-rpg/templates/sheet-parts/setup-stats-npc.html",
+    "systems/venture-rpg/templates/sheet-parts/setup-wounds.html",
+    "systems/venture-rpg/templates/sheet-parts/setup-resources.html",
+    "systems/venture-rpg/templates/sheet-parts/setup-skills.html",
+    "systems/venture-rpg/templates/sheet-parts/setup-abilities.html",
+  ];
+  return loadTemplates(templatePaths);
+};

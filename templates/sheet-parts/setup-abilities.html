@@ -1,0 +1,107 @@
+<div class="abilities">
+  <h2>Abilities</h2>
+  <ul>
+    {{#each system.abilities as |ability key|}}
+      <li class="ability">
+        <div>
+          <label>Description:</label>
+          <input type="text" name="system.abilities.{{key}}.name" value="{{ability.name}}">
+        </div>
+        <div>
+          <label>Skill:</label>
+          <select name="system.abilities.{{key}}.skill">
+            <option value="None" {{#if (eq ability.skill "None")}} selected {{/if}}>None</option>
+            {{#each ../system.trained_skills as |skill key|}}
+              <option value="{{key}}" {{#if (eq ability.skill key)}}selected{{/if}}>{{skill.name}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div>
+          <label>Type:</label>
+          <select name="system.abilities.{{key}}.type">
+            <option value="ability" {{#if (eq ability.type "ability")}}selected{{/if}}>
+              Ability
+            </option>
+            <option value="technique" {{#if (eq ability.type "technique")}}selected{{/if}}>
+              Technique
+            </option>
+            <option value="weapon" {{#if (eq ability.type "weapon")}}selected{{/if}}>
+              Weapon Technique
+            </option>
+          </select>
+        </div>
+        <div>
+          <label>Cost:</label>
+          <div class="flexrow">
+            <input type="number" name="system.abilities.{{key}}.cost" value="{{ability.cost}}" />
+            <select name="system.abilities.{{key}}.costtype">
+              <option value="vigour" {{#if (eq ability.costtype "vigour")}}selected{{/if}}>
+                Vigour
+              </option>
+              <option value="vim" {{#if (eq ability.costtype "vim")}}selected{{/if}}>
+                Vim
+              </option>
+              <option value="steam" {{#if (eq ability.costtype "steam")}}selected{{/if}}>
+                Steam
+              </option>
+            </select>
+          </div>
+        </div>
+        {{#if (or (eq ability.type "technique") (eq ability.type "weapon"))}}
+          <div>
+            <label>Action:</label>
+            <select name="system.abilities.{{key}}.action">
+              <option value="none" {{#if (eq ability.action "none")}}selected{{/if}}>
+                None
+              </option>
+              <option value="fast" {{#if (eq ability.action "fast")}}selected{{/if}}>
+                Fast
+              </option>
+              <option value="medium" {{#if (eq ability.action "medium")}}selected{{/if}}>
+                Medium
+              </option>
+              <option value="slow" {{#if (eq ability.action "slow")}}selected{{/if}}>
+                Slow
+              </option>
+              <option value="reaction" {{#if (eq ability.action "reaction")}}selected{{/if}}>
+                Reaction
+              </option>
+              {{#if (eq ability.type "weapon")}}
+              <option value="weapon" {{#if (eq ability.action "weapon")}}selected{{/if}}>
+                Weapon
+              </option>
+              {{/if}}
+            </select>
+          </div>
+          <div>
+            <label>Defense:</label>
+            <select name="system.abilities.{{key}}.defense">
+              {{#each ../system.current_stats as |stat key|}}
+              <option value="{{key}}" {{#if (eq ability.defense key)}}selected{{/if}}>
+                {{key}}
+              </option>
+              {{/each}}
+            </select>
+          </div>
+        {{/if}}
+        <div>
+          <label>Roll Type:</label>
+          <select name="system.abilities.{{key}}.roll_type">
+            <option value="skill" {{#if (eq ability.roll_type "skill")}} selected {{/if}}>
+              Skill
+            </option>
+            <option value="help" {{#if (eq ability.roll_type "help")}} selected {{/if}}>
+              Help
+            </option>
+          </select>
+        </div>
+        <div>
+          <label>Description:</label>
+          <input type="text" name="system.abilities.{{key}}.description" value="{{ability.description}}">
+        </div>
+        <img class="icon hover-shade delete-button" data-type="abilities" data-key="{{key}}" data-name="{{ability.name}}" src="{{icons 'delete'}}"/>
+      </li>
+    {{/each}}
+  </ul>
+  <button type="button" class="add-ability">+ Add Ability</button>
+</div>

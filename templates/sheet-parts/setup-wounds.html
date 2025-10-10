@@ -1,0 +1,52 @@
+<div class="setup-wounds">
+  <div class="flexrow">
+    <label>Major Threshold
+      <input type="number" name="system.major_threshold" value="{{system.major_threshold}}" {{#unless system.major_threshold_is_custom}}disabled{{/unless}}>
+    </label>
+    <label>
+      Use custom
+      <input type="checkbox" name="system.major_threshold_is_custom" {{checked system.major_threshold_is_custom}}>
+    </label>
+  </div>
+  <div class="flexrow">
+    <label>Critcial Threshold
+      <input type="number" name="system.critical_threshold" value="{{system.critical_threshold}}" {{#unless system.critical_threshold_is_custom}}disabled{{/unless}}>
+    </label>
+    <label>
+      Use custom
+      <input type="checkbox" name="system.critical_threshold_is_custom" {{checked system.critical_threshold_is_custom}}>
+    </label>
+  </div>
+  <div class="flexrow">
+    <label>Max Minor Wounds
+      <input type="number" name="system.max_minor_wounds" value="{{system.max_minor_wounds}}" {{#unless system.minor_wounds_is_custom}}disabled{{/unless}}>
+    </label>
+    <label>
+      Use custom
+      <input type="checkbox" name="system.minor_wounds_is_custom" {{checked system.minor_wounds_is_custom}}>
+    </label>
+  </div>
+  <div class="flexrow">
+    <label>Max Major Wounds
+      <input type="number" name="system.max_major_wounds" value="{{system.max_major_wounds}}" {{#unless system.major_wounds_is_custom}}disabled{{/unless}}>
+    </label>
+    <label>
+      Use custom
+      <input type="checkbox" name="system.major_wounds_is_custom" {{checked system.major_wounds_is_custom}}>
+    </label>
+  </div>
+  <div class="flexrow">
+    <label>Max Critical Wounds
+      <input type="number" name="system.max_critical_wounds" value="{{system.max_critical_wounds}}" {{#unless system.critical_wounds_is_custom}}disabled{{/unless}}>
+    </label>
+    <label>
+      Use custom
+      <input type="checkbox" name="system.critical_wounds_is_custom" {{checked system.critical_wounds_is_custom}}>
+    </label>
+  </div>
+  <div class="flexrow">
+    <label>Max Guard
+      <input type="number" name="system.max_guard" value="{{system.max_guard}}">
+    </label>
+  </div>
+</div>

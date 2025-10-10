@@ -1,17 +1,55 @@
 <form class="actor-sheet">
-  <h1>NPC: {{actor.name}}</h1>
-  <div class="abilities">
-    <label>{{localize "VENTURE-RPG.AbilityStrength"}}
-      <input type="number" name="venture-rpg.strength" value="{{venture-rpg.strength}}">
-    </label>
-    <label>{{localize "VENTURE-RPG.AbilityAgility"}}
-      <input type="number" name="venture-rpg.agility" value="{{venture-rpg.agility}}">
-    </label>
-    <label>{{localize "VENTURE-RPG.AbilityIntelligence"}}
-      <input type="number" name="venture-rpg.intelligence" value="{{venture-rpg.intelligence}}">
-    </label>
-    <label>{{localize "VENTURE-RPG.AbilityIntuition"}}
-      <input type="number" name="venture-rpg.intuition" value="{{venture-rpg.intuition}}">
-    </label>
+  <h2>{{actor.name}}</h2>
+  <div class="character-info">
+    <div class="flexrow">
+      <div class="field">
+        <label for="level">Level:</label>
+        <input type="number" name="system.level" value="{{system.level}}" min="0">
+      </div>
+    </div>
+  </div>
+  
+  <div>
+    <button type="button" class="display-actor-info">Display Info</button>
+  </div>
+
+  <nav class="tabs" data-group="primary">
+    <!-- Tab navigation -->
+    <ul class="tab-nav">
+      <li class="active" data-tab="basic-info">Info</li>
+      <li data-tab="edit">Edit Attributes</li>
+    </ul>
+  </nav>
+
+  <div class="tab-content">
+    <!-- Tab content -->
+    <div class="tab active" data-group="primary" data-tab="basic-info">
+      <h2>Skills and Defenses</h2>
+      <div class="flexrow">
+        <div>
+          {{> "systems/venture-rpg/templates/sheet-parts/skills.html"}}
+        </div>
+        <div>
+          {{> "systems/venture-rpg/templates/sheet-parts/defenses.html"}}
+        </div>
+      </div>
+      <h2>Wounds and Burn</h2>
+      <div class="flexrow">
+        <div>
+          {{> "systems/venture-rpg/templates/sheet-parts/wounds.html"}}
+        </div>
+        <div>
+          {{> "systems/venture-rpg/templates/sheet-parts/burn.html"}}
+        </div>
+      </div>
+      {{> "systems/venture-rpg/templates/sheet-parts/abilities.html"}}
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="edit">
+      {{> "systems/venture-rpg/templates/sheet-parts/setup-stats-npc.html"}}
+      {{> "systems/venture-rpg/templates/sheet-parts/setup-wounds.html"}}
+      {{> "systems/venture-rpg/templates/sheet-parts/setup-skills.html"}}
+      {{> "systems/venture-rpg/templates/sheet-parts/setup-abilities.html"}}
+    </div>
   </div>
 </form>
