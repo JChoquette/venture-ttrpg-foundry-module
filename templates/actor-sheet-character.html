@@ -37,6 +37,7 @@
       <li class="active" data-tab="basic-info">Basic Info</li>
       <li data-tab="abilities">Abilities</li>
       <li data-tab="equipment">Equipment</li>
+      <li data-tab="notes">Notes</li>
       <li data-tab="edit">Edit Attributes</li>
     </ul>
   </nav>
@@ -70,7 +71,15 @@
     </div>
 
     <div class="tab" data-group="primary" data-tab="equipment">
-      {{> "systems/venture-rpg/templates/sheet-parts/equipment.html"}}
+      {{# if system.equipment_edit}}
+        {{> "systems/venture-rpg/templates/sheet-parts/setup-equipment.html"}}
+      {{else}}
+        {{> "systems/venture-rpg/templates/sheet-parts/equipment.html"}}
+      {{/if}}
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="notes">
+      {{> "systems/venture-rpg/templates/sheet-parts/notes.html"}}
     </div>
 
     <div class="tab" data-group="primary" data-tab="edit">

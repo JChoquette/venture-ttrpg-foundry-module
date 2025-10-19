@@ -1,0 +1,94 @@
+<div class="equipment">
+  <h2 class="flexrow"><div>Equipment</div><img class="icon hover-shade toggle-equipment-edit" src="{{icons 'edit'}}"/></h2>
+  <h3>Weapons</h3>
+  <ul>
+    {{#each system.weapons as |weapon key|}}
+    <div>
+      <li class="item flexrow">
+        <div>
+          <label>Item:</label>
+          <input type="text" name="system.weapons.{{key}}.name" value="{{weapon.name}}">
+        </div>
+        <div>
+          <label>Stat:</label>
+          <select name="system.weapons.{{key}}.stat">
+            <option value="strength" {{#if (eq weapon.stat "strength")}}selected{{/if}}>
+              Strength
+            </option>
+            <option value="agility" {{#if (eq weapon.stat "agility")}}selected{{/if}}>
+              Agility
+            </option>
+            <option value="intelligence" {{#if (eq weapon.stat "intelligence")}}selected{{/if}}>
+              Intelligence
+            </option>
+            <option value="intuition" {{#if (eq weapon.stat "intuition")}}selected{{/if}}>
+              Intuition
+            </option>
+          </select>
+        </div>
+        <div>
+          <label>Action:</label>
+          <select name="system.weapons.{{key}}.action">
+            <option value="fast" {{#if (eq weapon.action "fast")}}selected{{/if}}>
+              Fast
+            </option>
+            <option value="medium" {{#if (eq weapon.action "medium")}}selected{{/if}}>
+              Medium
+            </option>
+            <option value="slow" {{#if (eq weapon.action "slow")}}selected{{/if}}>
+              Slow
+            </option>
+          </select>
+        </div>
+        <div>
+          <label>Range:</label>
+          <select name="system.weapons.{{key}}.range">
+            <option value="Melee" {{#if (eq weapon.range "Melee")}}selected{{/if}}>
+              Melee
+            </option>
+            <option value="Close" {{#if (eq weapon.range "Close")}}selected{{/if}}>
+              Close
+            </option>
+            <option value="Short" {{#if (eq weapon.range "Short")}}selected{{/if}}>
+              Short
+            </option>
+            <option value="Long" {{#if (eq weapon.range "Long")}}selected{{/if}}>
+              Long
+            </option>
+            <option value="Very Long" {{#if (eq weapon.range "Very Long")}}selected{{/if}}>
+              Very Long
+            </option>
+          </select>
+        </div>
+        <img class="icon hover-shade delete-button" data-type="weapons" data-key="{{key}}" data-name="{{weapon.name}}" src="{{icons 'delete'}}"/>
+      </li>
+      <div>
+        <label>Description:</label>
+        {{editor weapon.description class="editor-box" target=(concat "system.weapons." key ".description") button=true engine="prosemirror"}}
+      </div>
+    </div>
+    <hr>
+    {{/each}}
+  </ul>
+  <button type="button" class="add-equipment" data-type="weapon">+ Add Weapon</button>
+  <h3>Other Equipment</h3>
+  <ul>
+    {{#each system.equipment as |item key|}}
+    <div>
+      <li class="item flexrow">
+        <div>
+          <label>Item:</label>
+          <input type="text" name="system.equipment.{{key}}.name" value="{{item.name}}">
+        </div>
+        <img class="icon hover-shade delete-button" data-type="equipment" data-key="{{key}}" data-name="{{item.name}}" src="{{icons 'delete'}}"/>
+      </li>
+      <div>
+        <label>Description:</label>
+        {{editor item.description class="editor-box" target=(concat "system.equipment." key ".description") button=true engine="prosemirror"}}
+      </div>
+    </div>
+    <hr>
+    {{/each}}
+  </ul>
+  <button type="button" class="add-equipment">+ Add Item</button>
+</div>

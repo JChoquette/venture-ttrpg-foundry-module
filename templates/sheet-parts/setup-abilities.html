@@ -2,9 +2,10 @@
   <h2>Abilities</h2>
   <ul>
     {{#each system.abilities as |ability key|}}
+    <div>
       <li class="ability">
         <div>
-          <label>Description:</label>
+          <label>Name:</label>
           <input type="text" name="system.abilities.{{key}}.name" value="{{ability.name}}">
         </div>
         <div>
@@ -32,20 +33,21 @@
         </div>
         <div>
           <label>Cost:</label>
-          <div class="flexrow">
-            <input type="number" name="system.abilities.{{key}}.cost" value="{{ability.cost}}" />
-            <select name="system.abilities.{{key}}.costtype">
-              <option value="vigour" {{#if (eq ability.costtype "vigour")}}selected{{/if}}>
-                Vigour
-              </option>
-              <option value="vim" {{#if (eq ability.costtype "vim")}}selected{{/if}}>
-                Vim
-              </option>
-              <option value="steam" {{#if (eq ability.costtype "steam")}}selected{{/if}}>
-                Steam
-              </option>
-            </select>
-          </div>
+          <input type="number" name="system.abilities.{{key}}.cost" value="{{ability.cost}}" />
+        </div>
+        <div>
+          <label>&nbsp;</label>
+          <select name="system.abilities.{{key}}.costtype">
+            <option value="vigour" {{#if (eq ability.costtype "vigour")}}selected{{/if}}>
+              Vigour
+            </option>
+            <option value="vim" {{#if (eq ability.costtype "vim")}}selected{{/if}}>
+              Vim
+            </option>
+            <option value="steam" {{#if (eq ability.costtype "steam")}}selected{{/if}}>
+              Steam
+            </option>
+          </select>
         </div>
         {{#if (or (eq ability.type "technique") (eq ability.type "weapon"))}}
           <div>
@@ -95,12 +97,14 @@
             </option>
           </select>
         </div>
-        <div>
-          <label>Description:</label>
-          <input type="text" name="system.abilities.{{key}}.description" value="{{ability.description}}">
-        </div>
         <img class="icon hover-shade delete-button" data-type="abilities" data-key="{{key}}" data-name="{{ability.name}}" src="{{icons 'delete'}}"/>
       </li>
+      <div>
+        <label>Description:</label>
+        {{editor ability.description class="editor-box" target=(concat "system.abilities." key ".description") button=true engine="prosemirror"}}
+      </div>
+    </div>
+    <hr>
     {{/each}}
   </ul>
   <button type="button" class="add-ability">+ Add Ability</button>

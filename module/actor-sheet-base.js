@@ -10,6 +10,14 @@ export class VentureBaseSheet extends ActorSheet {
     context.system = this.actor.system; // expose system shorthand
     let system = context.system;
 
+    this.calculate_defaults(system);
+
+    console.log(JSON.stringify(system.notes));
+
+    //Are we editing anything?
+    system.equipment_edit = this.equipment_edit;
+    system.abilities_edit = this.abilities_edit;
+    
     // Create stats list
     system.current_stats = {
       "strength": system.strength - system.strength_burn || 1,
@@ -31,7 +39,6 @@ export class VentureBaseSheet extends ActorSheet {
       }
     }
 
-    this.calculate_defaults(system);
 
     //Calculate largest damage track and burn track
     system.largest_wounds = Math.max(system.max_guard,system.max_minor_wounds,system.max_major_wounds,system.max_critical_wounds);
@@ -40,10 +47,12 @@ export class VentureBaseSheet extends ActorSheet {
 
     //Equip a weapon if none
     if (system.weapons ){
-      if (! system.equipped_weapon || !system.weapons[system.equipped_weapon])system.equipped_weapon = system.weapons[Object.keys(system.weapons)[0]];
+      if (! system.equipped_weapon || !system.weapons[system.equipped_weapon])system.equipped_weapon = Object.keys(system.weapons)[0];
     } else {
       system.equipped_weapon = null;
     }
+
+    console.log(system);
 
     //Alter weapon abilities to apply rolls and correct weapon:
     system.abilities_prepared = {};
@@ -199,6 +208,20 @@ export class VentureBaseSheet extends ActorSheet {
       const key = $(ev.currentTarget).data("key");
       const name = $(ev.currentTarget).data("name");
       new ConfirmDeleteMenu(this.actor, name, type, key).render(true);
+    });
+
+    //Activate listeners for toggling editing of things
+    html.find(".toggle-equipment-edit").click(ev => {
+      ev.preventDefault();
+      console.log(!this.equipment_edit);
+      this.equipment_edit = !this.equipment_edit;
+      console.log(this.equipment_edit);
+      this.render();
+    });
+    html.find(".toggle-abilities-edit").click(ev => {
+      ev.preventDefault();
+      this.abilities_edit = !this.abilities_edit;
+      this.render();
     });
   }
 

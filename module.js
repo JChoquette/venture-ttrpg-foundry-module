@@ -58,6 +58,7 @@ Hooks.once("init", () => {
 
 export const preloadHandlebarsTemplates = async function() {
   const templatePaths = [
+    "systems/venture-rpg/templates/sheet-parts/notes.html",
     "systems/venture-rpg/templates/sheet-parts/skills.html",
     "systems/venture-rpg/templates/sheet-parts/defenses.html",
     "systems/venture-rpg/templates/sheet-parts/resources.html",
@@ -71,6 +72,7 @@ export const preloadHandlebarsTemplates = async function() {
     "systems/venture-rpg/templates/sheet-parts/setup-resources.html",
     "systems/venture-rpg/templates/sheet-parts/setup-skills.html",
     "systems/venture-rpg/templates/sheet-parts/setup-abilities.html",
+    "systems/venture-rpg/templates/sheet-parts/setup-equipment.html",
   ];
   return loadTemplates(templatePaths);
 };

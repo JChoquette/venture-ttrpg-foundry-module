@@ -20,7 +20,24 @@
     "module/confirm-delete-menu.js"
   ],
   "styles": ["styles/venture-rpg.css"],
-  "packs": [],
+  "packs": [
+    {
+      "name": "venture-abilities",
+      "label": "Abilities",
+      "system": "venture-rpg",
+      "path": "packs/abilities.db",
+      "type": "Item",
+      "private": false
+    },
+    {
+      "name": "venture-items",
+      "label": "Items",
+      "system": "venture-rpg",
+      "path": "packs/items.db",
+      "type": "Item",
+      "private": false
+    }
+  ],
   "languages": [
     {
       "lang": "en",

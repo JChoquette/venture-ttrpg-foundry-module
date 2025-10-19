@@ -108,3 +108,10 @@
 .venture-rpg .too-expensive{
   box-shadow: inset 0 0 0 9999px rgba(255,0,0,0.1);
 }
+
+.venture-rpg .editor-box{
+  border: 1px solid darkgrey;
+  border-radius: 5px;
+  min-height: 2em;
+  padding: 5px;
+}

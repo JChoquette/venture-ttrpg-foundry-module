@@ -15,7 +15,7 @@ export class MyNpcSheet extends VentureBaseSheet {
   }
 
   calculate_defaults(system) {
-    if(!system.level)system.level=1;
+    if(!system.level)this.actor.update({"system.level":1});
     system.endurance = system.level;
     if (!system.strength_is_custom){
       system.strength = system.level;
