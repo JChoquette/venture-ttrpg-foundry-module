@@ -1,6 +1,7 @@
 import {DiceAdjustMenu} from "./dice-adjust-menu.js"
 import {ConfirmDeleteMenu} from "./confirm-delete-menu.js"
 import {rollSkill} from "./rolling.js"
+import {actionValues} from "../module.js"
 
 
 export class VentureBaseSheet extends ActorSheet {
@@ -12,11 +13,8 @@ export class VentureBaseSheet extends ActorSheet {
 
     this.calculate_defaults(system);
 
-    console.log(JSON.stringify(system.notes));
-
     //Are we editing anything?
-    system.equipment_edit = this.equipment_edit;
-    system.abilities_edit = this.abilities_edit;
+    system.edit_field = this.edit_field;
     
     // Create stats list
     system.current_stats = {
@@ -52,8 +50,6 @@ export class VentureBaseSheet extends ActorSheet {
       system.equipped_weapon = null;
     }
 
-    console.log(system);
-
     //Alter weapon abilities to apply rolls and correct weapon:
     system.abilities_prepared = {};
     if(!system.abilities)system.abilities={};
@@ -77,7 +73,7 @@ export class VentureBaseSheet extends ActorSheet {
         if (ability_copy.action == "weapon") ability_copy.action = equipped_weapon.action;
         ability_copy.description += "\n Weapon info: "+equipped_weapon.description;
       }
-
+      if (ability_copy.action == "none")ability_copy.action=null; 
       if (ability_copy.cost && ability_copy.costtype){
         try{
           let resource_amount = system["max_"+ability_copy.costtype] - system[ability_copy.costtype];
@@ -87,6 +83,32 @@ export class VentureBaseSheet extends ActorSheet {
       }
 
       system.abilities_prepared[key] = ability_copy;
+    }
+
+    //Check if the actor is a combatant, and add appropriate flags if so
+    const currentCombat = game.combats.active;
+    if (currentCombat) {
+      const combatant = currentCombat.combatants.find(c => c.actorId === this.actor.id);
+      if(combatant){
+        console.log("this is a combatant");
+        const actionsUsed = combatant.getFlag("venture-rpg","actionsUsed") || 0;
+        const reactionsUsed = combatant.getFlag("venture-rpg","reactionsUsed") || 0;
+        system.in_combat = true;
+        system.actions_unavailable = {
+          fast: !(actionsUsed <= 4),
+          medium: !(actionsUsed <= 3),
+          slow: !(actionsUsed <= 0),
+          reaction: !(reactionsUsed <= (system.max_reactions || 1))
+        }
+      }else{
+        system.in_combat=false;
+        system.actions_unavailable = {
+          fast: false,
+          medium: false,
+          slow: false,
+          reaction: false
+        }
+      }
     }
 
     return context;
@@ -127,35 +149,23 @@ export class VentureBaseSheet extends ActorSheet {
     // Add new custom skill
     html.find(".add-skill").click(ev => {
       ev.preventDefault();
-      let trained = this.actor.system["trained_skills"] || {};
-      let new_id = randomID();
-      let new_skill = { name: "New Skill", stat: "strength", rank: 0 };
-      trained[new_id] = new_skill;
-      this.actor.update({ "system.trained_skills": trained});
-      this.render();
+      let new_skill = { name: "New Skill", stat: "strength", rank: this.get_default_skill_rank() };
+      this.add_skill(new_skill);
     });
 
     // Add new ability
     html.find(".add-ability").click(ev => {
       ev.preventDefault();
-      let abilities = {};
-      let new_id = randomID();
-      let new_ability = { name: "New Ability", action:"none", roll_type:"skill", description: "", skill: "None" };
-      abilities[new_id] = new_ability;
-      this.actor.update({ "system.abilities": abilities});
-      this.render();
+      const new_ability = { name: "New Ability", action:"none", roll_type:"skill", description: "", skill: "None" };
+      this.add_ability(new_ability);
     });
 
     // Add new item
     html.find(".add-equipment").click(ev => {
       ev.preventDefault();
       const item_type = $(ev.currentTarget).data("type");
-      let equipment = {};
-      let new_id = randomID();
-      equipment[new_id] = {name:"New item",description:""};
-      if (item_type == "weapon")this.actor.update({ "system.weapons": equipment});
-      else this.actor.update({ "system.equipment": equipment});
-      this.render();
+      const new_equipment = {name:"New item",description:"", item_type: item_type};
+      this.add_equipment(new_equipment);
     });
 
     //activate quick-rolls
@@ -177,7 +187,7 @@ export class VentureBaseSheet extends ActorSheet {
       new DiceAdjustMenu(name, d1, d2, d3).render(true);
     });
 
-    //activate custom rolls
+    //activate resource usage buttons
     html.find(".pay-cost").click(ev => {
       ev.preventDefault();
       const cost = $(ev.currentTarget).data("cost");
@@ -188,6 +198,23 @@ export class VentureBaseSheet extends ActorSheet {
       this.actor.update(new_value);
       this.render();
     });
+    //activate action usage buttons
+    html.find(".use-action").click(ev => {
+      ev.preventDefault();
+      const action = $(ev.currentTarget).data("action");
+      console.log("trying to use action",action);
+      const currentCombat = game.combats.active;
+      if (currentCombat) {
+        const combatant = currentCombat.combatants.find(c => c.actorId === this.actor.id);
+        if(combatant){
+          console.log("updating a combatant");
+          if(action == "reaction") combatant.setFlag("venture-rpg","reactionsUsed",combatant.getFlag("venture-rpg","reactionsUsed") + 1);
+          else combatant.setFlag("venture-rpg","actionsUsed",combatant.getFlag("venture-rpg","actionsUsed") + actionValues[action]);
+          console.log("combatant updated");
+        }
+      }
+    });
+
 
     //activate all custom roll buttons
     html.find(".increment-button").click(ev => {
@@ -210,19 +237,78 @@ export class VentureBaseSheet extends ActorSheet {
       new ConfirmDeleteMenu(this.actor, name, type, key).render(true);
     });
 
-    //Activate listeners for toggling editing of things
-    html.find(".toggle-equipment-edit").click(ev => {
+    //Editing of items
+    html.find(".edit-item").click(ev => {
       ev.preventDefault();
-      console.log(!this.equipment_edit);
-      this.equipment_edit = !this.equipment_edit;
-      console.log(this.equipment_edit);
+      //TBD: Fix this
+      return null;
+    });
+
+    //Activate listeners for toggling editing of blocks
+    html.find(".toggle-edit").click(ev => {
+      ev.preventDefault();
+      const field = $(ev.currentTarget).data("field");
+      if(!this.edit_field)this.edit_field={};
+      this.edit_field[field] = !this.edit_field[field];
       this.render();
     });
-    html.find(".toggle-abilities-edit").click(ev => {
-      ev.preventDefault();
-      this.abilities_edit = !this.abilities_edit;
-      this.render();
+
+    //Listen for combatant updates
+    Hooks.on("updateCombatant", (combatant, changes) => {
+      if(combatant.actorId == this.actor.id){
+        if(changes.flags)this.render();
+      }
     });
+  }
+
+  get_default_skill_rank(){
+    return 1;
+  }
+
+  //Add a skill
+  add_skill(new_skill){
+    let trained = this.actor.system["trained_skills"] || {};
+    let new_id = randomID();
+    trained[new_id] = new_skill;
+    this.actor.update({ "system.trained_skills": trained});
+    this.render();
+  }
+
+  //Add an ability
+  add_ability(new_ability){
+    let abilities = {};
+    let new_id = randomID();
+    abilities[new_id] = new_ability;
+    this.actor.update({ "system.abilities": abilities});
+    this.render();
+  }
+
+  //Add equipment
+  add_equipment(new_equipment){
+    // Add new item
+    let equipment = {};
+    let new_id = randomID();
+    equipment[new_id] = new_equipment;
+    if (new_equipment.item_type == "weapon")this.actor.update({ "system.weapons": equipment});
+    else this.actor.update({ "system.equipment": equipment});
+    this.render();
+  }
+
+  async _onDrop(ev){
+    console.log("A drop event has occured");
+
+    const data = JSON.parse(event.dataTransfer.getData("text/plain"));
+    console.log("Dropped data:", data);
+
+    // Retrieve the dropped Item document
+    const item = await Item.fromDropData(data);
+    if (!item) return;
+
+    console.log(item);
+
+    if(item.type=="ability")this.add_ability(item.system);
+    else if(item.type=="equipment")this.add_equipment(item.system);
+    else if(item.type=="skill")this.add_skill(item.system);
   }
 
 

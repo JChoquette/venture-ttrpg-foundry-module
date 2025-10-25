@@ -1,4 +1,5 @@
 <div>
+  <h2>Abilities</h2>
 	{{#if system.weapons}}
     <h3>Equip a weapon:</h3>
     <select name="system.equipped_weapon">
@@ -10,44 +11,75 @@
   <h3>Abilities:</h3>
   <table>
     <tr>
+      <th>Name</th>
       <th>Skill</th>
       <th>Cost</th>
-      <th>Name</th>
-      <th>Action</th>
+      <th></th>
       <th>Description</th>
     </tr>
     {{#each system.abilities_prepared as |ability key|}}
       <tr>
+        <td>{{ability.name}}</td>
         <td>{{ability.skill_name}}</td>
-        <td class="hover-shade pay-cost {{#if ability.too_expensive}}too-expensive{{/if}}" title="Pay cost" data-cost="{{ability.cost}}" data-costtype="{{ability.costtype}}">
+
+        <td>
           {{# if ability.cost}}
-            <img class="icon" src="{{icons ability.costtype}}"/> x {{ability.cost}}
+            {{> (component "icon-with-wrap") 
+              title="Pay cost"
+              filename=ability.costtype
+              click_class="pay-cost"
+              extra_text=(concat "x " ability.cost)
+              data=(data_fields 
+                "cost" ability.cost
+                "costtype" ability.costtype
+              )
+              conditional_class=(iftext ability.too_expensive "too-expensive")
+            }}
           {{/if}}
         </td>
-        <td>{{ability.name}}</td>
         <td>
           {{# if ability.action}}
-            {{ability.action}}
+            {{> (component "icon-with-wrap") 
+              title="Use action"
+              filename=(concat 'action-' ability.action)
+              click_class="use-action"
+              data=(data_fields 
+                "action" ability.action
+              )
+              conditional_class=(iftext (getkey ../system.actions_unavailable ability.action) "too-expensive")
+            }}
           {{/if}}
         </td>
         <td>{{{ability.description}}}</td>
         {{#if (eq ability.roll_type "help")}}
-        <td><img 
-          title="Help another"
-          src="{{icons 'help'}}" 
-          class="roll-skill-boon roll-icon hover-shade" 
-          data-name="{{ability.name}}"
-          data-d1="-1"
-          data-d2="-1"
-          data-d3="{{ability.rank}}"/></td>
+        <td>
+          {{> (component "icon-with-wrap") 
+            title="Help another"
+            filename="help"
+            click_class="roll-skill-boon"
+            extra_classes="roll-icon"
+            data=(data_fields 
+              "name" ability.name
+              "d1" "-1"
+              "d2" "-1"
+              "d3" ability.rank
+            )
+          }}
+        </td>
         {{else}}
-        <td><img 
-          title="Roll with boon/bane"
-          src="{{icons 'boon'}}"
-          class="roll-skill-boon roll-icon hover-shade" 
-          data-name="{{ability.name}}"
-          data-d1="{{ability.rank}}"
-          data-d2="{{ability.statValue}}"/></td>
+        <td>
+          {{> (component "icon-with-wrap") 
+            title="Roll menu"
+            filename="boon"
+            click_class="roll-skill-boon"
+            extra_classes="roll-icon"
+            data=(data_fields 
+              "name" ability.name
+              "d1" ability.rank
+              "d2" ability.statValue
+            )
+          }}
+        </td>
         {{/if}}
       </tr>
     {{/each}}

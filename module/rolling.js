@@ -9,6 +9,24 @@ export const VALUE_TO_DIE = {
   6: "d20"
 };
 
+export function getRollFormula(d1, d2, d3=-1){
+  const skillDie = VALUE_TO_DIE[d1] || "d1";
+  const statDie = VALUE_TO_DIE[d2] || "d4";
+  const helpDie = VALUE_TO_DIE[d3] || "0"
+
+  // Construct the Roll formula
+  let formula;
+  if(d1 > -1 && d2 > -1) {
+    formula = `1${skillDie} + 1${statDie}`;
+  }
+  else {
+    formula = "";
+  }
+  if (d3 >= 0) formula+=` + 1${helpDie}`;
+
+  return formula;
+}
+
 export function rollSkill(name, d1, d2, d3=-1, options={}) {
   const skillDie = VALUE_TO_DIE[d1] || "d1";
   const statDie = VALUE_TO_DIE[d2] || "d4";

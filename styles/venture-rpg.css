@@ -1,5 +1,145 @@
-.venture-rpg .actor-sheet {
-  padding: 10px;
+:root{
+  --venture-rpg-primary: #B2913B;
+  --venture-rpg-primary-transparent: #B2913B55;
+  /*--venture-rpg-secondary: #5E747F;*/
+  --venture-rpg-secondary: #9EADC8;
+  --venture-rpg-dark: #0D100B;
+  --venture-rpg-dark-transparent: #0D100BDD;
+  --venture-rpg-light: #DAD2D8;
+  --venture-rpg-light2: #F5F7FF;
+  --venture-rpg-accent: #764134;
+  --venture-rpg-green: #58B09C;
+  --venture-rpg-purple: #A288E3;
+  --venture-rpg-blue: #255C99;
+  --venture-rpg-red: #F67E7D;
+  --venture-rpg-red--transparent: #F67E7D77;
+
+  --venture-rpg-primary-filter: brightness(0) saturate(100%) invert(59%) sepia(48%) saturate(538%) hue-rotate(6deg) brightness(90%) contrast(85%);
+  /*--venture-rpg-secondary-filter: brightness(0) saturate(100%) invert(46%) sepia(26%) saturate(311%) hue-rotate(155deg) brightness(89%) contrast(89%);*/
+  --venture-rpg-secondary-filter: brightness(0) saturate(100%) invert(76%) sepia(19%) saturate(354%) hue-rotate(180deg) brightness(87%) contrast(89%);
+  --venture-rpg-dark-filter: brightness(0) saturate(100%) invert(3%) sepia(23%) saturate(781%) hue-rotate(53deg) brightness(94%) contrast(95%);
+  --venture-rpg-light-filter: brightness(0) saturate(100%) invert(94%) sepia(2%) saturate(531%) hue-rotate(263deg) brightness(89%) contrast(97%);
+  --venture-rpg-light2-filter: brightness(0) saturate(100%) invert(84%) sepia(17%) saturate(318%) hue-rotate(199deg) brightness(109%) contrast(105%);
+  --venture-rpg-accent-filter: brightness(0) saturate(100%) invert(26%) sepia(7%) saturate(3785%) hue-rotate(324deg) brightness(99%) contrast(88%);
+
+  --venture-rpg-roll-icon-filter: var(--venture-rpg-secondary-filter);
+  --venture-rpg-icon-filter: var(--venture-rpg-secondary-filter);
+}
+
+.venture-rpg.window-app{
+  background: var(--venture-rpg-dark-transparent);
+  color: var(--venture-rpg-primary);
+  border: 1px solid var(--venture-rpg-primary);
+  border-radius: 10px;
+}
+
+.venture-rpg.actor .window-content{
+  padding: 0;
+  padding-top: 10px;
+}
+
+.venture-rpg.window-app .window-header{
+  border-bottom: 0;
+}
+
+.venture-rpg button[disabled]{
+  color: var(--venture-rpg-secondary);
+  border: 1px solid var(--venture-rpg-secondary);
+  background: none;
+}
+
+.venture-rpg button{
+  border: 1px outset var(--venture-rpg-secondary);
+  background: var(--venture-rpg-secondary);
+  color: var(--venture-rpg-dark);
+}
+
+.venture-rpg table{
+  border: 0;
+}
+
+.venture-rpg th{
+  text-align: unset;
+}
+
+.venture-rpg input{
+  color: unset;
+}
+
+.venture-rpg nav.tabs [data-tab],.venture-rpg nav.tabs [data-tab].active{
+  color: var(--venture-rpg-primary);
+}
+
+.venture-rpg [data-tab].active, .venture-rpg [data-tab]:hover{
+  text-shadow: 0 0 10px var(--venture-rpg-primary);
+}
+
+.venture-rpg input:focus, .venture-rpg button:hover{
+  box-shadow: 0 0 5px var(--venture-rpg-primary);
+}
+
+.venture-rpg .window-content{
+  background: none;
+  color: unset;
+  scrollbar-color: var(--venture-rpg-accent) transparent;
+}
+
+.venture-rpg tr{
+  background: none;
+}
+
+.venture-rpg h2{
+  border-bottom: 1px solid var(--venture-rpg-accent);
+}
+
+.venture-rpg h3 {
+    background: var(--venture-rpg-primary);
+    color: var(--venture-rpg-dark);
+    border: 0;
+    padding: 2px;
+}
+
+.venture-rpg input.disabled{
+  pointer-events: none;
+}
+
+.venture-rpg input{
+  accent-color: var(--venture-rpg-secondary);
+}
+
+.venture-rpg input[type="checkbox"] {
+  appearance: none;          /* removes OS-native look */
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--venture-rpg-light);
+  border-radius: 0.2em;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+.venture-rpg input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  width: 6px;
+  height: 12px;
+  border: solid var(--venture-rpg-accent);
+  border-width: 0 0.15em 0.15em 0;
+  transform: rotate(45deg);
+  background: transparent;
+}
+
+.venture-rpg input[type="checkbox"]:checked {
+  background-color: var(--venture-rpg-light);  /* your venture-rpg-primary maybe */
+}
+
+
+.venture-rpg .actor-sheet > div{
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .venture-rpg .actor-sheet .stat{
@@ -39,7 +179,7 @@
   list-style: none; 
   display: flex; 
   padding: 0; 
-  margin: 0 0 10px 0; 
+  margin: 0;
 }
 .venture-rpg .actor-sheet .tab-nav li {
   padding: 5px 15px;
@@ -47,11 +187,20 @@
   margin-right: 2px;
   border-radius: 3px 3px 0 0;
 }
-.venture-rpg .actor-sheet .tab-nav li.active { background-color: #BBB; }
+.venture-rpg .actor-sheet .tab-nav li.active {
+  border: 1px solid var(--venture-rpg-primary);
+  border-bottom: 0;
+  outline: 1px solid var(--venture-rpg-dark);
+}
 .venture-rpg .actor-sheet .tab { 
   display: none; 
 }
 .venture-rpg .actor-sheet .tab.active { display: block; }
+.venture-rpg .actor-sheet .tab-content{
+  border: 0px solid var(--venture-rpg-primary);
+  border-top-width: 1px;
+}
+
 
 .venture-rpg .actor-sheet .increment-button{
   width: 24px;
@@ -63,27 +212,38 @@
   width: 64px;
   height: 64px;
   border: none;
+  filter: var(--venture-rpg-accent-filter);
 }
 
-.venture-rpg .roll-icon{
-  min-width: 24px;
-  border: 0px;
-  border-radius: 5px;
-}
 
 .venture-rpg .icon{
   width: 24px;
   min-width: 24px;
   max-width: 24px;
   border: 0px;
-  border-radius: 5px;
+  filter: var(--venture-rpg-icon-filter);
 }
 
-.hover-shade:not(.ui-state-disabled):not(.disabled):not([disabled]){
+.venture-rpg .icon-wrap{
+  border-radius: 5px;
+  overflow: hidden;
+  min-width: fit-content;
+  flex-grow: 0;
+}
+
+.venture-rpg td{
+  padding: 3px;
+}
+
+.venture-rpg .hover-shade:not(.ui-state-disabled):not(.disabled):not([disabled]){
     cursor:pointer;
 }
-.hover-shade:not(.ui-state-disabled):not(.disabled):not([disabled]):hover{
-    box-shadow: inset 0 0 0 9999px rgba(0,0,0,0.1);
+.venture-rpg .hover-shade:not(.ui-state-disabled):not(.disabled):not([disabled]):hover{
+    box-shadow: inset 0 0 0 9999px rgba(0,0,0,0.2);
+}
+.venture-rpg .icon-wrap.hover-shade:not(.ui-state-disabled):not(.disabled):not([disabled]):hover{
+    /*background: radial-gradient(circle closest-side at 12px 12px, var(--venture-rpg-primary-transparent) 40%, transparent 100%);*/
+    background: var(--venture-rpg-primary-transparent);
 }
 
 .roll-category > *{
@@ -106,7 +266,7 @@
 }
 
 .venture-rpg .too-expensive{
-  box-shadow: inset 0 0 0 9999px rgba(255,0,0,0.1);
+  background: var(--venture-rpg-red--transparent);
 }
 
 .venture-rpg .editor-box{
@@ -114,4 +274,55 @@
   border-radius: 5px;
   min-height: 2em;
   padding: 5px;
+}
+
+.venture-rpg .character-sheet-token{
+  height: 128px;
+  max-width: 128px;
+  border: none;
+}
+
+.venture-rpg .action-indicator{
+  height: 12px;
+  border: 1px solid #9f8475;
+  border-radius: 4px;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.venture-rpg .action-filler{
+  background-color: #c9593f;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.venture-rpg .action-toggles{
+  gap: 2px;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+}
+
+.venture-rpg .action-toggles img{
+  filter: invert(60%) sepia(13%) saturate(561%) hue-rotate(337deg) brightness(87%) contrast(95%);
+  border-radius: 4px;
+}
+
+.venture-rpg .action-toggles img.disabled{
+  filter: invert(20%) sepia(12%) saturate(15%) hue-rotate(314deg) brightness(93%) contrast(76%);
+}
+
+.venture-rpg .action-wrap{
+  flex-grow: 0;
+  border-radius: 4px;
+}
+
+.venture-rpg .action-toggles .action-wrap:hover{
+  background: #c9593f;
+}
+
+.venture-rpg .editor-edit{
+  color: var(--venture-rpg-secondary);
+  background: none;
 }

@@ -2,10 +2,10 @@
   "id": "venture-rpg",
   "title": "Venture RPG",
   "description": "A Foundry VTT system for Venture.",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "compatibility": {
-    "minimum": "11",
-    "verified": "11"
+    "minimum": "13",
+    "verified": "13"
   },
   "authors": [
     {
@@ -22,20 +22,465 @@
   "styles": ["styles/venture-rpg.css"],
   "packs": [
     {
-      "name": "venture-abilities",
-      "label": "Abilities",
+      "name": "venture-athletics",
+      "label": "Athletics",
       "system": "venture-rpg",
-      "path": "packs/abilities.db",
       "type": "Item",
+      "path": "packs/venture-athletics",
       "private": false
     },
     {
-      "name": "venture-items",
-      "label": "Items",
+      "name": "venture-acrobatics",
+      "label": "Acrobatics",
       "system": "venture-rpg",
-      "path": "packs/items.db",
       "type": "Item",
+      "path": "packs/venture-acrobatics",
       "private": false
+    },
+    {
+      "name": "venture-stealth",
+      "label": "Stealth",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-stealth",
+      "private": false
+    },
+    {
+      "name": "venture-pilot",
+      "label": "Pilot",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-pilot",
+      "private": false
+    },
+    {
+      "name": "venture-tinker",
+      "label": "Tinker",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-tinker",
+      "private": false
+    },
+    {
+      "name": "venture-medicine",
+      "label": "Medicine",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-medicine",
+      "private": false
+    },
+    {
+      "name": "venture-alchemy",
+      "label": "Alchemy",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-alchemy",
+      "private": false
+    },
+    {
+      "name": "venture-magic_theory",
+      "label": "Magic Theory",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-magic_theory",
+      "private": false
+    },
+    {
+      "name": "venture-armourer",
+      "label": "Armourer",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-armourer",
+      "private": false
+    },
+    {
+      "name": "venture-engineer",
+      "label": "Engineer",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-engineer",
+      "private": false
+    },
+    {
+      "name": "venture-naturalist",
+      "label": "Naturalist",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-naturalist",
+      "private": false
+    },
+    {
+      "name": "venture-scribe",
+      "label": "Scribe",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-scribe",
+      "private": false
+    },
+    {
+      "name": "venture-academics",
+      "label": "Academics",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-academics",
+      "private": false
+    },
+    {
+      "name": "venture-investigation",
+      "label": "Investigation",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-investigation",
+      "private": false
+    },
+    {
+      "name": "venture-wilderness_survival",
+      "label": "Wilderness Survival",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-wilderness_survival",
+      "private": false
+    },
+    {
+      "name": "venture-infiltration",
+      "label": "Infiltration",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-infiltration",
+      "private": false
+    },
+    {
+      "name": "venture-expedition",
+      "label": "Expedition",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-expedition",
+      "private": false
+    },
+    {
+      "name": "venture-street",
+      "label": "Street",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-street",
+      "private": false
+    },
+    {
+      "name": "venture-guile",
+      "label": "Guile",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-guile",
+      "private": false
+    },
+    {
+      "name": "venture-craft",
+      "label": "Craft",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-craft",
+      "private": false
+    },
+    {
+      "name": "venture-leadership",
+      "label": "Leadership",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-leadership",
+      "private": false
+    },
+    {
+      "name": "venture-influence",
+      "label": "Influence",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-influence",
+      "private": false
+    },
+    {
+      "name": "venture-communities",
+      "label": "Communities",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-communities",
+      "private": false
+    },
+    {
+      "name": "venture-occult",
+      "label": "Occult",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-occult",
+      "private": false
+    },
+    {
+      "name": "venture-innervation",
+      "label": "Innervation",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-innervation",
+      "private": false
+    },
+    {
+      "name": "venture-enervation",
+      "label": "Enervation",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-enervation",
+      "private": false
+    },
+    {
+      "name": "venture-conduit",
+      "label": "Conduit",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-conduit",
+      "private": false
+    },
+    {
+      "name": "venture-illusion",
+      "label": "Illusion",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-illusion",
+      "private": false
+    },
+    {
+      "name": "venture-clairvoyance",
+      "label": "Clairvoyance",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-clairvoyance",
+      "private": false
+    },
+    {
+      "name": "venture-thermal",
+      "label": "Thermal",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-thermal",
+      "private": false
+    },
+    {
+      "name": "venture-galvanic",
+      "label": "Galvanic",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-galvanic",
+      "private": false
+    },
+    {
+      "name": "venture-gravitic",
+      "label": "Gravitic",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-gravitic",
+      "private": false
+    },
+    {
+      "name": "venture-pneumatic",
+      "label": "Pneumatic",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-pneumatic",
+      "private": false
+    },
+    {
+      "name": "venture-chemical",
+      "label": "Chemical",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-chemical",
+      "private": false
+    },
+    {
+      "name": "venture-curse",
+      "label": "Curse",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-curse",
+      "private": false
+    },
+    {
+      "name": "venture-blood",
+      "label": "Blood",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-blood",
+      "private": false
+    },
+    {
+      "name": "venture-spirit",
+      "label": "Spirit",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-spirit",
+      "private": false
+    },
+    {
+      "name": "venture-shadow",
+      "label": "Shadow",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-shadow",
+      "private": false
+    },
+    {
+      "name": "venture-binding",
+      "label": "Binding",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-binding",
+      "private": false
+    },
+    {
+      "name": "venture-duelist",
+      "label": "Duelist",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-duelist",
+      "private": false
+    },
+    {
+      "name": "venture-soldier",
+      "label": "Soldier",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-soldier",
+      "private": false
+    },
+    {
+      "name": "venture-brawler",
+      "label": "Brawler",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-brawler",
+      "private": false
+    },
+    {
+      "name": "venture-stalker",
+      "label": "Stalker",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-stalker",
+      "private": false
+    },
+    {
+      "name": "venture-watchman",
+      "label": "Watchman",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-watchman",
+      "private": false
+    },
+    {
+      "name": "venture-basic_actions",
+      "label": "Basic Actions",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-basic_actions",
+      "private": false
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "Abilities",
+      "sorting": "a",
+      "folders": [
+        {
+          "name": "Physical",
+          "sorting": "a",
+          "packs": [
+            "venture-athletics",
+            "venture-acrobatics",
+            "venture-stealth",
+            "venture-pilot"
+          ]
+        },
+        {
+          "name": "Technology and Sciences",
+          "sorting": "a",
+          "packs": [
+            "venture-tinker",
+            "venture-medicine",
+            "venture-alchemy",
+            "venture-magic_theory",
+            "venture-armourer",
+            "venture-engineer",
+            "venture-naturalist",
+            "venture-scribe",
+            "venture-academics"
+          ]
+        },
+        {
+          "name": "Expertise",
+          "sorting": "a",
+          "packs": [
+            "venture-investigation",
+            "venture-wilderness_survival",
+            "venture-infiltration",
+            "venture-expedition",
+            "venture-street",
+            "venture-guile",
+            "venture-craft",
+            "venture-leadership",
+            "venture-influence",
+            "venture-communities",
+            "venture-occult"
+          ]
+        },
+        {
+          "name": "Arcana",
+          "sorting": "a",
+          "packs": [
+            "venture-innervation",
+            "venture-enervation",
+            "venture-conduit",
+            "venture-illusion",
+            "venture-clairvoyance"
+          ]
+        },
+        {
+          "name": "Natural Philosophy",
+          "sorting": "a",
+          "packs": [
+            "venture-thermal",
+            "venture-galvanic",
+            "venture-gravitic",
+            "venture-pneumatic",
+            "venture-chemical"
+          ]
+        },
+        {
+          "name": "Obscura",
+          "sorting": "a",
+          "packs": [
+            "venture-curse",
+            "venture-blood",
+            "venture-spirit",
+            "venture-shadow",
+            "venture-binding"
+          ]
+        },
+        {
+          "name": "Combat",
+          "sorting": "a",
+          "packs": [
+            "venture-duelist",
+            "venture-soldier",
+            "venture-brawler",
+            "venture-stalker",
+            "venture-watchman"
+          ]
+        },
+        {
+          "name": "Other",
+          "sorting": "a",
+          "packs": [
+            "venture-basic_actions"
+          ]
+        }
+      ]
     }
   ],
   "languages": [

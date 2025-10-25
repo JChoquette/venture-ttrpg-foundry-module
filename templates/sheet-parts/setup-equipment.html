@@ -1,5 +1,14 @@
 <div class="equipment">
-  <h2 class="flexrow"><div>Equipment</div><img class="icon hover-shade toggle-equipment-edit" src="{{icons 'edit'}}"/></h2>
+  <h2 class="flexrow"><div>Equipment</div>
+    {{> (component "icon-with-wrap") 
+      title="Edit"
+      filename="edit"
+      click_class="toggle-edit"
+      data=(data_fields 
+        "field" "equipment"
+      )
+    }}
+  </h2>
   <h3>Weapons</h3>
   <ul>
     {{#each system.weapons as |weapon key|}}

@@ -10,15 +10,19 @@ export class DiceAdjustMenu extends Application {
     this.d1 = d1;
     this.d2 = d2;
     this.d3 = d3;
+
+    this.options.title = "Rolling "+name;
   }
 
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    console.log(this.name);
+    console.log(this.d1);
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["venture-rpg", "dice-adjust-menu"],
       template: "systems/venture-rpg/templates/dice-adjust-menu.html",
       width: 300,
       height: "auto",
-      title: "Adjust Dice"
+      title: "Rolling"
     });
   }
 

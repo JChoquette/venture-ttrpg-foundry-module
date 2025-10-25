@@ -1,34 +1,35 @@
 <form class="actor-sheet">
-  <h2>{{actor.name}}</h2>
-  <div class="character-info">
-    <div class="flexrow">
-      <div class="field">
-        <label for="species">Species:</label>
-        <input type="text" name="system.species" value="{{system.species}}">
-      </div>
+  <div class="flexrow">
+    <div>
+    <h2>{{actor.name}}</h2>
+      <div class="character-info">
+        <div class="flexrow">
+          <div class="field">
+            <label for="species">Species:</label>
+            <input type="text" name="system.species" value="{{system.species}}">
+          </div>
 
-      <div class="field">
-        <label for="background">Background:</label>
-        <input type="text" name="system.background" value="{{system.background}}">
-      </div>
+          <div class="field">
+            <label for="background">Background:</label>
+            <input type="text" name="system.background" value="{{system.background}}">
+          </div>
 
-      <div class="field">
-        <label for="exp">Exp:</label>
-        <input type="number" name="system.exp" value="{{system.exp}}" min="0">
-      </div>
-      <div class="field">
-        <label for="wealth">Wealth:</label>
-        <input type="number" name="system.wealth" value="{{system.wealth}}" min="0">
-      </div>
-      <div class="field">
-        <label for="wealth_track">Wealth Track:</label>
-        <input type="number" name="system.wealth_track" value="{{system.wealth_track}}" min="0">
+          <div class="field">
+            <label for="exp">Exp:</label>
+            <input type="number" name="system.exp" value="{{system.exp}}" min="0">
+          </div>
+          <div class="field">
+            <label for="wealth">Wealth:</label>
+            <input type="number" name="system.wealth" value="{{system.wealth}}" min="0">
+          </div>
+          <div class="field">
+            <label for="wealth_track">Wealth Track:</label>
+            <input type="number" name="system.wealth_track" value="{{system.wealth_track}}" min="0">
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  
-  <div>
-    <button type="button" class="display-actor-info">Display Info</button>
+    <img class="character-sheet-token" src="{{actor.prototypeToken.texture.src}}"/>
   </div>
 
   <nav class="tabs" data-group="primary">
@@ -48,46 +49,49 @@
       <h2>Skills and Defenses</h2>
       <div class="flexrow">
         <div>
-          {{> "systems/venture-rpg/templates/sheet-parts/skills.html"}}
+          {{> (sheet_part "skills")}}
         </div>
         <div>
-          {{> "systems/venture-rpg/templates/sheet-parts/defenses.html"}}
+          {{> (sheet_part "defenses")}}
         </div>
       </div>
       <h2>Resources, Wounds and Burn</h2>
       <div class="flexrow">
         <div>
-          {{> "systems/venture-rpg/templates/sheet-parts/resources.html"}}
-          {{> "systems/venture-rpg/templates/sheet-parts/wounds.html"}}
+          {{> (sheet_part "resources")}}
+          {{> (sheet_part "wounds")}}
         </div>
         <div>
-          {{> "systems/venture-rpg/templates/sheet-parts/burn.html"}}
+          {{> (sheet_part "burn")}}
         </div>
       </div>
     </div>
 
     <div class="tab" data-group="primary" data-tab="abilities">
-      {{> "systems/venture-rpg/templates/sheet-parts/abilities.html"}}
+      {{> (sheet_part "abilities")}}
     </div>
 
     <div class="tab" data-group="primary" data-tab="equipment">
-      {{# if system.equipment_edit}}
-        {{> "systems/venture-rpg/templates/sheet-parts/setup-equipment.html"}}
+      {{# if system.edit_field.equipment}}
+        {{> (sheet_part "setup-equipment")}}
       {{else}}
-        {{> "systems/venture-rpg/templates/sheet-parts/equipment.html"}}
+        {{> (sheet_part "equipment")}}
       {{/if}}
     </div>
 
     <div class="tab" data-group="primary" data-tab="notes">
-      {{> "systems/venture-rpg/templates/sheet-parts/notes.html"}}
+      {{> (sheet_part "notes")}}
     </div>
 
     <div class="tab" data-group="primary" data-tab="edit">
-      {{> "systems/venture-rpg/templates/sheet-parts/setup-stats-character.html"}}
-      {{> "systems/venture-rpg/templates/sheet-parts/setup-wounds.html"}}
-      {{> "systems/venture-rpg/templates/sheet-parts/setup-resources.html"}}
-      {{> "systems/venture-rpg/templates/sheet-parts/setup-skills.html"}}
-      {{> "systems/venture-rpg/templates/sheet-parts/setup-abilities.html"}}
+      <div>
+        <button type="button" class="display-actor-info">Debug - Display Info</button>
+      </div>
+      {{> (sheet_part "setup-stats-character")}}
+      {{> (sheet_part "setup-wounds")}}
+      {{> (sheet_part "setup-resources")}}
+      {{> (sheet_part "setup-skills")}}
+      {{> (sheet_part "setup-abilities")}}
     </div>
   </div>
 </form>

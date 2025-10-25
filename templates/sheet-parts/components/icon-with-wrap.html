@@ -1,0 +1,9 @@
+<div class="icon-wrap hover-shade {{click_class}} {{conditional_class}} {{extra_classes}}"
+{{#if title}}title="{{title}}"{{/if}}  
+{{#each data as |item|}}
+	data-{{item.field}}="{{item.value}}"
+{{/each}}
+>
+	<img class="icon" src="{{icons filename}}"/>
+	{{extra_text}}
+</div>

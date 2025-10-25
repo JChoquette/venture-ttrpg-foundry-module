@@ -6,28 +6,46 @@
     <tr>
       <td><label> {{skill.name}}: {{rankToDie skill.rank}} + {{rankToDie skill.statValue}}
       </label></td>
-      <td><img
-        title="Quick roll"
-        src="{{icons 'rolling-dice-cup'}}"
-        class="roll-skill roll-icon hover-shade" 
-        data-name="{{skill.name}}"
-        data-d1="{{skill.rank}}"
-        data-d2="{{skill.statValue}}"/></td>
-      <td><img 
-        title="Roll with boon/bane"
-        src="{{icons 'boon'}}"
-        class="roll-skill-boon roll-icon hover-shade" 
-        data-name="{{skill.name}}"
-        data-d1="{{skill.rank}}"
-        data-d2="{{skill.statValue}}"/></td>
-      <td><img 
-        title="Help another"
-        src="{{icons 'help'}}" 
-        class="roll-skill-boon roll-icon hover-shade" 
-        data-name="{{skill.name}}"
-        data-d1="-1"
-        data-d2="-1"
-        data-d3="{{skill.rank}}"/></td>
+      <td>
+        {{> (component "icon-with-wrap") 
+          title="Quick roll"
+          filename="rolling-dice-cup"
+          click_class="roll-skill"
+          extra_classes="roll-icon"
+          data=(data_fields 
+            "name" skill.name
+            "d1" skill.rank
+            "d2" skill.statValue
+          )
+        }}
+      </td>
+      <td>
+        {{> (component "icon-with-wrap") 
+          title="Roll menu"
+          filename="boon"
+          click_class="roll-skill-boon"
+          extra_classes="roll-icon"
+          data=(data_fields 
+            "name" skill.name
+            "d1" skill.rank
+            "d2" skill.statValue
+          )
+        }}
+      </td>
+      <td>
+        {{> (component "icon-with-wrap") 
+          title="Help another"
+          filename="help"
+          click_class="roll-skill-boon"
+          extra_classes="roll-icon"
+          data=(data_fields 
+            "name" skill.name
+            "d1" -1
+            "d2" -1
+            "d3" skill.rank
+          )
+        }}
+      </td>
     </tr>
     {{/each}}
   </table>
@@ -36,28 +54,46 @@
       <tr>
         <td><label> {{skill.name}}: {{rankToDie skill.rank}} + {{rankToDie skill.statValue}}
         </label></td>
-        <td><img
+      <td>
+        {{> (component "icon-with-wrap") 
           title="Quick roll"
-          src="{{icons 'rolling-dice-cup'}}"
-          class="roll-skill roll-icon hover-shade" 
-          data-name="{{skill.name}}"
-          data-d1="{{skill.rank}}"
-          data-d2="{{skill.statValue}}"/></td>
-        <td><img 
-          title="Roll with boon/bane"
-          src="{{icons 'boon'}}"
-          class="roll-skill-boon roll-icon hover-shade" 
-          data-name="{{skill.name}}"
-          data-d1="{{skill.rank}}"
-          data-d2="{{skill.statValue}}"/></td>
-        <td><img 
+          filename="rolling-dice-cup"
+          click_class="roll-skill"
+          extra_classes="roll-icon"
+          data=(data_fields 
+            "name" skill.name
+            "d1" skill.rank
+            "d2" skill.statValue
+          )
+        }}
+      </td>
+      <td>
+        {{> (component "icon-with-wrap") 
+          title="Roll menu"
+          filename="boon"
+          click_class="roll-skill-boon"
+          extra_classes="roll-icon"
+          data=(data_fields 
+            "name" skill.name
+            "d1" skill.rank
+            "d2" skill.statValue
+          )
+        }}
+      </td>
+      <td>
+        {{> (component "icon-with-wrap") 
           title="Help another"
-          src="{{icons 'help'}}" 
-          class="roll-skill-boon roll-icon hover-shade" 
-          data-name="{{skill.name}}"
-          data-d1="-1"
-          data-d2="-1"
-          data-d3="{{skill.rank}}"/></td>
+          filename="help"
+          click_class="roll-skill-boon"
+          extra_classes="roll-icon"
+          data=(data_fields 
+            "name" skill.name
+            "d1" -1
+            "d2" -1
+            "d3" skill.rank
+          )
+        }}
+      </td>
       </tr>
     {{/each}}
   </table>

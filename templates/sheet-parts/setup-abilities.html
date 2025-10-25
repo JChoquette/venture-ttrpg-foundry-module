@@ -78,6 +78,7 @@
           <div>
             <label>Defense:</label>
             <select name="system.abilities.{{key}}.defense">
+              <option value="none">None</option>
               {{#each ../system.current_stats as |stat key|}}
               <option value="{{key}}" {{#if (eq ability.defense key)}}selected{{/if}}>
                 {{key}}

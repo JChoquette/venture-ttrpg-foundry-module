@@ -8,7 +8,7 @@ export class ConfirmDeleteMenu extends Application {
   }
 
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["venture-rpg", "confirm-delete-menu"],
       template: "systems/venture-rpg/templates/confirm-delete-menu.html",
       width: 200,

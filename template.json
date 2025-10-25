@@ -81,6 +81,11 @@
     }
   },
   "Item": {
-    "types": []
+    "types": ["equipment","weapon","ability","skill"],
+    "templates": {
+      "base": {
+        "description": "",
+      }
+    }
   }
 }

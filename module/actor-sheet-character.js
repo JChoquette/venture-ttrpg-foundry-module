@@ -5,7 +5,7 @@ import {VentureBaseSheet} from "./actor-sheet-base.js"
 
 export class MyCharacterSheet extends VentureBaseSheet {
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["venture-rpg", "sheet", "actor", "character"],
       template: "systems/venture-rpg/templates/actor-sheet-character.html",
       width: 800,
@@ -16,7 +16,7 @@ export class MyCharacterSheet extends VentureBaseSheet {
 }
 
 Hooks.once("init", () => {
-  Actors.registerSheet("venture-rpg", MyCharacterSheet, {
+  foundry.documents.collections.Actors.registerSheet("venture-rpg", MyCharacterSheet, {
     types: ["character"],
     makeDefault: true
   });

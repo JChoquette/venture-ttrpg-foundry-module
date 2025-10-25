@@ -5,7 +5,7 @@ import {VentureBaseSheet} from "./actor-sheet-base.js"
 
 export class MyNpcSheet extends VentureBaseSheet {
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["venture-rpg", "sheet", "actor", "npc"],
       template: "systems/venture-rpg/templates/actor-sheet-npc.html",
       width: 800,
@@ -47,10 +47,15 @@ export class MyNpcSheet extends VentureBaseSheet {
     }
 
   }
+
+  get_default_skill_rank(){
+    return this.actor.system.level || 1;
+  }
+
 }
 
 Hooks.once("init", () => {
-  Actors.registerSheet("venture-rpg", MyNpcSheet, {
+  foundry.documents.collections.Actors.registerSheet("venture-rpg", MyNpcSheet, {
     types: ["npc"],
     makeDefault: true
   });
