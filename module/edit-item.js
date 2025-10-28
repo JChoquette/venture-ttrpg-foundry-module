@@ -1,26 +1,83 @@
+const stat_choices = {
+  "strength": {name:"Strength"},
+  "agility": {name:"Agility"},
+  "intelligence": {name:"Intelligence"},
+  "intuition": {name:"Intuition"},
+}
+
+const defense_choices = {
+  "none": {name:"None"},
+  "strength": {name:"Strength"},
+  "agility": {name:"Agility"},
+  "intelligence": {name:"Intelligence"},
+  "intuition": {name:"Intuition"},
+}
+
+const action_choices = {
+  "none": {name:"None"},
+  "fast": {name:"Fast"},
+  "medium": {name:"Medium"},
+  "slow": {name:"Slow"},
+}
+
+const range_choices = {
+  "none": {name:"None/Other"},
+  "adjacent": {name:"Adjacent"},
+  "close": {name:"Close"},
+  "short": {name:"Short"},
+  "long": {name:"Long"},
+  "very_long": {name:"Very Long"},
+}
+
+const hands_choices = {
+  "1h": {name:"One-handed"},
+  "2h": {name:"Two-handed"},
+}
+
+const costtype_choices = {
+  "none": {name:"None"},
+  "vigour": {name:"Vigour"},
+  "vim": {name:"Vim"},
+  "steam": {name:"Steam"},
+}
+
+const skill_stat_choices = {
+  "strength": {name:"Strength"},
+  "agility": {name:"Agility"},
+  "intelligence": {name:"Intelligence"},
+  "intuition": {name:"Intuition"},
+  "weapon": {name:"Weapon"},
+  "none": {name:"None"},
+}
+
+const ability_type_choices = {
+  "ability": {name:"Ability"},
+  "weapon": {name:"Weapon Technique (weapon properties override empty fields)"}
+}
+
 export class VentureItemSheet extends ItemSheet {
-
-  // constructor(actor, item, item_type, options={}) {
-  //   super(options);
-  //   this.actor = actor;
-  //   this.item = item;
-  //   this.item_type = item_type;
-  //   this.options.title = "Edit "+item.name;
-  // }
-
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["venture-rpg", "sheet", "item"],
       template: "systems/venture-rpg/templates/edit-item.html",
       width: 600,
-      height: "auto",
+      height: 600,
       title: "Edit"
     });
   }
 
-  getData(){
+  getData(options){
     const context = super.getData(options);
-    const itemData = this.item.system;
+    context.system = this.item.system;
+    context.stat_choices = stat_choices;
+    context.action_choices = action_choices;
+    context.range_choices = range_choices;
+    context.defense_choices = defense_choices;
+    context.hands_choices = hands_choices;
+    context.costtype_choices = costtype_choices;
+    context.skill_stat_choices = skill_stat_choices;
+    context.ability_type_choices = ability_type_choices;
+    return context;
   }
 
   activateListeners(html) {
@@ -31,4 +88,13 @@ export class VentureItemSheet extends ItemSheet {
     });
   }
 }
+
+Hooks.once("init", () => {
+  console.log("registering our item sheet")
+  // Unregister core item sheet
+  foundry.documents.collections.Items.unregisterSheet("core", ItemSheet);
+  // Register our custom sheet as default
+  foundry.documents.collections.Items.registerSheet("venture-rpg", VentureItemSheet, { makeDefault: true });
+});
+
 

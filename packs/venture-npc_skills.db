@@ -1,0 +1,2 @@
+{"_id":"0da563c2-0cfd-4701-aa14-8d462a5fc97f","type":"skill","name":"Attack","system":{"skill_id":"attack","domain":"combat","rank":1,"stat":"weapon"}}
+{"_id":"45baac43-db75-40bc-9173-e7348044d10f","type":"skill","name":"Perception","system":{"skill_id":"attack","domain":"combat","rank":1,"stat":"intuition"}}

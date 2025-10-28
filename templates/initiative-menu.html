@@ -2,8 +2,7 @@
   <p>Roll Initiative:</p>
   <div>
     <select class="select-skill-for-initiative">
-      <option>Select a Skill</option>
-      {{selectOptions skills selected=selected_skill labelAttr="name"}}
+      {{selectOptions skills selected=selected_skill labelAttr="name" valueAttr="key"}}
     </select>
   </div>
   <div class="flexrow">

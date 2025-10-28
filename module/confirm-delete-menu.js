@@ -1,10 +1,8 @@
 export class ConfirmDeleteMenu extends Application {
-  constructor(actor, name, type, key, options={}) {
+  constructor(actor, item, options={}) {
     super(options);
-    this.name = name;
-    this.type = type;
-    this.key = key;
     this.actor = actor;
+    this.item = item;
   }
 
   static get defaultOptions() {
@@ -19,9 +17,7 @@ export class ConfirmDeleteMenu extends Application {
 
   getData() {
     return {
-      name: this.name,
-      key: this.key,
-      type: this.type
+      item: this.item,
     }
   }
 
@@ -30,9 +26,7 @@ export class ConfirmDeleteMenu extends Application {
     html.find(".confirm").click(ev => {
       ev.preventDefault();
       // Delete the item
-      let new_value = {};
-      new_value["system."+this.type+".-="+this.key] = null;
-      this.actor.update(new_value);
+      this.item.delete();
       this.close();
     });
   }

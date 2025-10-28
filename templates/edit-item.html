@@ -1,6 +1,164 @@
-<form autocomplete="off">
+<form class="item-sheet" autocomplete="off">
 	<div>
+		{{#if editable}}
 		<label>Name</label>
-		<input type="text" value="{{system.name}}"/>
+			<input type="text" name="name" value="{{item.name}}"/>
+		{{/if}}
+	</div>
+	{{#if (eq item.type "ability")}}
+    <div>
+      <label>Skill:</label>
+      	{{#if (and editable item.actor)}}
+      		{{#with (getActorSkills item.actor) as |skill_choices|}}
+			      <select name="system.skill">
+			      	{{selectOptions skill_choices selected=../system.skill labelAttr="name"}}
+			      </select>
+      		{{/with}}
+		    {{else}}
+					<p>{{system.skill}}</p>
+		    {{/if}}
+    </div>
+	{{/if}}
+	{{#if (eq item.type "ability")}}
+    <div>
+      <label>Ability Type:</label>
+      	{{#if editable}}
+			      <select name="system.type">
+			      	{{selectOptions ability_type_choices selected=system.type labelAttr="name"}}
+			      </select>
+		    {{else}}
+					<p>{{getkeysafe (getkeysafe ability_type_choices system.type) "name"}}</p>
+		    {{/if}}
+    </div>
+	{{/if}}
+	{{#if (or (eq item.type "weapon") (eq item.type "equipment"))}}
+	  <div>
+	    <label>Price:</label>
+	    	{{#if editable}}
+	    		<input type="number" name="system.price" value="{{system.price}}"/>
+		    {{else}}
+					<p>{{system.price}}</p>
+		    {{/if}}
+	  </div>
+	 {{/if}}
+  <div>
+    <label>Rank:</label>
+    	{{#if editable}}
+    		<input type="number" name="system.rank" value="{{system.rank}}"/>
+	    {{else}}
+				<p>{{system.rank}}</p>
+	    {{/if}}
+  </div>
+	{{#if (eq item.type "skill")}}
+	    <div>
+	      <label>Stat:</label>
+      	{{#if editable}}
+		      <select name="system.stat">
+		      	{{selectOptions skill_stat_choices selected=system.stat labelAttr="name"}}
+		      </select>
+		    {{else}}
+					<p>{{getkeysafe (getkeysafe skill_stat_choices system.stat) "name"}}</p>
+		    {{/if}}
+	    </div>
+	{{/if}}
+	{{#if (or (eq item.type "weapon") (eq item.type "ability"))}}
+    <div>
+      <label>Action:</label>
+      	{{#if editable}}
+		      <select name="system.action">
+		      	{{selectOptions action_choices selected=system.action labelAttr="name"}}
+		      </select>
+		    {{else}}
+					<p>{{getkeysafe (getkeysafe action_choices system.action) "name"}}</p>
+		    {{/if}}
+    </div>
+	{{/if}}
+	{{#if (eq item.type "ability")}}
+    <div>
+      <label>Cost:</label>
+      	{{#if editable}}
+      		<input type="number" name="system.cost" value="{{system.cost}}"/>
+		      <select name="system.costtype">
+		      	{{selectOptions costtype_choices selected=system.costtype labelAttr="name"}}
+		      </select>
+		    {{else}}
+					<p>{{system.cost}} {{getkeysafe (getkeysafe costtype_choices system.costtype) "name"}}</p>
+		    {{/if}}
+    </div>
+	{{/if}}
+	{{#if (eq item.type "weapon")}}
+	    <div>
+	      <label>Stat:</label>
+      	{{#if editable}}
+		      <select name="system.stat">
+		      	{{selectOptions stat_choices selected=system.stat labelAttr="name"}}
+		      </select>
+		    {{else}}
+					<p>{{getkeysafe (getkeysafe stat_choices system.stat) "name"}}</p>
+		    {{/if}}
+	    </div>
+	{{/if}}
+	{{#if (eq item.type "weapon")}}
+	    <div>
+	      <label>Hands:</label>
+      	{{#if editable}}
+		      <select name="system.hands">
+		      	{{selectOptions hands_choices selected=system.hands labelAttr="name"}}
+		      </select>
+		    {{else}}
+					<p>{{getkeysafe (getkeysafe hands_choices system.hands) "name"}}</p>
+		    {{/if}}
+	    </div>
+	{{/if}}
+	{{#if (or (eq item.type "weapon") (eq item.type "ability"))}}
+    <div>
+      <label>Range:</label>
+      	{{#if editable}}
+		      <select name="system.range">
+		      	{{selectOptions range_choices selected=system.range labelAttr="name"}}
+		      </select>
+		    {{else}}
+					<p>{{getkeysafe (getkeysafe range_choices system.range) "name"}}</p>
+		    {{/if}}
+    </div>
+	{{/if}}
+	{{#if (or (eq item.type "weapon") (eq item.type "ability"))}}
+    <div>
+      <label>Defense:</label>
+      	{{#if editable}}
+		      <select name="system.defense">
+		      	{{selectOptions defense_choices selected=system.defense labelAttr="name"}}
+		      </select>
+		    {{else}}
+					<p>{{getkeysafe (getkeysafe defense_choices system.defense) "name"}}</p>
+		    {{/if}}
+    </div>
+	{{/if}}
+	{{#if (and editable (eq item.type "ability"))}}
+		<div>
+			<label>Roll Type:</label>
+      <select name="system.roll_type">
+        <option value="skill" {{#if (eq system.roll_type "skill")}} selected {{/if}}>
+          Skill
+        </option>
+        <option value="help" {{#if (eq system.roll_type "help")}} selected {{/if}}>
+          Help
+        </option>
+      </select>
+		</div>
+	{{/if}}
+	{{#if (and editable (eq item.type "skill"))}}
+		<div>
+			<label>Is Combat Skill:</label>
+			<input type="checkbox" name="system.is_combat" {{#if system.is_combat}}checked{{/if}}/>
+		</div>
+	{{/if}}
+	<div>
+		<label>Description:</label>
+    {{#if editable}}
+    	{{editor system.description class="editor-box" target="system.description" button=true engine="prosemirror"}}
+    {{else}}
+			<p>{{{system.description}}}</p>
+    {{/if}}
 	</div>
 </div>

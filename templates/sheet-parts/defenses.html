@@ -1,7 +1,7 @@
 <div>
   <h3>Defenses</h3>
   <table class="first-column-grow">
-    {{#each system.current_stats as |stat key|}}
+    {{#each current_stats as |stat key|}}
       <tr>
         <td><label> {{key}}: {{rankToDie stat}} + {{rankToDie stat}}
         </label>

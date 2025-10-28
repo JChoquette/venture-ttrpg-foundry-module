@@ -15,8 +15,6 @@ export class DiceAdjustMenu extends Application {
   }
 
   static get defaultOptions() {
-    console.log(this.name);
-    console.log(this.d1);
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["venture-rpg", "dice-adjust-menu"],
       template: "systems/venture-rpg/templates/dice-adjust-menu.html",

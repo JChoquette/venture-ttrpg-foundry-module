@@ -13,6 +13,50 @@ export const actionValues = {
   "reaction":1,
 }
 
+export const getDiceForSkill = function(skill){
+  if(!skill.actor)return {d1:0,d2:0,d3:0};
+  const actor_system = skill.actor.system;
+  const skill_system = skill.system;
+  let stat = skill_system.stat;
+  if(stat == "weapon"){
+    const equipped_weapon = skill.actor.items.get(skill.actor.system.equipped_weapon);
+    stat = equipped_weapon?.system?.stat || "none";
+  }
+  if(stat!="none"){
+    return {
+      d1:skill_system.rank,
+      d2:actor_system[stat] - actor_system[stat+"_burn"],
+      d3:skill_system.rank,
+    }
+  }else{
+    return {
+      d1:skill_system.rank,
+      d2:0,
+      d3:skill_system.rank,
+    }
+  }
+}
+
+const getDiceForWeapon = function(weapon){
+  if(!weapon.actor)return {d1:0,d2:0,d3:0};
+  const actor_system = weapon.actor.system;
+  const stat = weapon.system.stat;
+  const stat_value = (actor_system[stat] - actor_system[stat+"_burn"]) || 0;
+  let skill_value = 0;
+  for(let skill of weapon.actor.items){
+    if(skill.type=="skill"){
+      if(skill.system.domain?.toLowerCase()=="combat" || skill.system.is_combat){
+        if(skill.system.rank > skill_value)skill_value = skill.system.rank;
+      }
+    }
+  }
+  return {
+    d1:skill_value,
+    d2:stat_value,
+    d3:skill_value
+  }
+}
+
 /**
  * System initialization
  */
@@ -21,11 +65,6 @@ Hooks.once("init", () => {
 
   //preload templates
   preloadHandlebarsTemplates();
-
-  // Unregister core item sheet
-  Items.unregisterSheet("core", ItemSheet);
-  // Register our custom sheet as default
-  Items.registerSheet("venture-rpg", VentureItemSheet, { makeDefault: true });
 
   // Example Handlebars helper: convert rank 1–5 into dice
   Handlebars.registerHelper("rankToDie", function(rank) {
@@ -54,6 +93,10 @@ Hooks.once("init", () => {
   Handlebars.registerHelper("getkey", function(obj,key){
     return obj[key];
   })
+  Handlebars.registerHelper("getkeysafe", function(obj,key){
+    if(!obj) return "";
+    return obj[key];
+  })
 
   Handlebars.registerHelper("subtract", function(a,b){
     return a - b;
@@ -61,6 +104,14 @@ Hooks.once("init", () => {
 
   Handlebars.registerHelper("gte", function(a,b){
     return a >= b;
+  })
+
+  Handlebars.registerHelper("eq", function(a,b){
+    return a == b;
+  })
+
+  Handlebars.registerHelper("neq", function(a,b){
+    return a != b;
   })
 
   Handlebars.registerHelper("or", function(a,b){
@@ -107,12 +158,81 @@ Hooks.once("init", () => {
   Handlebars.registerHelper("actionToPercent", function(action, max_values) {
     return action/max_values*100;
   });
+
+
+  Handlebars.registerHelper("getDiceForSkill", getDiceForSkill);
+
+  Handlebars.registerHelper("getOverridesForAbility", function(ability){
+    if(!ability.actor)return {};
+    let weapon;
+    let overrides = {action:ability.system.action,defense:ability.system.defense};
+    if(ability.system.type == "weapon"){
+      const equipped_weapon = ability.actor.items.get(ability.actor.system.equipped_weapon);
+      if(equipped_weapon){
+        if(!ability.system.action || ability.system.action == "none")overrides.action = equipped_weapon.system.action;
+        if(!ability.system.defense || ability.system.defense == "none")overrides.defense = equipped_weapon.system.defense;
+      }
+    }
+    let skill;
+    for(let item of ability.actor.items){
+      if(item.id==ability.system.skill){
+        return {
+          skill:item.name,
+          dice:getDiceForSkill(item),
+          ...overrides
+        }
+      }
+    }
+    return {
+      skill:"None",
+      ...overrides
+    }
+  });
+
+  Handlebars.registerHelper("getDiceForWeapon", getDiceForWeapon);
+
+  Handlebars.registerHelper("getActorSkills", function(actor){
+    let skills={"none":{"name":"None"}};
+    for(let item of actor.items){
+      if(item.type=="skill"){
+        skills[item.id] = {
+          "name":item.name,
+        }
+      }
+    }
+    return skills
+  });
+
+  Handlebars.registerHelper("getAbilityCostClass", function(ability){
+    if(!ability.actor)return "disabled";
+    const costtype = ability.system.costtype;
+    const cost = ability.system.cost;
+    if(!cost || !costtype)return "disabled";
+    const max_res = ability.actor.system["max_"+costtype];
+    const res_remaining = max_res - ability.actor.system[costtype];
+    if(!max_res)return "too-expensive disabled";
+    if(res_remaining < cost)return "too-expensive disabled";
+    return "pay-cost";
+  });
+  Handlebars.registerHelper("getAbilityActionClass", function(ability, action_info, overrides={}){
+    if(!action_info.in_combat)return "use-action";
+    if(!ability.actor)return "disabled";
+    const action = overrides.action || ability.system.action;
+    if(!action || action == "none")return "disabled";
+    if(action == "reaction"){
+      if(action_info.reactions_used >= (action_info.max_reactions || 1))return "too-expensive disabled";
+    }else if(actionValues[action] + action_info.actions_used > 6.01)return "too-expensive disabled";
+    return "use-action";
+  });
 });
+
+
 
 export const preloadHandlebarsTemplates = async function() {
   const sheetParts = [
     "notes.html",
     "skills.html",
+    "untrained-skills.html",
     "defenses.html",
     "resources.html",
     "wounds.html",
@@ -123,9 +243,6 @@ export const preloadHandlebarsTemplates = async function() {
     "setup-stats-npc.html",
     "setup-wounds.html",
     "setup-resources.html",
-    "setup-skills.html",
-    "setup-abilities.html",
-    "setup-equipment.html",
   ]
   const sheetComponents = [
     "icon-with-wrap.html"
@@ -344,4 +461,69 @@ Hooks.on("combatTurnChange", (combat, updateData, updateOptions) =>{
   const combatant = combat.combatants.get(updateOptions.combatantId);
   combatant.setFlag("venture-rpg","actionsUsed",0);
   combatant.setFlag("venture-rpg","reactionsUsed",0);
+})
+
+Hooks.on("renderCompendium", async (app, html, data)=>{
+  console.log("Rendering the compendium");
+  console.log(app.collection.metadata.label);
+
+  // Load the full index (we’ll need system data)
+  const documents = await app.collection.getIndex({fields:["system"]});
+  console.log(documents);
+  console.log(app.collection.getIndex);
+
+  // For each entry row
+  $(html).find(".directory-item").each((i, li) => {
+    const id = $(li).data("entry-id");
+    if (!id)$(li).remove();
+    const entry = documents.get(id);
+    if (!entry) return;
+
+    const price = entry.system?.price ?? "—";
+    const category = entry.system?.category ?? "—";
+    const skill = entry.system?.skill ?? "—";
+    const rank = entry.system?.rank ?? "—";
+
+    // Append your custom info
+    let info;
+    if(entry.type=="ability")info = $(`<div class="compendium-item-meta"><span>${skill}</span> <span>${rank}:</span></div>`);
+    if(entry.type=="equipment")info = $(`<div class="compendium-item-meta"><span>${category}</span> <span>${rank}:</span></div>`);
+    if(entry.type=="weapon")info = $(`<div class="compendium-item-meta"><span>${category}</span> <span>${rank}:</span></div>`);
+    if(entry.type=="skill")info=$(`<div class="compendium-item-meta"><span>Skill:</span></div>`);
+    $(li).find(".entry-name").before(info);
+  });
+
+  const sortedEntries = Array.from(documents.values()).sort((a, b) => {
+    const skillA = (a.system?.skill ?? "").toLowerCase();
+    const skillB = (b.system?.skill ?? "").toLowerCase();
+    if (skillA !== skillB) return skillA.localeCompare(skillB);
+
+    const categoryA = (a.system?.category ?? "").toLowerCase();
+    const categoryB = (b.system?.category ?? "").toLowerCase();
+    if (categoryA !== categoryB) return categoryA.localeCompare(categoryB);
+
+    const rankA = a.system?.rank ?? 0;
+    const rankB = b.system?.rank ?? 0;
+    if (rankA !== rankB)return rankA - rankB;
+
+    const nameA = (a.name ?? "").toLowerCase();
+    const nameB = (b.name ?? "").toLowerCase();
+    return nameA.localeCompare(nameB);
+  });
+
+  // Build a map of id → sorted position
+  const orderMap = new Map(sortedEntries.map((e, i) => [e._id, i]));
+
+  // Sort the DOM elements based on that
+  const list = $(html).find(".directory-list");
+  const items = list.children(".directory-item").get();
+
+  items.sort((a, b) => {
+    const posA = orderMap.get($(a).data("entry-id")) ?? 0;
+    const posB = orderMap.get($(b).data("entry-id")) ?? 0;
+    return posA - posB;
+  });
+
+  // Re-append in sorted order
+  list.append(items);
 })

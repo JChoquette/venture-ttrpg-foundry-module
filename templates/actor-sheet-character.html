@@ -52,6 +52,7 @@
           {{> (sheet_part "skills")}}
         </div>
         <div>
+          {{> (sheet_part "untrained-skills")}}
           {{> (sheet_part "defenses")}}
         </div>
       </div>
@@ -72,11 +73,7 @@
     </div>
 
     <div class="tab" data-group="primary" data-tab="equipment">
-      {{# if system.edit_field.equipment}}
-        {{> (sheet_part "setup-equipment")}}
-      {{else}}
-        {{> (sheet_part "equipment")}}
-      {{/if}}
+      {{> (sheet_part "equipment")}}
     </div>
 
     <div class="tab" data-group="primary" data-tab="notes">
@@ -90,8 +87,6 @@
       {{> (sheet_part "setup-stats-character")}}
       {{> (sheet_part "setup-wounds")}}
       {{> (sheet_part "setup-resources")}}
-      {{> (sheet_part "setup-skills")}}
-      {{> (sheet_part "setup-abilities")}}
     </div>
   </div>
 </form>

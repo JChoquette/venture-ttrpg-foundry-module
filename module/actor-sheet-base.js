@@ -14,76 +14,58 @@ export class VentureBaseSheet extends ActorSheet {
     this.calculate_defaults(system);
 
     //Are we editing anything?
-    system.edit_field = this.edit_field;
+    context.edit_field = this.edit_field;
     
     // Create stats list
-    system.current_stats = {
+    context.current_stats = {
       "strength": system.strength - system.strength_burn || 1,
       "agility": system.agility - system.agility_burn || 1,
       "intelligence": system.intelligence - system.intelligence_burn || 1,
       "intuition": system.intuition - system.intuition_burn || 1,
     }
 
+    //Split up and filter the items
+    let weapons = [];
+    let equipment = [];
+    let abilities = [];
+    let skills = [];
+    for(let item of this.actor.items){
+      console.log(item);
+      switch(item.type){
+        case "weapon": weapons.push(item);break;
+        case "equipment": equipment.push(item);break;
+        case "ability": abilities.push(item);break;
+        case "skill": skills.push(item);break;
+      }
+    }
+    //TODO: do all the editing here
+
+    context.all_items = {
+      "weapon": weapons,
+      "equipment": equipment,
+      "ability": abilities,
+      "skill": skills
+    }
+
+    //TODO: Redo this for Item-based skills
     // Precompute stat values for untrained skills
     if (system["untrained_skills"]) {
       for (let [key, skill] of Object.entries(system["untrained_skills"])) {
-        skill.statValue = system.current_stats[skill.stat];
+        skill.statValue = context.current_stats[skill.stat];
       }
     }
     // Precompute stat values for skills
     if (system["trained_skills"]) {
       for (let [key, skill] of Object.entries(system["trained_skills"])) {
-        skill.statValue = system.current_stats[skill.stat];
+        skill.statValue = context.current_stats[skill.stat];
       }
     }
 
 
     //Calculate largest damage track and burn track
-    system.largest_wounds = Math.max(system.max_guard,system.max_minor_wounds,system.max_major_wounds,system.max_critical_wounds);
-    system.largest_stat = Math.max(system.strength, system.agility, system.intelligence, system.intuition, system.endurance, system.fuel);
-    system.largest_resource = Math.max(system.max_steam, system.max_vigour, system.max_vim);
-
-    //Equip a weapon if none
-    if (system.weapons ){
-      if (! system.equipped_weapon || !system.weapons[system.equipped_weapon])system.equipped_weapon = Object.keys(system.weapons)[0];
-    } else {
-      system.equipped_weapon = null;
-    }
-
-    //Alter weapon abilities to apply rolls and correct weapon:
-    system.abilities_prepared = {};
-    if(!system.abilities)system.abilities={};
-    for (let [key, ability] of Object.entries(system["abilities"])) {
-      let ability_copy = {...ability};
-      if (ability_copy.skill != "None"){
-        try {
-          let skill = system.trained_skills[ability_copy.skill];
-          ability_copy.statValue = skill.statValue;
-          ability_copy.rank = skill.rank;
-          ability_copy.skill_name = skill.name
-        } catch (err) {}
-      } else {
-        ability_copy.skill_name = "None";
-      }
-      if (ability_copy.type == "weapon" && system.equipped_weapon){
-        let equipped_weapon = system.weapons[system.equipped_weapon];
-        if (equipped_weapon.stat){
-          ability_copy.statValue = system[equipped_weapon.stat];
-        }
-        if (ability_copy.action == "weapon") ability_copy.action = equipped_weapon.action;
-        ability_copy.description += "\n Weapon info: "+equipped_weapon.description;
-      }
-      if (ability_copy.action == "none")ability_copy.action=null; 
-      if (ability_copy.cost && ability_copy.costtype){
-        try{
-          let resource_amount = system["max_"+ability_copy.costtype] - system[ability_copy.costtype];
-          if (resource_amount < ability_copy.cost) ability_copy.too_expensive = true;
-          else ability_copy.too_expensive = false;
-        } catch (err) {}
-      }
-
-      system.abilities_prepared[key] = ability_copy;
-    }
+    context.largest_wounds = Math.max(system.max_guard,system.max_minor_wounds,system.max_major_wounds,system.max_critical_wounds);
+    context.largest_stat = Math.max(system.strength, system.agility, system.intelligence, system.intuition, system.endurance, system.fuel);
+    context.largest_resource = Math.max(system.max_steam, system.max_vigour, system.max_vim);
 
     //Check if the actor is a combatant, and add appropriate flags if so
     const currentCombat = game.combats.active;
@@ -93,23 +75,16 @@ export class VentureBaseSheet extends ActorSheet {
         console.log("this is a combatant");
         const actionsUsed = combatant.getFlag("venture-rpg","actionsUsed") || 0;
         const reactionsUsed = combatant.getFlag("venture-rpg","reactionsUsed") || 0;
-        system.in_combat = true;
-        system.actions_unavailable = {
-          fast: !(actionsUsed <= 4),
-          medium: !(actionsUsed <= 3),
-          slow: !(actionsUsed <= 0),
-          reaction: !(reactionsUsed <= (system.max_reactions || 1))
+        context.action_info = {
+          in_combat : true,
+          actions_used : actionsUsed,
+          reactions_used : reactionsUsed,
+          max_reactions : system.max_reactions,
         }
       }else{
-        system.in_combat=false;
-        system.actions_unavailable = {
-          fast: false,
-          medium: false,
-          slow: false,
-          reaction: false
-        }
+        context.action_info = {in_combat:false}
       }
-    }
+    }else context.action_info = {in_combat:false}
 
     return context;
   }
@@ -145,6 +120,12 @@ export class VentureBaseSheet extends ActorSheet {
     html.find(".display-actor-info").click(ev => {
       console.log(this.actor.system);
     })
+
+    //Create an item
+    html.find(".item-create").click(this._onItemCreate.bind(this));
+    html.find(".edit-item").click(this._onItemEdit.bind(this));
+    html.find(".delete-item").click(this._onItemDelete.bind(this));
+
 
     // Add new custom skill
     html.find(".add-skill").click(ev => {
@@ -196,6 +177,7 @@ export class VentureBaseSheet extends ActorSheet {
       let new_value = {};
       new_value["system."+costtype] = this.actor.system[costtype]+cost;
       this.actor.update(new_value);
+      ui.notifications.info(`Spent ${cost} ${costtype}`);
       this.render();
     });
     //activate action usage buttons
@@ -211,6 +193,7 @@ export class VentureBaseSheet extends ActorSheet {
           if(action == "reaction") combatant.setFlag("venture-rpg","reactionsUsed",combatant.getFlag("venture-rpg","reactionsUsed") + 1);
           else combatant.setFlag("venture-rpg","actionsUsed",combatant.getFlag("venture-rpg","actionsUsed") + actionValues[action]);
           console.log("combatant updated");
+          ui.notifications.info(`Used action: ${action}`);
         }
       }
     });
@@ -237,13 +220,6 @@ export class VentureBaseSheet extends ActorSheet {
       new ConfirmDeleteMenu(this.actor, name, type, key).render(true);
     });
 
-    //Editing of items
-    html.find(".edit-item").click(ev => {
-      ev.preventDefault();
-      //TBD: Fix this
-      return null;
-    });
-
     //Activate listeners for toggling editing of blocks
     html.find(".toggle-edit").click(ev => {
       ev.preventDefault();
@@ -265,50 +241,124 @@ export class VentureBaseSheet extends ActorSheet {
     return 1;
   }
 
-  //Add a skill
-  add_skill(new_skill){
-    let trained = this.actor.system["trained_skills"] || {};
-    let new_id = randomID();
-    trained[new_id] = new_skill;
-    this.actor.update({ "system.trained_skills": trained});
-    this.render();
+  async _onItemCreate(event) {
+    const type = event.currentTarget.dataset.type;
+    await this.actor.createEmbeddedDocuments("Item", [{
+      name: `New ${type}`,
+      type,
+      system: {}
+    }]);
   }
 
-  //Add an ability
-  add_ability(new_ability){
-    let abilities = {};
-    let new_id = randomID();
-    abilities[new_id] = new_ability;
-    this.actor.update({ "system.abilities": abilities});
-    this.render();
+  async _onItemDelete(event) {
+    const elem = $(event.currentTarget).closest(".item");
+    const item = this.actor.items.get(elem.data("itemId"));
+    new ConfirmDeleteMenu(this.actor, item).render(true);
   }
 
-  //Add equipment
-  add_equipment(new_equipment){
-    // Add new item
-    let equipment = {};
-    let new_id = randomID();
-    equipment[new_id] = new_equipment;
-    if (new_equipment.item_type == "weapon")this.actor.update({ "system.weapons": equipment});
-    else this.actor.update({ "system.equipment": equipment});
-    this.render();
+  _onItemEdit(event) {
+    const elem = $(event.currentTarget).closest(".item");
+    const item = this.actor.items.get(elem.data("itemId"));
+    item.sheet.render(true);
   }
+
+  // //Add a skill
+  // add_skill(new_skill){
+  //   let trained = this.actor.system["trained_skills"] || {};
+  //   let new_id = randomID();
+  //   trained[new_id] = new_skill;
+  //   this.actor.update({ "system.trained_skills": trained});
+  //   this.render();
+  // }
+
+  // //Add an ability
+  // add_ability(new_ability){
+  //   let abilities = {};
+  //   let new_id = randomID();
+  //   abilities[new_id] = new_ability;
+  //   this.actor.update({ "system.abilities": abilities});
+  //   this.render();
+  // }
+
+  // //Add equipment
+  // add_equipment(new_equipment){
+  //   // Add new item
+  //   let equipment = {};
+  //   let new_id = randomID();
+  //   equipment[new_id] = new_equipment;
+  //   if (new_equipment.item_type == "weapon")this.actor.update({ "system.weapons": equipment});
+  //   else this.actor.update({ "system.equipment": equipment});
+  //   this.render();
+  // }
 
   async _onDrop(ev){
-    console.log("A drop event has occured");
 
     const data = JSON.parse(event.dataTransfer.getData("text/plain"));
-    console.log("Dropped data:", data);
 
     // Retrieve the dropped Item document
     const item = await Item.fromDropData(data);
     if (!item) return;
 
-    console.log(item);
+    const itemData = item.toObject();
 
-    if(item.type=="ability")this.add_ability(item.system);
-    else if(item.type=="equipment")this.add_equipment(item.system);
-    else if(item.type=="skill")this.add_skill(item.system);
+    if(itemData.type=="ability"){
+      const skill_id = itemData.system.skill_id;
+      const skill_name = itemData.system.skill;
+      //Try to find the corresponding skill, so long as it isn't other, none, or empty
+      if(skill_id && skill_id != "none" && skill_id !="Other"){
+        let skill_found = false;
+        //Try to find a skill created from the compendium
+        for(let skill of this.actor.items){
+          if(skill.type == "skill" && skill_id == skill.system.skill_id){
+            skill_found = true;
+            itemData.system.skill = skill.id;
+            break;
+          }
+        }
+        //Try to find a skill with a matching name
+        if(!skill_found){
+          for(let skill of this.actor.items){
+            if(skill.type == "skill" && skill_name == skill.name){
+              skill_found = true;
+              itemData.system.skill = skill.id;
+              break;
+            }
+          }
+        }
+        //Try to find it in the compendium
+        if(!skill_found){
+          const pack = await game.packs.get("venture-rpg.skills");
+          const skills = await pack.getDocuments();
+          for(let skill of skills){
+            if(skill_id == skill.system.skill_id){
+              skill_found = true;
+              const skillData = skill.toObject()
+              if(skillData.type=="skill"){
+                if(this.actor.type=="npc" && this.actor.system.level)skillData.system.rank=this.actor.system.level;
+                else skillData.system.rank=1;
+              }
+              const created_skills = await this.actor.createEmbeddedDocuments("Item", [skillData]);
+              ui.notifications.info(`Added skill ${skillData.name} to ${this.actor.name}.`);
+              itemData.system.skill = created_skills[0].id;
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    if(itemData.type=="skill"){
+      if(this.actor.type=="npc" && this.actor.system.level)itemData.system.rank=this.actor.system.level;
+      else itemData.system.rank=1;
+    }
+
+    await this.actor.createEmbeddedDocuments("Item", [itemData]);
+
+    ui.notifications.info(`Added ${itemData.name} to ${this.actor.name}.`);
+
+    // if(item.type=="ability")this.add_ability(item.system);
+    // else if(item.type=="equipment")this.add_equipment(item.system);
+    // else if(item.type=="skill")this.add_skill(item.system);
   }
 
 

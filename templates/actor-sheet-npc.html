@@ -1,12 +1,15 @@
 <form class="actor-sheet">
-  <h2>{{actor.name}}</h2>
-  <div class="character-info">
-    <div class="flexrow">
-      <div class="field">
-        <label for="level">Level:</label>
-        <input type="number" name="system.level" value="{{system.level}}" min="0">
+  <div class="flexrow">
+    <h2>{{actor.name}}</h2>
+    <div class="character-info">
+      <div class="flexrow">
+        <div class="field">
+          <label for="level">Level:</label>
+          <input type="number" name="system.level" value="{{system.level}}" min="0">
+        </div>
       </div>
     </div>
+    <img class="character-sheet-token" src="{{actor.prototypeToken.texture.src}}"/>
   </div>
   
   <nav class="tabs" data-group="primary">
@@ -26,6 +29,7 @@
           {{> (sheet_part "skills")}}
         </div>
         <div>
+          {{> (sheet_part "untrained-skills")}}
           {{> (sheet_part "defenses")}}
         </div>
       </div>
@@ -47,8 +51,6 @@
       </div>
       {{> (sheet_part "setup-stats-npc")}}
       {{> (sheet_part "setup-wounds")}}
-      {{> (sheet_part "setup-skills")}}
-      {{> (sheet_part "setup-abilities")}}
     </div>
   </div>
 </form>

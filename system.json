@@ -17,10 +17,35 @@
     "module/dice-adjust-menu.js",
     "module/actor-sheet-character.js",
     "module/actor-sheet-npc.js",
-    "module/confirm-delete-menu.js"
+    "module/confirm-delete-menu.js",
+    "module/edit-item.js"
   ],
   "styles": ["styles/venture-rpg.css"],
   "packs": [
+    {
+      "name": "npc_skills",
+      "label": "NPC Skills",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-npc_skills",
+      "private": true
+    },
+    {
+      "name": "all_abilities",
+      "label": "All Abilities",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-all_abilities",
+      "private": false
+    },
+    {
+    "name": "skills",
+    "label": "Skills",
+    "system": "venture-rpg",
+    "type": "Item",
+    "path": "packs/venture-skills",
+    "private": false
+    },
     {
       "name": "venture-athletics",
       "label": "Athletics",
@@ -380,6 +405,190 @@
       "type": "Item",
       "path": "packs/venture-basic_actions",
       "private": false
+    },
+    {
+      "name": "venture-armourer-weapons",
+      "label": "Weapons",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-armourer-weapons",
+      "private": false
+    },
+    {
+      "name": "venture-armourer-weapon_properties",
+      "label": "Weapon Properties",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-armourer-weapon_properties",
+      "private": false
+    },
+    {
+      "name": "venture-armourer-armour",
+      "label": "Armour",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-armourer-armour",
+      "private": false
+    },
+    {
+      "name": "venture-armourer-ammunition",
+      "label": "Ammunition",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-armourer-ammunition",
+      "private": false
+    },
+    {
+      "name": "venture-engineering-mechanical_weapons",
+      "label": "Mechanical Weapons",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-engineering-mechanical_weapons",
+      "private": false
+    },
+    {
+      "name": "venture-engineering-weapon_upgrades",
+      "label": "Weapon Upgrades",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-engineering-weapon_upgrades",
+      "private": false
+    },
+    {
+      "name": "venture-engineering-steam_harnesses_and_armour",
+      "label": "Steam Harnesses and Armour",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-engineering-steam_harnesses_and_armour",
+      "private": false
+    },
+    {
+      "name": "venture-engineering-steam_armour_upgrades",
+      "label": "Steam Armour Upgrades",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-engineering-steam_armour_upgrades",
+      "private": false
+    },
+    {
+      "name": "venture-engineering-vehicles",
+      "label": "Vehicles",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-engineering-vehicles",
+      "private": false
+    },
+    {
+      "name": "venture-engineering-vehicle_upgrades",
+      "label": "Vehicle Upgrades",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-engineering-vehicle_upgrades",
+      "private": false
+    },
+    {
+      "name": "venture-tinker-automaton",
+      "label": "Automaton",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-tinker-automaton",
+      "private": false
+    },
+    {
+      "name": "venture-tinker-automaton_upgrade",
+      "label": "Automaton Upgrade",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-tinker-automaton_upgrade",
+      "private": false
+    },
+    {
+      "name": "venture-tinker-biomechanical_limbs",
+      "label": "Biomechanical Limbs",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-tinker-biomechanical_limbs",
+      "private": false
+    },
+    {
+      "name": "venture-tinker-biomechanical_attachments",
+      "label": "Biomechanical Attachments",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-tinker-biomechanical_attachments",
+      "private": false
+    },
+    {
+      "name": "venture-tinker-tinker_contraptions",
+      "label": "Tinker Contraptions",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-tinker-tinker_contraptions",
+      "private": false
+    },
+    {
+      "name": "venture-alchemy-drugs",
+      "label": "Drugs",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-alchemy-drugs",
+      "private": false
+    },
+    {
+      "name": "venture-alchemy-poisons",
+      "label": "Poisons",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-alchemy-poisons",
+      "private": false
+    },
+    {
+      "name": "venture-alchemy-explosives",
+      "label": "Explosives",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-alchemy-explosives",
+      "private": false
+    },
+    {
+      "name": "venture-magic_theory-weapon_enchantments",
+      "label": "Weapon Enchantments",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-magic_theory-weapon_enchantments",
+      "private": false
+    },
+    {
+      "name": "venture-magic_theory-armour_enchantments",
+      "label": "Armour Enchantments",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-magic_theory-armour_enchantments",
+      "private": false
+    },
+    {
+      "name": "venture-magic_theory-other_enchantments",
+      "label": "Other Enchantments",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-magic_theory-other_enchantments",
+      "private": false
+    },
+    {
+      "name": "venture-occult-occult_equipment",
+      "label": "Occult Equipment",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-occult-occult_equipment",
+      "private": false
+    },
+    {
+      "name": "all_items",
+      "label": "All Items",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-all_items",
+      "private": false
     }
   ],
   "packFolders": [
@@ -478,6 +687,70 @@
           "sorting": "a",
           "packs": [
             "venture-basic_actions"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Items",
+      "sorting": "a",
+      "folders": [
+        {
+          "name": "Armourer",
+          "sorting": "a",
+          "packs": [
+            "venture-armourer-weapons",
+            "venture-armourer-weapon_properties",
+            "venture-armourer-armour",
+            "venture-armourer-ammunition"
+          ]
+        },
+        {
+          "name": "Engineering",
+          "sorting": "a",
+          "packs": [
+            "venture-engineering-mechanical_weapons",
+            "venture-engineering-weapon_upgrades",
+            "venture-engineering-steam_harnesses_and_armour",
+            "venture-engineering-steam_armour_upgrades",
+            "venture-engineering-vehicles",
+            "venture-engineering-vehicle_upgrades"
+          ]
+        },
+        {
+          "name": "Tinker",
+          "sorting": "a",
+          "packs": [
+            "venture-tinker-automaton",
+            "venture-tinker-automaton_upgrade",
+            "venture-tinker-biomechanical_limbs",
+            "venture-tinker-biomechanical_attachments",
+            "venture-tinker-tinker_contraptions"
+          ]
+        },
+        {
+          "name": "Alchemy",
+          "sorting": "a",
+          "packs": [
+            "venture-alchemy-drugs",
+            "venture-alchemy-poisons",
+            "venture-alchemy-explosives"
+          ]
+        },
+        {
+          "name": "Magic Theory",
+          "sorting": "a",
+          "packs": [
+            "venture-magic_theory-weapon_enchantments",
+            "venture-magic_theory-armour_enchantments",
+            "venture-magic_theory-other_enchantments"
+          ]
+        },
+        {
+          "name": "Occult",
+          "sorting": "a",
+          "packs": [
+            "venture-occult-occult_equipment"
           ]
         }
       ]

@@ -84,8 +84,39 @@
     "types": ["equipment","weapon","ability","skill"],
     "templates": {
       "base": {
-        "description": "",
+        "description": ""
+      },
+      "ability":{
+        "type": "ability",
+        "skill": null,
+        "cost": 0,
+        "costtype": "vigour",
+        "action":"none",
+        "range":"none",
+        "target":"none",
+        "duration":"none",
+        "defense": "none"
+      },
+      "weapon":{
+        "stat":"strength",
+        "action":"medium",
+        "range":"melee",
+        "damage": "Light",
+        "defense": "agility",
+        "hands": "1h"
       }
+    },
+    "equipment":{
+      "templates":["base"]
+    },
+    "weapon":{
+      "templates":["base","weapon"]
+    },
+    "ability":{
+      "templates":["base","ability"]
+    },
+    "skill":{
+      "templates":["base"]
     }
   }
 }

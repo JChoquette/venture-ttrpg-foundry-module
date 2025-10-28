@@ -4,7 +4,7 @@
   /*--venture-rpg-secondary: #5E747F;*/
   --venture-rpg-secondary: #9EADC8;
   --venture-rpg-dark: #0D100B;
-  --venture-rpg-dark-transparent: #0D100BDD;
+  --venture-rpg-dark-transparent: #0D100BEE;
   --venture-rpg-light: #DAD2D8;
   --venture-rpg-light2: #F5F7FF;
   --venture-rpg-accent: #764134;
@@ -58,6 +58,10 @@
   border: 0;
 }
 
+.venture-rpg td:last-child{
+  width: fit-content;
+}
+
 .venture-rpg th{
   text-align: unset;
 }
@@ -86,6 +90,10 @@
 
 .venture-rpg tr{
   background: none;
+}
+
+.venture-rpg tr:hover{
+  background: var(--venture-rpg-primary-transparent);
 }
 
 .venture-rpg h2{
@@ -228,6 +236,8 @@
   border-radius: 5px;
   overflow: hidden;
   min-width: fit-content;
+  max-width: fit-content;
+  padding: 2px;
   flex-grow: 0;
 }
 
@@ -326,3 +336,36 @@
   color: var(--venture-rpg-secondary);
   background: none;
 }
+
+.venture-rpg .item-sheet label{
+  display: block;
+  width: 100%;
+  border-bottom: 1px solid var(--venture-rpg-accent);
+  margin-bottom: 3px;
+  margin-top: 5px;
+  padding: 5px;
+}
+.venture-rpg .item-sheet select{
+  display: block;
+  width: 100%;
+}
+
+.venture-rpg .item-controls {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+}
+
+.compendium-item-meta{
+  flex-grow: 0;
+  max-width: fit-content;
+  white-space: nowrap;
+}
+
+.compendium-directory .directory-item img.thumbnail{
+  filter: invert(100%);
+  max-width: 32px;
+  max-height: 32px;
+}
+
+

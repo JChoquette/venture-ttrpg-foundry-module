@@ -9,7 +9,7 @@
       {{#times (subtract system.max_vigour system.vigour)}}
         <td><input type="checkbox" class="disabled"/></td>
       {{/times}}
-      {{#if (gte (subtract system.largest_resource system.max_vigour) 1) }}<td colspan="{{subtract system.largest_resource system.max_vigour}}"/>{{/if}}
+      {{#if (gte (subtract largest_resource system.max_vigour) 1) }}<td colspan="{{subtract largest_resource system.max_vigour}}"/>{{/if}}
       <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="vigour" {{#if (gte system.vigour system.max_vigour)}} disabled {{/if}}>+</button></td>
       <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="vigour" {{#if (gte 0 system.vigour)}} disabled {{/if}}>-</button></td>
     </tr>
@@ -21,7 +21,7 @@
       {{#times (subtract system.max_vim system.vim)}}
         <td><input type="checkbox" class="disabled"/></td>
       {{/times}}
-      {{#if (gte (subtract system.largest_resource system.max_vim) 1) }}<td colspan="{{subtract system.largest_resource system.max_vim}}"/>{{/if}}
+      {{#if (gte (subtract largest_resource system.max_vim) 1) }}<td colspan="{{subtract largest_resource system.max_vim}}"/>{{/if}}
       <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="vim" {{#if (gte system.vim system.max_vim)}} disabled {{/if}}>+</button></td>
       <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="vim" {{#if (gte 0 system.vim)}} disabled {{/if}}>-</button></td>
     </tr>
@@ -34,7 +34,7 @@
       {{#times (subtract system.max_steam system.steam)}}
         <td><input type="checkbox" class="disabled"/></td>
       {{/times}}
-      {{#if (gte (subtract system.largest_resource system.max_steam) 1) }}<td colspan="{{subtract system.largest_resource system.max_steam}}"/>{{/if}}
+      {{#if (gte (subtract largest_resource system.max_steam) 1) }}<td colspan="{{subtract largest_resource system.max_steam}}"/>{{/if}}
       <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="steam" {{#if (gte system.steam system.max_steam)}} disabled {{/if}}>+</button></td>
       <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="steam" {{#if (gte 0 system.steam)}} disabled {{/if}}>-</button></td>
     </tr>

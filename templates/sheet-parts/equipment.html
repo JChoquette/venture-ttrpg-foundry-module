@@ -1,44 +1,24 @@
 <div class="equipment">
-  <h2 class="flexrow"><div>Equipment</div>
-    {{> (component "icon-with-wrap") 
-      title="Edit"
-      filename="edit"
-      click_class="toggle-edit"
-      data=(data_fields 
-        "field" "equipment"
-      )
-    }}
-  </h2>
-  <h3>Weapons</h3>
-  <table>
-    <tr>
-      <th>Item</th>
-      <th>Stat</th>
-      <th>Action</th>
-      <th>Range</th>
-      <th>Description</th>
-    </tr>
-    {{#each system.weapons as |item key|}}
-      <tr>
-        <td>{{item.name}}</td>
-        <td>{{item.stat}}</td>
-        <td>{{item.action}}</td>
-        <td>{{item.range}}</td>
-        <td>{{{item.description}}}</td>
-      </tr>
-    {{/each}}
-  </table>
+  <h2 class="flexrow"><div>Equipment</div></h2>
   <h3>Other Equipment</h3>
   <table>
     <tr>
       <th>Item</th>
       <th>Description</th>
+      <th></th>
     </tr>
-    {{#each system.equipment as |item key|}}
-      <tr>
+    {{#each all_items.equipment as |item|}}
+      <tr class="item" data-item-id="{{item.id}}">
         <td>{{item.name}}</td>
-        <td>{{{item.description}}}</td>
+        <td>{{{item.system.description}}}</td>
+        <td>
+          <div class="item-controls">
+            <a class="edit-item"><i class="fas fa-edit"></i></a>
+            <a class="delete-item"><i class="fas fa-trash"></i></a>
+          </div>
+        </td>
       </tr>
     {{/each}}
+    <a class="item-create" data-type="equipment"><i class="fas fa-plus"></i> Add Item</a>
   </table>
 </div>

@@ -2,99 +2,60 @@
 <div>
   <h3>Skills</h3>
   <table class="first-column-grow">
-    {{#each system.trained_skills as |skill key|}}
-    <tr>
-      <td><label> {{skill.name}}: {{rankToDie skill.rank}} + {{rankToDie skill.statValue}}
-      </label></td>
-      <td>
-        {{> (component "icon-with-wrap") 
-          title="Quick roll"
-          filename="rolling-dice-cup"
-          click_class="roll-skill"
-          extra_classes="roll-icon"
-          data=(data_fields 
-            "name" skill.name
-            "d1" skill.rank
-            "d2" skill.statValue
-          )
-        }}
-      </td>
-      <td>
-        {{> (component "icon-with-wrap") 
-          title="Roll menu"
-          filename="boon"
-          click_class="roll-skill-boon"
-          extra_classes="roll-icon"
-          data=(data_fields 
-            "name" skill.name
-            "d1" skill.rank
-            "d2" skill.statValue
-          )
-        }}
-      </td>
-      <td>
-        {{> (component "icon-with-wrap") 
-          title="Help another"
-          filename="help"
-          click_class="roll-skill-boon"
-          extra_classes="roll-icon"
-          data=(data_fields 
-            "name" skill.name
-            "d1" -1
-            "d2" -1
-            "d3" skill.rank
-          )
-        }}
-      </td>
-    </tr>
+    {{#each all_items.skill as |skill key|}}
+      {{#with (getDiceForSkill skill) as |dice|}}
+        <tr class="item" data-item-id="{{skill.id}}">
+          <td><label> {{skill.name}}: {{rankToDie dice.d1}} + {{rankToDie dice.d2}}
+          </label></td>
+          <td>
+            {{> (component "icon-with-wrap") 
+              title="Quick roll"
+              filename="rolling-dice-cup"
+              click_class="roll-skill"
+              extra_classes="roll-icon"
+              data=(data_fields 
+                "name" skill.name
+                "d1" dice.d1
+                "d2" dice.d2
+              )
+            }}
+          </td>
+          <td>
+            {{> (component "icon-with-wrap") 
+              title="Roll menu"
+              filename="boon"
+              click_class="roll-skill-boon"
+              extra_classes="roll-icon"
+              data=(data_fields 
+                "name" skill.name
+                "d1" dice.d1
+                "d2" dice.d2
+              )
+            }}
+          </td>
+          <td>
+            {{> (component "icon-with-wrap") 
+              title="Help another"
+              filename="help"
+              click_class="roll-skill-boon"
+              extra_classes="roll-icon"
+              data=(data_fields 
+                "name" skill.name
+                "d1" -1
+                "d2" -1
+                "d3" dice.d3
+              )
+            }}
+          </td>
+          <td>
+            <div class="item-controls">
+              <a class="edit-item"><i class="fas fa-edit"></i></a>
+              <a class="delete-item"><i class="fas fa-trash"></i></a>
+            </div>
+          </td>
+        </tr>
+      {{/with}}
     {{/each}}
-  </table>
-  <table class="first-column-grow">
-    {{#each system.untrained_skills as |skill key|}}
-      <tr>
-        <td><label> {{skill.name}}: {{rankToDie skill.rank}} + {{rankToDie skill.statValue}}
-        </label></td>
-      <td>
-        {{> (component "icon-with-wrap") 
-          title="Quick roll"
-          filename="rolling-dice-cup"
-          click_class="roll-skill"
-          extra_classes="roll-icon"
-          data=(data_fields 
-            "name" skill.name
-            "d1" skill.rank
-            "d2" skill.statValue
-          )
-        }}
-      </td>
-      <td>
-        {{> (component "icon-with-wrap") 
-          title="Roll menu"
-          filename="boon"
-          click_class="roll-skill-boon"
-          extra_classes="roll-icon"
-          data=(data_fields 
-            "name" skill.name
-            "d1" skill.rank
-            "d2" skill.statValue
-          )
-        }}
-      </td>
-      <td>
-        {{> (component "icon-with-wrap") 
-          title="Help another"
-          filename="help"
-          click_class="roll-skill-boon"
-          extra_classes="roll-icon"
-          data=(data_fields 
-            "name" skill.name
-            "d1" -1
-            "d2" -1
-            "d3" skill.rank
-          )
-        }}
-      </td>
-      </tr>
-    {{/each}}
+    <a class="item-create" data-type="skill"><i class="fas fa-plus"></i> Add Skill</a>
   </table>
 </div>

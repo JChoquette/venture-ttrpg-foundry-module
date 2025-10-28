@@ -1,19 +1,57 @@
-import {VALUE_TO_DIE, getRollFormula} from "./rolling.js"
+import {VALUE_TO_DIE, getRollFormula} from "./rolling.js";
+import {getDiceForSkill} from "../module.js";
 
 export class InitiativeMenu extends Application {
   constructor(actor, res, options={}) {
     super(options);
     this.actor = actor;
     this.name = name;
-    this.d1_initial = 1;
-    this.d2_initial = 1;
-    this.d3_initial = -1;
-    this.d1 = 1;
-    this.d2 = 1;
-    this.d3 = -1;
     this.resolve = res;
-    this.all_skills = {...this.actor.system.trained_skills,...this.actor.system.untrained_skills};
-
+    this.all_skills = [{
+      name:"Untrained Agility",
+      key:"agility",
+      dice:{
+        d1:0,
+        d2:actor.system.agility - actor.system.agility_burn,
+        d3:-1
+      }
+    },{
+      name:"Untrained Strength",
+      key:"strength",
+      dice:{
+        d1:0,
+        d2:actor.system.strength - actor.system.strength_burn,
+        d3:-1
+      }
+    },{
+      name:"Untrained Intelligence",
+      key:"intelligence",
+      dice:{
+        d1:0,
+        d2:actor.system.intelligence - actor.system.intelligence_burn,
+        d3:-1
+      }
+    },{
+      name:"Untrained Intuition",
+      key:"intuition",
+      dice:{
+        d1:0,
+        d2:actor.system.intuition - actor.system.intuition_burn,
+        d3:-1
+      }
+    }];
+    for(let item of actor.items){
+      if(item.type=="skill"){
+        this.all_skills.push({
+          name:item.name,
+          key:item.id,
+          dice:{...getDiceForSkill(item),d3:-1}
+        });
+      }
+    }
+    console.log(this.all_skills);
+    this.dice_initial = {...this.all_skills[0].dice};
+    this.dice = {...this.all_skills[0].dice};
   }
 
   static get defaultOptions() {
@@ -35,8 +73,8 @@ export class InitiativeMenu extends Application {
      * Dice cannot go below -1 (not present) or above 6 (d20)
      */
 
-    let [d1, d2, d3] = [this.d1, this.d2, this.d3];
-    let [d1i, d2i, d3i] = [this.d1_initial, this.d2_initial, this.d3_initial];
+    let [d1, d2, d3] = [this.dice.d1, this.dice.d2, this.dice.d3];
+    let [d1i, d2i, d3i] = [this.dice_initial.d1, this.dice_initial.d2, this.dice_initial.d3];
     let [d1b, d2b, d3b] = [d1-d1i, d2-d2i, d3-d3i];
     let enabled = {
       d1: {up:true, down:true},
@@ -72,9 +110,9 @@ export class InitiativeMenu extends Application {
       selected_skill: this.selected_skill,
       skills: this.all_skills,
       name: this.name,
-      d1: this.d1,
-      d2: this.d2,
-      d3: this.d3,
+      d1: d1,
+      d2: d2,
+      d3: d3,
       enabled:enabled,
       boons: this.boons,
       epic: this.epic
@@ -102,13 +140,9 @@ export class InitiativeMenu extends Application {
     html.find(".select-skill-for-initiative").on("change", ev => {
       const selected = ev.currentTarget.value;
       this.selected_skill = selected;
-      this.d1 = this.all_skills[this.selected_skill].rank;
-      this.d2 = this.all_skills[this.selected_skill].statValue;
-      this.d3 = -1;
-      console.log(this.actor.system);
-      console.log(this.d1,this.d2,this.d3);
-      console.log(this.all_skills);
-      console.log(`Selected initiative skill: ${selected}`);
+      const dice = this.all_skills.find((elem)=>elem.key==selected).dice;
+      this.dice_initial = {...dice};
+      this.dice = {...dice};
       this.render();
     });
   }
