@@ -26,7 +26,7 @@ export const getDiceForSkill = function(skill){
   if(stat!="none"){
     return {
       d1:skill_system.rank,
-      d2:actor_system[stat] - actor_system[stat+"_burn"],
+      d2:actor_system.derived[stat+"_current"],
       d3:skill_system.rank,
     }
   }else{
@@ -42,7 +42,7 @@ const getDiceForWeapon = function(weapon){
   if(!weapon.actor)return {d1:0,d2:0,d3:0};
   const actor_system = weapon.actor.system;
   const stat = weapon.system.stat;
-  const stat_value = (actor_system[stat] - actor_system[stat+"_burn"]) || 0;
+  const stat_value = actor_system.derived[stat+"_current"];
   let skill_value = 0;
   for(let skill of weapon.actor.items){
     if(skill.type=="skill"){
@@ -283,7 +283,7 @@ Hooks.once("init", () => {
     const costtype = ability.system.costtype;
     const cost = ability.system.cost;
     if(!cost || !costtype)return "disabled";
-    const max_res = ability.actor.system["max_"+costtype];
+    const max_res = ability.actor.system.derived["max_"+costtype];
     const res_remaining = max_res - ability.actor.system[costtype];
     if(!max_res)return "too-expensive disabled";
     if(res_remaining < cost)return "too-expensive disabled";
@@ -324,7 +324,8 @@ export const preloadHandlebarsTemplates = async function() {
     "setup-resources.html",
   ]
   const sheetComponents = [
-    "icon-with-wrap.html"
+    "icon-with-wrap.html",
+    "damage-tracker.html",
   ]
   const templatePaths = sheetParts.map((x)=>pathSheetParts+x).concat(sheetComponents.map((x)=>pathComponents+x));
   return foundry.applications.handlebars.loadTemplates(templatePaths);

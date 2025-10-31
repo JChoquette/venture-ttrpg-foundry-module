@@ -100,6 +100,7 @@ export class VentureItemSheet extends ItemSheet {
           "defense",
           "roll_type",
           "description",
+          "modifiers",
         ];
         break;
       case "weapon":
@@ -114,6 +115,7 @@ export class VentureItemSheet extends ItemSheet {
           "defense",
           "roll_type",
           "description",
+          "modifiers",
         ];
         break;
       case "equipment":
@@ -123,6 +125,7 @@ export class VentureItemSheet extends ItemSheet {
           "rank",
           "action",
           "description",
+          "modifiers",
         ];
         break;
       case "species":
@@ -132,6 +135,7 @@ export class VentureItemSheet extends ItemSheet {
           "community",
           "ability",
           "description",
+          "modifiers",
         ];
         break;
       case "background":
@@ -139,6 +143,7 @@ export class VentureItemSheet extends ItemSheet {
           "name",
           "ability",
           "description",
+          "modifiers",
         ];
         break;
       default:
@@ -157,6 +162,35 @@ export class VentureItemSheet extends ItemSheet {
     html.find(".confirm").click(ev => {
       ev.preventDefault();
       this.close();
+    });
+
+    // Add new modifier
+    html.find('.add-modifier').click(ev => {
+      ev.preventDefault();
+      const modifiers = foundry.utils.duplicate(this.item.system.modifiers ?? []);
+      modifiers.push({ target: "", value: 0 });
+      this.item.update({ "system.modifiers": modifiers });
+      console.log(this.item);
+    });
+
+    // Remove modifier
+    html.find('.delete-modifier').click(ev => {
+      ev.preventDefault();
+      const index = Number(ev.currentTarget.dataset.index);
+      const modifiers = foundry.utils.duplicate(this.item.system.modifiers ?? []);
+      modifiers.splice(index, 1);
+      this.item.update({ "system.modifiers": modifiers });
+    });
+
+    // Edit modifier fields
+    html.find('.modifier-input').change(ev => {
+      const index = Number(ev.currentTarget.dataset.index);
+      const field = ev.currentTarget.dataset.field;
+      const value = ev.currentTarget.value;
+
+      const modifiers = foundry.utils.duplicate(this.item.system.modifiers ?? []);
+      modifiers[index][field] = value;
+      this.item.update({ "system.modifiers": modifiers });
     });
   }
 }

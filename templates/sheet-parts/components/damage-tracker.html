@@ -1,0 +1,12 @@
+<tr class="damage-tracker">
+  <td><label>{{name}}{{#if threshold}} (>={{threshold}}){{/if}}</label></td>
+  {{#times amount_used}}
+    <td><input type="checkbox" checked="true" class="disabled"/></td>
+  {{/times}}
+  {{#times (subtract (subtract max_amount min_amount) amount_used)}}
+    <td><input type="checkbox" class="disabled"/></td>
+  {{/times}}
+  {{#if (gt largest_value (subtract max_amount min_amount)) }}<td colspan="{{subtract largest_value (subtract max_amount min_amount)}}"/>{{/if}}
+  <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="{{data_field}}" {{#if (gte amount_used (subtract max_amount min_amount))}} disabled {{/if}}>+</button></td>
+  <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="{{data_field}}" {{#if (gte 0 amount_used)}} disabled {{/if}}>-</button></td>
+</tr>

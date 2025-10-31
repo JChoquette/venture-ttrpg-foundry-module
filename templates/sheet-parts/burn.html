@@ -1,78 +1,57 @@
 <div>
 	<h3>Stat Burn</h3>
   <table class="first-column-grow">
-    <tr class="damage-tracker">
-      <td><label>Strength</label></td>
-      {{#times system.strength_burn}}
-        <td><input type="checkbox" checked="true" class="disabled"/></td>
-      {{/times}}
-      {{#times (subtract (subtract system.strength 1) system.strength_burn)}}
-        <td><input type="checkbox" class="disabled"/></td>
-      {{/times}}
-      {{#if (gte (subtract largest_stat system.strength) 1) }}<td colspan="{{subtract largest_stat system.strength}}"/>{{/if}}
-      <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="strength_burn" {{#if (gte system.strength_burn (subtract system.strength 1))}} disabled {{/if}}>+</button></td>
-      <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="strength_burn" {{#if (gte 0 system.strength_burn)}} disabled {{/if}}>-</button></td>
-    </tr>
-    <tr class="damage-tracker">
-      <td><label>Agility</label></td>
-      {{#times system.agility_burn}}
-        <td><input type="checkbox" checked="true" class="disabled"/></td>
-      {{/times}}
-      {{#times (subtract (subtract system.agility 1) system.agility_burn)}}
-        <td><input type="checkbox" class="disabled"/></td>
-      {{/times}}
-      {{#if (gte (subtract largest_stat system.agility) 1) }}<td colspan="{{subtract largest_stat system.agility}}"/>{{/if}}
-      <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="agility_burn" {{#if (gte system.agility_burn (subtract system.agility 1))}} disabled {{/if}}>+</button></td>
-      <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="agility_burn" {{#if (gte 0 system.agility_burn)}} disabled {{/if}}>-</button></td>
-    </tr>
-    <tr class="damage-tracker">
-      <td><label>Intelligence</label></td>
-      {{#times system.intelligence_burn}}
-        <td><input type="checkbox" checked="true" class="disabled"/></td>
-      {{/times}}
-      {{#times (subtract (subtract system.intelligence 1) system.intelligence_burn)}}
-        <td><input type="checkbox" class="disabled"/></td>
-      {{/times}}
-      {{#if (gte (subtract largest_stat system.intelligence) 1) }}<td colspan="{{subtract largest_stat system.intelligence}}"/>{{/if}}
-      <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="intelligence_burn" {{#if (gte system.intelligence_burn (subtract system.intelligence 1))}} disabled {{/if}}>+</button></td>
-      <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="intelligence_burn" {{#if (gte 0 system.intelligence_burn)}} disabled {{/if}}>-</button></td>
-    </tr>
-    <tr class="damage-tracker">
-      <td><label>Intuition</label></td>
-      {{#times system.intuition_burn}}
-        <td><input type="checkbox" checked="true" class="disabled"/></td>
-      {{/times}}
-      {{#times (subtract (subtract system.intuition 1) system.intuition_burn)}}
-        <td><input type="checkbox" class="disabled"/></td>
-      {{/times}}
-      {{#if (gte (subtract largest_stat system.intuition) 1) }}<td colspan="{{subtract largest_stat system.intuition}}"/>{{/if}}
-      <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="intuition_burn" {{#if (gte system.intuition_burn (subtract system.intuition 1))}} disabled {{/if}}>+</button></td>
-      <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="intuition_burn" {{#if (gte 0 system.intuition_burn)}} disabled {{/if}}>-</button></td>
-    </tr>
-    <tr class="damage-tracker">
-      <td><label>Endurance</label></td>
-      {{#times system.endurance_burn}}
-        <td><input type="checkbox" checked="true" class="disabled"/></td>
-      {{/times}}
-      {{#times (subtract system.endurance system.endurance_burn)}}
-        <td><input type="checkbox" class="disabled"/></td>
-      {{/times}}
-      {{#if (gte (subtract largest_stat system.endurance) 0) }}<td colspan="{{subtract (subtract largest_stat 1) system.endurance}}"/>{{/if}}
-      <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="endurance_burn" {{#if (gte system.endurance_burn system.endurance)}} disabled {{/if}}>+</button></td>
-      <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="endurance_burn" {{#if (gte 0 system.endurance_burn)}} disabled {{/if}}>-</button></td>
-    </tr>
-    {{#if system.fuel}}<tr class="damage-tracker">
-      <td><label>Fuel</label></td>
-      {{#times system.fuel_burn}}
-        <td><input type="checkbox" checked="true" class="disabled"/></td>
-      {{/times}}
-      {{#times (subtract system.fuel system.fuel_burn)}}
-        <td><input type="checkbox" class="disabled"/></td>
-      {{/times}}
-      {{#if (gte (subtract largest_stat system.fuel) 0) }}<td colspan="{{subtract  (subtract largest_stat 1) system.fuel}}"/>{{/if}}
-      <td><button class="increment-button" data-name="increment-button" data-amount="+1" data-field="fuel_burn" {{#if (gte system.fuel_burn system.fuel)}} disabled {{/if}}>+</button></td>
-      <td><button class="increment-button" data-name="increment-button" data-amount="-1" data-field="fuel_burn" {{#if (gte 0 system.fuel_burn)}} disabled {{/if}}>-</button></td>
-    </tr>
-    {{/if}}
+    {{> (component "damage-tracker")
+      name="Strength"
+      amount_used = system.strength_burn
+      max_amount = system.derived.strength
+      min_amount = 1
+      data_field = "strength_burn"
+      largest_value = largest_stat
+    }}
+    {{> (component "damage-tracker")
+      name="Agility"
+      amount_used = system.agility_burn
+      max_amount = system.derived.agility
+      min_amount = 1
+      data_field = "agility_burn"
+      largest_value = largest_stat
+    }}
+    {{> (component "damage-tracker")
+      name="Intelligence"
+      amount_used = system.intelligence_burn
+      max_amount = system.derived.intelligence
+      min_amount = 1
+      data_field = "intelligence_burn"
+      largest_value = largest_stat
+    }}
+    {{> (component "damage-tracker")
+      name="Intuition"
+      amount_used = system.intuition_burn
+      max_amount = system.derived.intuition
+      min_amount = 1
+      data_field = "intuition_burn"
+      largest_value = largest_stat
+    }}
+    {{#unless (eq actor.type "npc")}}
+      {{> (component "damage-tracker")
+        name="Endurance"
+        amount_used = system.endurance_burn
+        max_amount = system.derived.endurance
+        min_amount = 0
+        data_field = "endurance_burn"
+        largest_value = largest_stat
+      }}
+      {{#if system.derived.fuel}}
+        {{> (component "damage-tracker")
+          name="Fuel"
+          amount_used = system.fuel_burn
+          max_amount = system.derived.fuel
+          min_amount = 0
+          data_field = "fuel_burn"
+          largest_value = largest_stat
+        }}
+      {{/if}}
+    {{/unless}}
   </table>
 </div>

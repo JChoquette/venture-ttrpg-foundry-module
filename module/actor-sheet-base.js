@@ -21,10 +21,10 @@ export class VentureBaseSheet extends ActorSheet {
 
     // Create stats list
     context.current_stats = {
-      "strength": {name:"Strength",value:system.strength - system.strength_burn || 1},
-      "agility": {name:"Agility",value:system.agility - system.agility_burn || 1},
-      "intelligence": {name:"Intelligence",value:system.intelligence - system.intelligence_burn || 1},
-      "intuition": {name:"Intuition",value:system.intuition - system.intuition_burn || 1},
+      "strength": {name:"Strength",value:system.derived.strength_current},
+      "agility": {name:"Agility",value:system.derived.agility_current},
+      "intelligence": {name:"Intelligence",value:system.derived.intelligence_current},
+      "intuition": {name:"Intuition",value:system.derived.intuition_current},
     }
 
     //Split up and filter the items
@@ -63,9 +63,9 @@ export class VentureBaseSheet extends ActorSheet {
 
 
     //Calculate largest damage track and burn track
-    context.largest_wounds = Math.max(system.max_guard,system.max_minor_wounds,system.max_major_wounds,system.max_critical_wounds);
-    context.largest_stat = Math.max(system.strength, system.agility, system.intelligence, system.intuition, system.endurance, system.fuel);
-    context.largest_resource = Math.max(system.max_steam, system.max_vigour, system.max_vim);
+    context.largest_wounds = Math.max(system.derived.max_guard,system.derived.max_minor_wounds,system.derived.max_major_wounds,system.derived.max_critical_wounds);
+    context.largest_stat = Math.max(system.derived.strength-1, system.derived.agility-1, system.derived.intelligence-1, system.derived.intuition-1, system.derived.endurance, system.derived.fuel);
+    context.largest_resource = Math.max(system.derived.max_steam, system.derived.max_vigour, system.derived.max_vim);
 
     //Check if the actor is a combatant, and add appropriate flags if so
     const currentCombat = game.combats.active;

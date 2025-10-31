@@ -21,8 +21,10 @@ export class VentureActor extends Actor {
 
     // Loop through each stat and compute final values
     for (const stat of baseStats) {
-      const base = system[stat] ?? 0;
-      system.derived[stat] = base + this._addModifiers(stat);
+      let value = this.getStat(stat);
+      if(baseStats.indexOf(stat)<=3 && value > 5)value=5;
+      if(baseStats.indexOf(stat)<=4 && value < 1)value=1;
+      system.derived[stat] = value;
       system.derived[stat+"_current"] = system.derived[stat] - (system[stat+"_burn"] || 0);
     }
 
@@ -43,6 +45,12 @@ export class VentureActor extends Actor {
     system.derived["critical_threshold"] = this.getCriticalThreshold();
   }
 
+  getStat(stat){
+    let base = this.system[stat] || 0;
+    if(this.type=="npc" && ! this.system[stat+"_is_custom"] && stat != "fuel")base=this.system.level || 1;
+    return base + this._addModifiers(stat);
+  }
+
   //Resources
   getVigour(){
     const base = this.system.derived["strength"]+this.system.derived["agility"];
@@ -59,17 +67,19 @@ export class VentureActor extends Actor {
 
   //Wounds
   getGuard(){
-    const base = 0;
+    //For now, use the input value as base, later base on equipped armour
+    //TODO
+    const base = this.system.max_guard;
     return base + this._addModifiers("guard");
   }
   getMinorWounds(){
     let base = this.system.level;
-    if(this.type=="character")base = this.derived.endurance+1;
+    if(this.type=="character")base = this.system.derived.endurance+1;
     return base + this._addModifiers("minor_wounds");
   }
   getMajorWounds(){
     let base = this.system.level;
-    if(this.type=="character")base = this.derived.endurance+1;
+    if(this.type=="character")base = this.system.derived.endurance+1;
     return base + this._addModifiers("major_wounds");
   }
   getCriticalWounds(){
@@ -80,20 +90,20 @@ export class VentureActor extends Actor {
   getMajorThreshold(){
     let base;
     if(this.type=="npc") base = 4 + Math.floor((this.level ?? 0)/2);
-    else base = 4 + Math.floor(this.derived.endurance/2);
+    else base = 4 + Math.floor(this.system.derived.endurance/2);
     return base + this._addModifiers("major_threshold");
   }
   getCriticalThreshold(){
     let base;
-    if(this.type=="npc") base = this.derived.major_threshold*2;
-    else base = this.derived.major_threshold+10;
+    if(this.type=="npc") base = this.system.derived.major_threshold*2;
+    else base = this.system.derived.major_threshold+10;
     return base + this._addModifiers("critical_threshold");
   }
 
 
   _addModifiers(stat){
     const modifiers = this._collectModifiers(stat);
-    return modifiers.reduce((sum, mod) => sum + mod.value, 0);
+    return modifiers.reduce((sum, mod) => sum + parseInt(mod.value), 0);
   }
 
   /**
@@ -105,7 +115,6 @@ export class VentureActor extends Actor {
     const mods = [];
     for (const item of this.items) {
       const itemMods = item.system?.modifiers ?? [];
-      if(item.type=="species" && stat==item.system.bonus_stat)mods.push({value:1});
       for (const mod of itemMods) {
         if (mod.target === stat) mods.push(mod);
       }

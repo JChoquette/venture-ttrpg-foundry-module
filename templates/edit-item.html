@@ -163,14 +163,8 @@
 		{{/if}}
 		{{#if (eq field "bonus_stat")}}
 		    <div>
-		      <label>Stat:</label>
-	      	{{#if editable}}
-			      <select name="system.bonus_stat">
-			      	{{selectOptions defense_choices selected=system.bonus_stat labelAttr="name"}}
-			      </select>
-			    {{else}}
-						<p>{{system.bonus_stat}}</p>
-			    {{/if}}
+		      <label>Bonus Stat:</label>
+					<p>{{getkeysafe (getkeysafe system.modifiers 0) "target"}}</p>
 		    </div>
 		{{/if}}
 		{{#if (eq field "community")}}
@@ -201,6 +195,34 @@
 		    {{else}}
 					<p>{{{system.description}}}</p>
 		    {{/if}}
+			</div>
+		{{/if}}
+		{{# if (and editable (eq field "modifiers"))}}
+			<div>
+				<label>Modifiers:</label>
+				<table class="modifiers-table">
+		      <tr>
+		        <th>Target</th>
+		        <th>Value</th>
+		        <th></th>
+		      </tr>
+		      {{#each system.modifiers as |mod i|}}
+		      <tr>
+		        <td>
+		          <input type="text" class="modifier-input" data-index="{{i}}" data-field="target" value="{{mod.target}}" placeholder="e.g. strength">
+		        </td>
+		        <td>
+		          <input type="number" class="modifier-input" data-index="{{i}}" data-field="value" value="{{mod.value}}">
+		        </td>
+		        <td>
+		          <a class="delete-modifier" data-index="{{i}}">
+		            <i class="fas fa-trash"></i>
+		          </a>
+		        </td>
+		      </tr>
+		      {{/each}}
+	        <a class="add-modifier"><i class="fas fa-plus"></i> Add Modifier</a>
+			  </table>
 			</div>
 		{{/if}}
 	{{/forEach}}

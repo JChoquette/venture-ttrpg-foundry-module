@@ -12,7 +12,7 @@ export class InitiativeMenu extends Application {
       key:"agility",
       dice:{
         d1:0,
-        d2:actor.system.agility - actor.system.agility_burn,
+        d2:actor.system.derived["agility_current"],
         d3:-1
       }
     },{
@@ -20,7 +20,7 @@ export class InitiativeMenu extends Application {
       key:"strength",
       dice:{
         d1:0,
-        d2:actor.system.strength - actor.system.strength_burn,
+        d2:actor.system.derived["strength_current"],
         d3:-1
       }
     },{
@@ -28,7 +28,7 @@ export class InitiativeMenu extends Application {
       key:"intelligence",
       dice:{
         d1:0,
-        d2:actor.system.intelligence - actor.system.intelligence_burn,
+        d2:actor.system.derived["intelligence_current"],
         d3:-1
       }
     },{
@@ -36,7 +36,7 @@ export class InitiativeMenu extends Application {
       key:"intuition",
       dice:{
         d1:0,
-        d2:actor.system.intuition - actor.system.intuition_burn,
+        d2:actor.system.derived["intuition_current"],
         d3:-1
       }
     }];

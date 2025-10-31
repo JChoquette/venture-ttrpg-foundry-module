@@ -1,2 +1,3 @@
-{"_id":"9372709e-d691-4fa7-8f14-cdeeaf9314ce","type":"skill","name":"Perception","system":{"skill_id":"attack","domain":"combat","rank":1,"stat":"intuition"}}
-{"_id":"ff99245e-7b3f-4e61-8fa5-d59a70240e14","type":"skill","name":"Attack","system":{"skill_id":"attack","domain":"combat","rank":1,"stat":"weapon"}}
+{"_id":"4e70bc17-a511-4f7f-8f8b-c4a2b87d769b","type":"skill","name":"Attack","system":{"skill_id":"attack","domain":"combat","rank":0,"stat":"weapon"}}
+{"_id":"7b75e293-c029-4708-bd35-b1f0026efdc9","type":"ability","name":"Boss","system":{"rank":0,"description":"Add 1 to each wound type","modifiers":[{"target":"minor_wounds","value":1},{"target":"major_wounds","value":1},{"target":"critical_wounds","value":1}]}}
+{"_id":"bf4405ba-0308-491f-8c1f-4014f4fb340a","type":"skill","name":"Perception","system":{"skill_id":"attack","domain":"combat","rank":0,"stat":"intuition"}}
