@@ -27,7 +27,7 @@ export function getRollFormula(d1, d2, d3=-1){
   return formula;
 }
 
-export function rollSkill(name, d1, d2, d3=-1, options={}) {
+export function rollSkill(actor, name, d1, d2, d3=-1, options={}) {
   const skillDie = VALUE_TO_DIE[d1] || "d1";
   const statDie = VALUE_TO_DIE[d2] || "d4";
   const helpDie = VALUE_TO_DIE[d3] || "0"
@@ -57,7 +57,7 @@ export function rollSkill(name, d1, d2, d3=-1, options={}) {
   // Roll it using Foundry's Roll class
   const roll = new Roll(formula);
   roll.toMessage({
-    speaker: ChatMessage.getSpeaker({actor: game.user.character}),
+    speaker: ChatMessage.getSpeaker({actor: actor}),
     flavor: `${message} (${formula})`
   });
 }

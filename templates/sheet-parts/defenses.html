@@ -1,9 +1,10 @@
 <div>
-  <h3>Defenses</h3>
+  <h3>Stats</h3>
   <table class="first-column-grow">
+    <tr><th/><th colspan="2">Defense</th><th><span style="width: 32px;display:block;"/></th><th colspan="3">Untrained Skill</th>
     {{#each current_stats as |stat key|}}
       <tr>
-        <td><label> {{key}}: {{rankToDie stat}} + {{rankToDie stat}}
+        <td><label> {{stat.name}} ({{rankToDie stat.value}}):
         </label>
         <td>
           {{> (component "icon-with-wrap") 
@@ -13,8 +14,8 @@
             extra_classes="roll-icon"
             data=(data_fields 
               "name" key
-              "d1" stat
-              "d2" stat
+              "d1" stat.value
+              "d2" stat.value
             )
           }}
         </td>
@@ -26,8 +27,49 @@
             extra_classes="roll-icon"
             data=(data_fields 
               "name" key
-              "d1" stat
-              "d2" stat
+              "d1" stat.value
+              "d2" stat.value
+            )
+          }}
+        </td>
+        <td/>
+        <td>
+          {{> (component "icon-with-wrap") 
+            title="Quick roll"
+            filename="rolling-dice-cup"
+            click_class="roll-skill"
+            extra_classes="roll-icon"
+            data=(data_fields 
+              "name" key
+              "d1" "0"
+              "d2" stat.value
+            )
+          }}
+        </td>
+        <td>
+          {{> (component "icon-with-wrap") 
+            title="Roll menu"
+            filename="boon"
+            click_class="roll-skill-boon"
+            extra_classes="roll-icon"
+            data=(data_fields 
+              "name" key
+              "d1" "0"
+              "d2" stat.value
+            )
+          }}
+        </td>
+        <td>
+          {{> (component "icon-with-wrap") 
+            title="Roll menu"
+            filename="help"
+            click_class="roll-skill-boon"
+            extra_classes="roll-icon"
+            data=(data_fields 
+              "name" key
+              "d1" "-1"
+              "d2" "-1"
+              "d3" "0"
             )
           }}
         </td>

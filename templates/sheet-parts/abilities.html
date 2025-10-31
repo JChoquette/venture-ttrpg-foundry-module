@@ -1,143 +1,265 @@
 <div>
   <h2>Abilities</h2>
-  <h3>Equip a weapon:</h3>
-  <table>
-    <tr>
-      <th></th>
-      <th>Item</th>
-      <th>Stat</th>
-      <th>Action</th>
-      <th>Range</th>
-      <th>Description</th>
-    </tr>
-    {{#each all_items.weapon as |item key|}}
-      <tr class="item" data-item-id="{{item.id}}">
-        <td><input type="radio" value="{{item.id}}" name="system.equipped_weapon" {{#if (eq item.id ../system.equipped_weapon)}}checked{{/if}}/>
-        <td>{{item.name}}</td>
-        <td>{{item.system.stat}}</td>
-        <td>
-          {{# if item.system.action}}
-            {{> (component "icon-with-wrap") 
-              title="Use action"
-              filename=(concat 'action-' item.system.action)
-              click_class=(getAbilityActionClass item ../action_info)
-              data=(data_fields 
-                "action" item.system.action
-              )
-            }}
-          {{/if}}
-        </td>
-        <td>{{item.system.range}}</td>
-        <td>{{{item.system.description}}}</td>
-        <td>
-          {{#with (getDiceForWeapon item) as |dice|}}
-            {{> (component "icon-with-wrap") 
-              title="Roll menu"
-              filename="boon"
-              click_class="roll-skill-boon"
-              extra_classes="roll-icon"
-              data=(data_fields 
-                "name" item.name
-                "d1" dice.d1
-                "d2" dice.d2
-              )
-            }}
-          {{/with}}
-        </td>
-        <td>
-          <div class="item-controls">
-            <a class="edit-item"><i class="fas fa-edit"></i></a>
-            <a class="delete-item"><i class="fas fa-trash"></i></a>
-          </div>
-        </td>
-      </tr>
-    {{/each}}
-    <a class="item-create" data-type="weapon"><i class="fas fa-plus"></i> Add Weapon</a>
-  </table>
-  <h3>Abilities</h3>
-  <table>
-    <tr>
-      <th>Name</th>
-      <th>Skill</th>
-      <th>Cost</th>
-      <th></th>
-      <th>Description</th>
-    </tr>
-    {{#each all_items.ability as |ability|}}
-      {{#with (getOverridesForAbility ability) as |overrides|}}
-        <tr class="item" data-item-id="{{ability.id}}">
-          <td>{{ability.name}}</td>
-          <td>{{overrides.skill}}</td>
-          <td>
-            {{# if ability.system.cost}}
-              {{> (component "icon-with-wrap") 
-                title="Pay cost"
-                filename=ability.system.costtype
-                click_class=(getAbilityCostClass ability)
-                extra_text=(concat "x " ability.system.cost)
-                data=(data_fields 
-                  "cost" ability.system.cost
-                  "costtype" ability.system.costtype
-                )
-              }}
-            {{/if}}
-          </td>
-          <td>
-            {{# if (and overrides.action (neq overrides.action "none"))}}
-              {{> (component "icon-with-wrap") 
-                title="Use action"
-                filename=(concat 'action-' overrides.action)
-                click_class=(getAbilityActionClass ability ../../action_info overrides)
-                data=(data_fields 
-                  "action" overrides.action
-                )
-              }}
-            {{/if}}
-          </td>
-          <td>{{{ability.system.description}}}</td>
-          {{#if overrides.dice}}
-          {{#if (eq ability.system.roll_type "help")}}
-          <td>
-            {{> (component "icon-with-wrap") 
-              title="Help another"
-              filename="help"
-              click_class="roll-skill-boon"
-              extra_classes="roll-icon"
-              data=(data_fields 
-                "name" ability.name
-                "d1" "-1"
-                "d2" "-1"
-                "d3" overrides.dice.d3
-              )
-            }}
-          </td>
-          {{else}}
-          <td>
-            {{> (component "icon-with-wrap") 
-              title="Roll menu"
-              filename="boon"
-              click_class="roll-skill-boon"
-              extra_classes="roll-icon"
-              data=(data_fields 
-                "name" ability.name
-                "d1" overrides.dice.d1
-                "d2" overrides.dice.d2
-              )
-            }}
-          </td>
-          {{/if}}
-          {{else}}
-          <td></td>
-          {{/if}}
-          <td>
-            <div class="item-controls">
-              <a class="edit-item"><i class="fas fa-edit"></i></a>
-              <a class="delete-item"><i class="fas fa-trash"></i></a>
-            </div>
-          </td>
+  <section class="collapsible-section {{#if collapsed.weapons}}collapsed{{/if}}" data-section="weapons" >
+    <h3 class="section-header"><a class="toggle-section"><i class="fas fa-chevron-down"></i></a>Weapons</h3>
+    </header>
+    <div class="section-body">
+      <table>
+        <tr>
+          <th></th>
+          <th>Item</th>
+          <th>Stat</th>
+          <th>Action</th>
+          <th>Range</th>
+          <th>Description</th>
         </tr>
-      {{/with}}
-    {{/each}}
-    <a class="item-create" data-type="ability"><i class="fas fa-plus"></i> Add Ability</a>
-  </table>
+        {{#each all_items.weapon as |item key|}}
+          <tr class="item" data-item-id="{{item.id}}">
+            <td><input type="radio" value="{{item.id}}" name="system.equipped_weapon" {{#if (eq item.id ../system.equipped_weapon)}}checked{{/if}}/></td>
+            <td>{{item.name}}</td>
+            <td>{{item.system.stat}}</td>
+            <td>
+              {{# if item.system.action}}
+                {{> (component "icon-with-wrap") 
+                  title="Use action"
+                  filename=(concat 'action-' item.system.action)
+                  click_class=(getAbilityActionClass item ../action_info)
+                  data=(data_fields 
+                    "action" item.system.action
+                  )
+                }}
+              {{/if}}
+            </td>
+            <td>{{item.system.range}}</td>
+            <td>{{{item.system.description}}}</td>
+            <td>
+              {{#with (getDiceForWeapon item) as |dice|}}
+                {{> (component "icon-with-wrap") 
+                  title="Roll menu"
+                  filename="boon"
+                  click_class="roll-skill-boon"
+                  extra_classes="roll-icon"
+                  data=(data_fields 
+                    "name" item.name
+                    "d1" dice.d1
+                    "d2" dice.d2
+                  )
+                }}
+              {{/with}}
+            </td>
+            <td>
+              <div class="item-controls">
+                <a class="edit-item"><i class="fas fa-edit"></i></a>
+                <a class="delete-item"><i class="fas fa-trash"></i></a>
+              </div>
+            </td>
+          </tr>
+        {{/each}}
+        <a class="item-create" data-type="weapon"><i class="fas fa-plus"></i> Add Weapon</a>
+      </table>
+    </div>
+  </section>
+  <section class="collapsible-section {{#if collapsed.abilities}}collapsed{{/if}}" data-section="abilities">
+    <h3 class="section-header"><a class="toggle-section"><i class="fas fa-chevron-down"></i></a>Abilities</h3>
+    </header>
+    <div class="section-body">
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Skill</th>
+          <th>Cost</th>
+          <th></th>
+          <th>Description</th>
+        </tr>
+        {{# if all_items.species}}
+          {{#with all_items.species as |species|}}
+            <tr class="item" data-item-id="{{species.id}}">
+              <td>{{species.name}}</td>
+              <td/>
+              <td/>
+              <td/>
+              <td>
+                {{#if species.system.community}}
+                  <p>Community: Boon to {{species.system.community}}</p>
+                {{/if}}
+                <p>{{{species.system.ability}}}</p>
+              </td>
+              <td/>
+              <td>
+                <div class="item-controls">
+                  <a class="edit-item"><i class="fas fa-edit"></i></a>
+                  <a class="delete-item"><i class="fas fa-trash"></i></a>
+                </div>
+              </td>
+            </tr>
+          {{/with}}
+        {{/if}}
+        {{#each all_items.ability as |ability|}}
+          {{#with (getOverridesForAbility ability) as |overrides|}}
+            <tr class="item" data-item-id="{{ability.id}}">
+              <td>{{ability.name}}</td>
+              <td>{{overrides.skill}}</td>
+              <td>
+                {{# if ability.system.cost}}
+                  {{> (component "icon-with-wrap") 
+                    title="Pay cost"
+                    filename=ability.system.costtype
+                    click_class=(getAbilityCostClass ability)
+                    extra_text=(concat "x " ability.system.cost)
+                    data=(data_fields 
+                      "cost" ability.system.cost
+                      "costtype" ability.system.costtype
+                    )
+                  }}
+                {{/if}}
+              </td>
+              <td>
+                {{# if (and overrides.action (neq overrides.action "none"))}}
+                  {{> (component "icon-with-wrap") 
+                    title="Use action"
+                    filename=(concat 'action-' overrides.action)
+                    click_class=(getAbilityActionClass ability ../../action_info overrides)
+                    data=(data_fields 
+                      "action" overrides.action
+                    )
+                  }}
+                {{/if}}
+              </td>
+              <td>{{{ability.system.description}}}</td>
+              {{#if overrides.dice}}
+              {{#if (eq ability.system.roll_type "help")}}
+              <td>
+                {{> (component "icon-with-wrap") 
+                  title="Help another"
+                  filename="help"
+                  click_class="roll-skill-boon"
+                  extra_classes="roll-icon"
+                  data=(data_fields 
+                    "name" ability.name
+                    "d1" "-1"
+                    "d2" "-1"
+                    "d3" overrides.dice.d3
+                  )
+                }}
+              </td>
+              {{else}}
+              <td>
+                {{> (component "icon-with-wrap") 
+                  title="Roll menu"
+                  filename="boon"
+                  click_class="roll-skill-boon"
+                  extra_classes="roll-icon"
+                  data=(data_fields 
+                    "name" ability.name
+                    "d1" overrides.dice.d1
+                    "d2" overrides.dice.d2
+                  )
+                }}
+              </td>
+              {{/if}}
+              {{else}}
+              <td></td>
+              {{/if}}
+              <td>
+                <div class="item-controls">
+                  <a class="edit-item"><i class="fas fa-edit"></i></a>
+                  <a class="delete-item"><i class="fas fa-trash"></i></a>
+                </div>
+              </td>
+            </tr>
+          {{/with}}
+        {{/each}}
+        <a class="item-create" data-type="ability"><i class="fas fa-plus"></i> Add Ability</a>
+      </table>
+    </div>
+  </section>
+  <section class="collapsible-section {{#if collapsed.basic_actions}}collapsed{{/if}}" data-section="basic_actions">
+    <h3 class="section-header"><a class="toggle-section"><i class="fas fa-chevron-down"></i></a>Basic Actions</h3>
+    </header>
+    <div class="section-body">
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Cost</th>
+          <th></th>
+          <th>Description</th>
+        </tr>
+        {{#each all_items.basic_action as |ability|}}
+          {{#with (getOverridesForAbility ability) as |overrides|}}
+            <tr class="item" data-item-id="{{ability.id}}">
+              <td>{{ability.name}}</td>
+              <td>
+                {{# if ability.system.cost}}
+                  {{> (component "icon-with-wrap") 
+                    title="Pay cost"
+                    filename=ability.system.costtype
+                    click_class=(getAbilityCostClass ability)
+                    extra_text=(concat "x " ability.system.cost)
+                    data=(data_fields 
+                      "cost" ability.system.cost
+                      "costtype" ability.system.costtype
+                    )
+                  }}
+                {{/if}}
+              </td>
+              <td>
+                {{# if (and overrides.action (neq overrides.action "none"))}}
+                  {{> (component "icon-with-wrap") 
+                    title="Use action"
+                    filename=(concat 'action-' overrides.action)
+                    click_class=(getAbilityActionClass ability ../../action_info overrides)
+                    data=(data_fields 
+                      "action" overrides.action
+                    )
+                  }}
+                {{/if}}
+              </td>
+              <td>{{{ability.system.description}}}</td>
+              {{#if overrides.dice}}
+              {{#if (eq ability.system.roll_type "help")}}
+              <td>
+                {{> (component "icon-with-wrap") 
+                  title="Help another"
+                  filename="help"
+                  click_class="roll-skill-boon"
+                  extra_classes="roll-icon"
+                  data=(data_fields 
+                    "name" ability.name
+                    "d1" "-1"
+                    "d2" "-1"
+                    "d3" overrides.dice.d3
+                  )
+                }}
+              </td>
+              {{else}}
+              <td>
+                {{> (component "icon-with-wrap") 
+                  title="Roll menu"
+                  filename="boon"
+                  click_class="roll-skill-boon"
+                  extra_classes="roll-icon"
+                  data=(data_fields 
+                    "name" ability.name
+                    "d1" overrides.dice.d1
+                    "d2" overrides.dice.d2
+                  )
+                }}
+              </td>
+              {{/if}}
+              {{else}}
+              <td></td>
+              {{/if}}
+              <td>
+                <div class="item-controls">
+                  <a class="edit-item"><i class="fas fa-edit"></i></a>
+                  <a class="delete-item"><i class="fas fa-trash"></i></a>
+                </div>
+              </td>
+            </tr>
+          {{/with}}
+        {{/each}}
+        <a class="item-create" data-type="ability"><i class="fas fa-plus"></i> Add Ability</a>
+      </table>
+    </div>
+  </section>
 </div>

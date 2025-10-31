@@ -70,6 +70,15 @@
   color: unset;
 }
 
+.venture-rpg .inline{
+  display: inline;
+  max-width: fit-content;
+}
+
+.venture-rpg .toggle-edit{
+  padding-left: 12px;
+}
+
 .venture-rpg nav.tabs [data-tab],.venture-rpg nav.tabs [data-tab].active{
   color: var(--venture-rpg-primary);
 }
@@ -368,4 +377,50 @@
   max-height: 32px;
 }
 
+.venture-rpg .section-header {
+  cursor: pointer;
+}
 
+.venture-rpg .collapsed .section-body {
+  display: none;
+}
+
+.venture-rpg .collapsed .fa-chevron-down {
+  transform: rotate(-90deg);
+}
+
+.venture-rpg i.fas.fa-chevron-down {
+    padding: 0px 5px;
+}
+
+.venture-rpg .wealth-dot{
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: var(--venture-rpg-primary);
+}
+
+.venture-rpg .wealth-dot.wealth-track{
+  width: 6px;
+  height: 6px;
+}
+
+.venture-rpg .wealth-dot.wealth-track-empty{
+  width: 6px;
+  height: 6px;
+  border-radius: 4px;
+  background-color: transparent;
+  border: 1px solid var(--venture-rpg-primary);
+}
+
+.venture-rpg .wealth-table{
+  flex-grow: 0;
+}
+
+.venture-rpg .wealth-table td{
+  white-space: nowrap;
+}
+
+.venture-rpg .wealth-table td:first-child{
+  padding-right: 12px;
+}

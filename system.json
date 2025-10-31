@@ -23,12 +23,20 @@
   "styles": ["styles/venture-rpg.css"],
   "packs": [
     {
+      "name": "species",
+      "label": "Species",
+      "system": "venture-rpg",
+      "type": "Item",
+      "path": "packs/venture-species",
+      "private": false
+    },
+    {
       "name": "npc_skills",
       "label": "NPC Skills",
       "system": "venture-rpg",
       "type": "Item",
       "path": "packs/venture-npc_skills",
-      "private": true
+      "private": false
     },
     {
       "name": "all_abilities",

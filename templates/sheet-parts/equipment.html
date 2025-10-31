@@ -1,5 +1,41 @@
 <div class="equipment">
   <h2 class="flexrow"><div>Equipment</div></h2>
+  <h3>Wealth</h3>
+  <div class="flexrow">
+    <table class="wealth-table">
+      <tr>
+        <td>Wealth:</td>
+        {{#times system.wealth}}
+          <td><div class="wealth-dot"/></div></td>
+        {{/times}}
+        <td>({{wealthToJarn system.wealth}} Jarn)</td>
+      </tr>
+      <tr>
+        <td>Wealth Track:</td>
+        {{#times system.wealth_track}}
+          <td><div class="wealth-dot wealth-track"/></div></td>
+        {{/times}}
+        {{#times (subtract system.wealth system.wealth_track)}}
+          <td><div class="wealth-dot wealth-track-empty"/></div></td>
+        {{/times}}
+        <td/>
+      </tr>
+    </table>
+    <div>
+      {{> (component "icon-with-wrap") 
+        title="Receive Money"
+        filename="get-money"
+        click_class="get-money"
+        extra_classes="roll-icon"
+      }}
+      {{> (component "icon-with-wrap") 
+        title="Spend Money"
+        filename="spend-money"
+        click_class="spend-money"
+        extra_classes="roll-icon"
+      }}
+    </div>
+  </div>
   <h3>Other Equipment</h3>
   <table>
     <tr>

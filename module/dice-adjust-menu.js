@@ -1,8 +1,9 @@
 import {VALUE_TO_DIE, rollSkill} from "./rolling.js"
 
 export class DiceAdjustMenu extends Application {
-  constructor(name, d1, d2, d3=-1, options={}) {
+  constructor(actor, name, d1, d2, d3=-1, options={}) {
     super(options);
+    this.actor=actor;
     this.name = name;
     this.d1_initial = d1;
     this.d2_initial = d2;
@@ -82,7 +83,7 @@ export class DiceAdjustMenu extends Application {
     html.find(".confirm").click(ev => {
       ev.preventDefault();
       console.log(`Rolling ${this.name} with d${this.d1} and d${this.d2}`);
-      rollSkill(this.name,this.d1,this.d2,this.d3,{boons:this.boons,epic:this.epic});
+      rollSkill(this.actor,this.name,this.d1,this.d2,this.d3,{boons:this.boons,epic:this.epic});
       this.close();
     });
 

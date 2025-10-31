@@ -1,0 +1,26 @@
+<form>
+  <p>How much wealth is being spent?</p>
+  <div class="flexrow">
+    <div>
+      <label>Wealth:</label>
+      <input class="wealth-input" type="number" name="wealth" value="{{jarnToWealth jarn}}"/>
+    </div>
+    <div>
+      <label>Jarn:</label>
+      <input class="jarn-input" type="number" name="jarn" value="{{jarn}}"/>
+    </div>
+  </div>
+  <div>
+    {{#if (gte price_diff 0)}}
+      <p>Rolling to hit <strong>5 or more</strong> with:</p>
+      <div class="flexrow">
+        <img class="die-indicator" src="{{dieImage (rankToDie price_diff)}}"/>
+        <img class="die-indicator" src="{{dieImage (rankToDie price_diff)}}"/>
+      </div>
+    {{else}}
+      <p>You don't have enough wealth!</p>
+    {{/if}}
+  </div>
+  <button type="button" class="confirm"
+  {{#if (gt wealth actor_wealth)}}disabled{{/if}}>Confirm</button>
+</form>

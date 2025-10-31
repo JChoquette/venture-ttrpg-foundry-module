@@ -77,6 +77,78 @@ export class VentureItemSheet extends ItemSheet {
     context.costtype_choices = costtype_choices;
     context.skill_stat_choices = skill_stat_choices;
     context.ability_type_choices = ability_type_choices;
+
+    switch(this.item.type){
+      case "skill":
+        context.fields=[
+          "name",
+          "rank",
+          "skill_stat",
+          "is_combat",
+          "description",
+        ];
+        break;
+      case "ability":
+        context.fields=[
+          "name",
+          "skill",
+          "rank",
+          "ability_type",
+          "action",
+          "cost",
+          "range",
+          "defense",
+          "roll_type",
+          "description",
+        ];
+        break;
+      case "weapon":
+        context.fields=[
+          "name",
+          "price",
+          "rank",
+          "action",
+          "stat",
+          "hands",
+          "range",
+          "defense",
+          "roll_type",
+          "description",
+        ];
+        break;
+      case "equipment":
+        context.fields=[
+          "name",
+          "price",
+          "rank",
+          "action",
+          "description",
+        ];
+        break;
+      case "species":
+        context.fields=[
+          "name",
+          "bonus_stat",
+          "community",
+          "ability",
+          "description",
+        ];
+        break;
+      case "background":
+        context.fields=[
+          "name",
+          "ability",
+          "description",
+        ];
+        break;
+      default:
+        context_fields=[
+          "name",
+          "description",
+        ];
+    }
+    console.log(context.fields);
+
     return context;
   }
 

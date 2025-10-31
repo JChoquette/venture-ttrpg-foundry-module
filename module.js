@@ -1,6 +1,7 @@
 // module.js
 import {InitiativeMenu} from "./module/initiative-menu.js";
 import { VentureItemSheet } from "./module/edit-item.js";
+import { VentureActor } from "./module/venture-actor.js";
 
 const pathTemplate = "systems/venture-rpg/templates/";
 const pathSheetParts = pathTemplate+"sheet-parts/";
@@ -51,10 +52,64 @@ const getDiceForWeapon = function(weapon){
     }
   }
   return {
-    d1:skill_value,
+    d1:skill_value.toString(),
     d2:stat_value,
-    d3:skill_value
+    d3:skill_value.toString()
   }
+}
+
+const reloadAllBasicActions = async function(){
+  const pack = game.packs.get("venture-rpg.venture-basic_actions");
+  const abilities = await pack.getDocuments();
+  const basicActions = abilities.filter(a=>a.system.skill_id=="basic_actions").map(ability=>ability.toObject());
+  //pop the last one, it's a duplicate. Don't know why this happens.
+  basicActions.pop();
+
+  for(let actor of game.actors.filter(a=>a.type=="character" && a.id)){
+    for(let item of actor.items){
+      if(item.system.skill_id=="basic_actions"){
+        item.delete();
+      }
+    }
+
+    actor.createEmbeddedDocuments("Item",basicActions);
+  }
+}
+
+const reloadBasicActionsForActor = async function(actor){
+  const pack = game.packs.get("venture-rpg.venture-basic_actions");
+  const abilities = await pack.getDocuments();
+  const basicActions = abilities.map(ability=>ability.toObject());
+  actor.createEmbeddedDocuments("Item",basicActions);
+}
+
+const wealthBase = {
+  1:1,
+  2:2.5,
+  0:5,
+}
+
+export const wealthToJarn = function(wealth){
+  wealth = parseInt(wealth);
+  if(wealth==0)return 0;
+  const base = wealthBase[wealth % 3];
+  const exp = Math.floor((wealth+2)/3);
+  return base*(10**exp);
+}
+
+export const jarnToWealth = function(jarn){
+  jarn = parseInt(jarn);
+  if(jarn == 0)return 0;
+  if(jarn < 10)return 1;
+  const exp = Math.ceil(Math.log10(jarn));
+  const prefactor = jarn/(10**(exp-1));
+  let base;
+  if(prefactor>5){
+    base = 1;
+  }else if(prefactor > 2.5){
+    base = 0;
+  }else base = -1;
+  return 3*(exp-1)+base;
 }
 
 /**
@@ -62,6 +117,9 @@ const getDiceForWeapon = function(weapon){
  */
 Hooks.once("init", () => {
   console.log("Venture RPG | Initializing system");
+
+  //Use our custom actor class
+  CONFIG.Actor.documentClass = VentureActor;
 
   //preload templates
   preloadHandlebarsTemplates();
@@ -80,6 +138,7 @@ Hooks.once("init", () => {
     return dice[rank] || "?";
   });
 
+  //Create a block multiple times
   Handlebars.registerHelper("times", function(n, block) {
     let accum = "";
     for (let i = 0; i < n; ++i) {
@@ -87,6 +146,14 @@ Hooks.once("init", () => {
       accum += block.fn(i);
     }
     return accum;
+  });
+  //Custom each that keeps outside context
+  Handlebars.registerHelper('forEach', function (array, block) {
+    let out = '';
+    for (let i = 0; i < array.length; i++) {
+      out += block.fn({field: array[i], ...this});
+    }
+    return out;
   });
 
 
@@ -171,6 +238,14 @@ Hooks.once("init", () => {
       if(equipped_weapon){
         if(!ability.system.action || ability.system.action == "none")overrides.action = equipped_weapon.system.action;
         if(!ability.system.defense || ability.system.defense == "none")overrides.defense = equipped_weapon.system.defense;
+      }      
+      //If we have an ability that has no skill but is weapon-based, the roll will be the player's highest combat skill
+      if(ability.system.skill=="none" || ability.system.skill_id=="basic_actions"){
+        overrides.name="Combat";
+        if(equipped_weapon){
+          overrides.dice = getDiceForWeapon(equipped_weapon);
+        }
+        return overrides;
       }
     }
     let skill;
@@ -224,6 +299,11 @@ Hooks.once("init", () => {
     }else if(actionValues[action] + action_info.actions_used > 6.01)return "too-expensive disabled";
     return "use-action";
   });
+
+  //Money stuff!
+  Handlebars.registerHelper("wealthToJarn",wealthToJarn);
+  Handlebars.registerHelper("jarnToWealth",jarnToWealth);
+
 });
 
 
@@ -232,7 +312,6 @@ export const preloadHandlebarsTemplates = async function() {
   const sheetParts = [
     "notes.html",
     "skills.html",
-    "untrained-skills.html",
     "defenses.html",
     "resources.html",
     "wounds.html",
@@ -259,6 +338,7 @@ const venture_distances = [
   {name:"Very Long",min:50,max:100,color:"#FF9900"},
   {name:"Out of range",min:100,max:9999,color:"#FF0000"},
 ]
+
 
 //Alter the way the rulers display
 Hooks.once("ready", () => {
@@ -464,17 +544,14 @@ Hooks.on("combatTurnChange", (combat, updateData, updateOptions) =>{
 })
 
 Hooks.on("renderCompendium", async (app, html, data)=>{
-  console.log("Rendering the compendium");
-  console.log(app.collection.metadata.label);
 
   // Load the full index (we’ll need system data)
   const documents = await app.collection.getIndex({fields:["system"]});
-  console.log(documents);
-  console.log(app.collection.getIndex);
 
   // For each entry row
   $(html).find(".directory-item").each((i, li) => {
     const id = $(li).data("entry-id");
+    //I don't know why foundry keeps adding extra entries
     if (!id)$(li).remove();
     const entry = documents.get(id);
     if (!entry) return;
@@ -484,7 +561,7 @@ Hooks.on("renderCompendium", async (app, html, data)=>{
     const skill = entry.system?.skill ?? "—";
     const rank = entry.system?.rank ?? "—";
 
-    // Append your custom info
+    // Append custom info
     let info;
     if(entry.type=="ability")info = $(`<div class="compendium-item-meta"><span>${skill}</span> <span>${rank}:</span></div>`);
     if(entry.type=="equipment")info = $(`<div class="compendium-item-meta"><span>${category}</span> <span>${rank}:</span></div>`);
@@ -526,4 +603,21 @@ Hooks.on("renderCompendium", async (app, html, data)=>{
 
   // Re-append in sorted order
   list.append(items);
-})
+});
+
+//Add the basic actions onto characters
+Hooks.on("ready", async ()=>{
+  if(!game.user.isGM) return;
+  reloadAllBasicActions();
+});
+
+//Add the basic actions to newly created characters
+Hooks.on("createActor", async (actor, options, userId) => {
+  if (actor.type !== "character") return;
+  reloadBasicActionsForActor(actor);
+  //Add unarmed as a weapon
+  const pack = game.packs.get("venture-rpg.venture-armourer-weapons");
+  const weapons = await pack.getDocuments();
+  const unarmed = weapons.find(a=>a.name=="Unarmed");
+  if(unarmed)actor.createEmbeddedDocuments("Item",[unarmed.toObject()]);
+});

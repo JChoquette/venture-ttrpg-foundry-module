@@ -14,8 +14,6 @@
       },
       "pc-basics": {
         "exp":0,
-        "background":"",
-        "species":"",
         "wealth":0,
         "wealth_track":0,
         "notes":"",
@@ -81,7 +79,7 @@
     }
   },
   "Item": {
-    "types": ["equipment","weapon","ability","skill"],
+    "types": ["equipment","weapon","ability","skill","species","background"],
     "templates": {
       "base": {
         "description": ""
@@ -104,6 +102,12 @@
         "damage": "Light",
         "defense": "agility",
         "hands": "1h"
+      },
+      "skill":{
+        "stat":"strength"
+      },
+      "species":{
+        "stat":"choice"
       }
     },
     "equipment":{
@@ -116,6 +120,12 @@
       "templates":["base","ability"]
     },
     "skill":{
+      "templates":["base","skill"]
+    },
+    "species":{
+      "templates":["base","species"]
+    },
+    "background":{
       "templates":["base"]
     }
   }

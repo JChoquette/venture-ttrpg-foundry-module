@@ -1,30 +1,51 @@
 <form class="actor-sheet">
   <div class="flexrow">
     <div>
-    <h2>{{actor.name}}</h2>
+      
+      <h2>{{#if edit_field.name}}<input type="text" class="inline" name="name" value="{{actor.name}}"/>{{else}}{{actor.name}}{{/if}} <a class="toggle-edit" data-field="name"><i class="fas fa-edit"></i></a></h2>
       <div class="character-info">
         <div class="flexrow">
           <div class="field">
             <label for="species">Species:</label>
-            <input type="text" name="system.species" value="{{system.species}}">
+            {{#if all_items.species}}
+              <div class="item flexrow" data-item-id="{{all_items.species.id}}">
+                <div>
+                  {{all_items.species.name}}
+                </div>
+                <div class="item-controls">
+                  <a class="edit-item"><i class="fas fa-edit"></i></a>
+                  <a class="delete-item"><i class="fas fa-trash"></i></a>
+                </div>
+              </div>
+            {{else}}
+              <div>
+                None
+              </div>
+            {{/if}}
           </div>
 
           <div class="field">
             <label for="background">Background:</label>
-            <input type="text" name="system.background" value="{{system.background}}">
+            {{#if all_items.background}}
+              <div class="item flexrow" data-item-id="{{all_items.background.id}}">
+                <div>
+                  {{all_items.background.name}}
+                </div>
+                <div class="item-controls">
+                  <a class="edit-item"><i class="fas fa-edit"></i></a>
+                  <a class="delete-item"><i class="fas fa-trash"></i></a>
+                </div>
+              </div>
+            {{else}}
+              <div>
+                None
+              </div>
+            {{/if}}
           </div>
 
           <div class="field">
             <label for="exp">Exp:</label>
             <input type="number" name="system.exp" value="{{system.exp}}" min="0">
-          </div>
-          <div class="field">
-            <label for="wealth">Wealth:</label>
-            <input type="number" name="system.wealth" value="{{system.wealth}}" min="0">
-          </div>
-          <div class="field">
-            <label for="wealth_track">Wealth Track:</label>
-            <input type="number" name="system.wealth_track" value="{{system.wealth_track}}" min="0">
           </div>
         </div>
       </div>
@@ -52,7 +73,6 @@
           {{> (sheet_part "skills")}}
         </div>
         <div>
-          {{> (sheet_part "untrained-skills")}}
           {{> (sheet_part "defenses")}}
         </div>
       </div>
